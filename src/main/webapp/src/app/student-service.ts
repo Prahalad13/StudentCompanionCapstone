@@ -37,7 +37,9 @@ export class StudentService {
     return this.http.get<Student | null>(
       `${studentUrl}/me`,
       {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
     );
   }

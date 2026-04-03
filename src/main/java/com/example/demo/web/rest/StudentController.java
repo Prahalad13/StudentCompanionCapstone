@@ -57,16 +57,28 @@ public class StudentController {
         return ResponseEntity.ok(saved);
     }
     
- // CHECK IF LOGGED-IN USER ALREADY HAS A STUDENT
+// // CHECK IF LOGGED-IN USER ALREADY HAS A STUDENT
+//    @GetMapping("/me")
+//    public ResponseEntity<Student> getMyStudent(Authentication auth) {
+//        String email = auth.getName();
+//        User user = userRepository.findByEmail(email).orElseThrow();
+//
+//        return studentService.findByUserId(user.getId())
+//                .map(ResponseEntity::ok)
+//                .orElse(ResponseEntity.noContent().build());
+//    }
     @GetMapping("/me")
-    public ResponseEntity<Student> getMyStudent(Authentication auth) {
+    public ResponseEntity<?> getMyStudent(Authentication auth) {
+
         String email = auth.getName();
+        System.out.println("AUTH EMAIL 👉 " + email);
+
         User user = userRepository.findByEmail(email).orElseThrow();
 
-        return studentService.findByUserId(user.getId())
+        return studentService.findByUser(user) // ✅ correct
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.noContent().build());
+                .orElse(ResponseEntity.ok(null)); // ✅ no 204
     }
-    
+     
     
 }

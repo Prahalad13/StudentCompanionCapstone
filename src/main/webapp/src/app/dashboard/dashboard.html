@@ -22,27 +22,23 @@
   <!-- MAIN CONTENT -->
   <div class="main-content">
 
-    <!-- TOP BAR -->
-    <div class="topbar">
-      <h2>
-        @if (studentName) {
-          Welcome, {{ studentName }}!
-        } @else {
-          Welcome, {{ email }}!
-        }
-      </h2>
-    </div>
+<div class="topbar">
+
+  <h1>
+    Welcome, {{ student?.name || email }}!
+  </h1>
+
+  <div *ngIf="!student" class="no-student">
+    <p>No student profile found.</p>
+    <a routerLink="/dashboard/create-student" class="card-btn">
+      Create Student
+    </a>
+  </div>
+
+</div>
 
     <!-- CARDS -->
     <div class="cards">
-
-      <div class="card">
-        <h3>Students</h3>
-        <p>Create and manage students</p>
-        <a routerLink="/dashboard/create-student" class="card-btn">
-          Create Student
-        </a>
-      </div>
 
       <div class="card">
         <h3>Courses</h3>
@@ -59,8 +55,42 @@
           View Assessments
         </a>
       </div>
-
+      <div class="card">
+        <h3>Students</h3>
+        <p>Create and manage students</p>
+        <a routerLink="/dashboard/create-student" class="card-btn">
+          Create Student
+        </a>
+      </div>
     </div>
+    <hr>
+    <!-- BELOW CARDS -->
+	<div class="card" *ngIf="student">
+
+	  <h3>📅 Calendar</h3>
+	
+	  <div *ngFor="let a of assessments" class="calendar-row">
+	
+	    <span class="title">{{ a.title }}</span>
+	
+	    <span class="date">
+	      {{ a.dueDate | date:'mediumDate' }}
+	    </span>
+	
+	    <span 
+	      class="status"
+	      [ngClass]="{
+	        'overdue': isOverdue(a.dueDate),
+	        'upcoming': isUpcoming(a.dueDate)
+	      }">
+	
+	      {{ isOverdue(a.dueDate) ? 'Overdue' : 'Upcoming' }}
+	
+	    </span>
+	
+	  </div>
+	
+	</div>
 
   </div>
 
