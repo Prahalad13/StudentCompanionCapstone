@@ -1,0 +1,125 @@
+<div class="assessment-container">
+
+  <!-- HEADER -->
+  <div class="assessment-header">
+    <div>
+      <h2>Assessments</h2>
+      <p>Assignments, Quizzes and exams across all courses</p>
+      <a routerLink="/dashboard" class="back-link">← Back</a>
+    </div>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="assessment-card">
+
+    <!-- ADD FORM -->
+    <div class="assessment-form">
+
+      <input
+        type="text"
+        placeholder="Assessment Title"
+        [(ngModel)]="newAssessment.title"
+      />
+
+      <input
+        type="date"
+        [(ngModel)]="newAssessment.dueDate"
+      />
+
+      <select [(ngModel)]="newAssessment.course.id">
+        <option value="0" disabled>Select Course</option>
+
+        @for (c of courses; track c.id) {
+          <option [value]="c.id">
+            {{ c.courseName }} — {{ c.term }}
+          </option>
+        }
+      </select>
+
+      <button (click)="addAssessment()">Add</button>
+
+    </div>
+
+    <!-- CONTENT -->
+    <div class="assessment-content">
+
+      <!-- LEFT SIDE (LIST) -->
+      <div class="assessment-list">
+
+        @for (a of assessments; track a.id) {
+          <div class="assessment-item">
+
+			  <div class="assessment-info">
+			    <h3>{{ a.title }}</h3>
+			
+			    <div class="details">
+			      <span>📅 {{ a.dueDate }}</span>
+			      <span>📘 {{ a.course.courseName }}</span>
+			    </div>
+			  </div>
+			
+			  <!-- 🔥 NEW BUTTON -->
+			  <button (click)="loadHelp(a)">
+			    Get Help
+			  </button>
+			
+			  <!-- 🔥 SHOW HELP LINKS -->
+			  <!-- <div *ngIf="selectedHelp[a.id]">
+			    <ul>
+			      <li *ngFor="let link of selectedHelp[a.id]">
+			        <a [href]="link.url" target="_blank">
+			          {{ link.title }}
+			        </a>
+			      </li>
+			    </ul>
+			  </div> -->
+			
+			  <!-- EXISTING DELETE BUTTON -->
+			  <button class="delete-btn" (click)="deleteAssessment(a.id)">
+			    Delete
+			  </button>
+			
+			</div>
+        }
+
+      </div>
+
+      <!-- RIGHT SIDE (SUMMARY BOX like Figma) -->
+      <div class="summary-box">
+        <h4>Quick Summary</h4>
+        <p>Total: {{ assessments.length }}</p>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- 🔥 HELP SECTION (BOTTOM OF PAGE) -->
+	@if (selectedHelp.length > 0) {
+
+	  <div class="help-section">
+	
+	    <h3>📚 Help Resources for {{ selectedTopic }}</h3>
+	
+	    <ul class="help-list">
+		  @for (link of selectedHelp; track link) {
+		    <li>
+		      <a class="help-btn" [href]="link.url" target="_blank">
+		        
+		        <span class="icon">
+		          {{ getIcon(link.title) }}
+		        </span>
+		
+		        <span class="text">
+		          {{ link.title }}
+		        </span>
+		
+		        <span class="arrow">↗</span>
+		
+		      </a>
+		    </li>
+		  }
+		</ul>	
+	  </div>	
+	}
+
+</div>

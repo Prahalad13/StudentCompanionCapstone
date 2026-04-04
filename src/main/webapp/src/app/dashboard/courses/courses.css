@@ -1,0 +1,86 @@
+.courses-container {
+  padding: 30px;
+  color: white;
+  background: linear-gradient(135deg, #6a11cb, #8e44ad);
+  min-height: 100vh;
+}
+
+/* HEADER */
+.courses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.back-link {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* ADD COURSE CARD */
+.add-course-card {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.course-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.course-form input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.course-form button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #4a90e2;
+  color: white;
+  cursor: pointer;
+}
+
+/* GRID */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* COURSE CARD */
+.course-card {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-info h3 {
+  margin: 0;
+}
+
+.course-info p {
+  opacity: 0.8;
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+  background: #ff4d4d;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: white;
+}

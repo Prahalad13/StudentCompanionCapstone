@@ -1,0 +1,215 @@
+.assessment-container {
+  padding: 30px;
+  color: white;
+  background: linear-gradient(135deg, #6a11cb, #8e44ad);
+  min-height: 100vh;
+}
+
+/* HEADER */
+.assessment-header h2 {
+  margin: 0;
+}
+
+.assessment-header p {
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+.back-link {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* MAIN CARD */
+.assessment-card {
+  margin-top: 20px;
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+/* FORM */
+.assessment-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.assessment-form input,
+.assessment-form select {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.assessment-form button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #4a90e2;
+  color: white;
+  cursor: pointer;
+}
+
+/* CONTENT LAYOUT */
+.assessment-content {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+}
+
+/* LIST */
+.assessment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.assessment-item {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assessment-info h3 {
+  margin: 0;
+}
+
+.details {
+  display: flex;
+  gap: 15px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+  background: #ff4d4d;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: white;
+}
+
+/* SUMMARY BOX */
+.summary-box {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 12px;
+  height: fit-content;
+}
+/* GET HELP BUTTON */
+.assessment-item button:not(.delete-btn) {
+  background: #2ecc71;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.assessment-item button:not(.delete-btn):hover {
+  background: #27ae60;
+  transform: scale(1.05);
+}
+.help-section {
+  margin-top: 25px;
+  padding: 20px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+}
+
+.help-section h3 {
+  margin-bottom: 15px;
+}
+.help-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* ICON */
+.help-item .icon {
+  font-size: 18px;
+}
+
+/* LINK STYLE */
+.help-item a {
+  text-decoration: none;
+  color: #2c2c2c; /* dark gray for contrast */
+  background: rgba(255,255,255,0.85);
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+/* HOVER EFFECT */
+.help-item a:hover {
+  background: white;
+  color: #6a11cb; /* purple theme */
+  transform: translateX(5px);
+}
+/* LIST RESET */
+.help-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+/* EACH ITEM */
+.help-list li {
+  margin-bottom: 12px;
+}
+
+/* FULL WIDTH BUTTON LINK */
+.help-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  text-decoration: none;
+
+  background: rgba(255,255,255,0.9);
+  color: #2c2c2c;
+
+  padding: 12px 16px;
+  border-radius: 12px;
+
+  font-weight: 500;
+
+  transition: all 0.25s ease;
+}
+
+/* LEFT SIDE (ICON + TEXT) */
+.help-btn .icon {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.help-btn .text {
+  flex: 1;
+}
+
+/* RIGHT ARROW */
+.help-btn .arrow {
+  opacity: 0.6;
+}
+
+/* HOVER EFFECT 🔥 */
+.help-btn:hover {
+  background: white;
+  color: #6a11cb; /* purple */
+  transform: translateX(6px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}

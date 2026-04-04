@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #6a11cb, #a4508b);
+  color: white;
+}
+
+.container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.logo {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 20px;   /* 👈 soft rounded edges */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25); /* 👈 soft shadow */
+}
+.right a {
+  color: #333;              /* dark gray */
+  font-weight: 600;         /* make it bold */
+  text-decoration: none;    /* remove underline */
+  margin-left: 5px;
+  transition: 0.2s ease;
+}
+.right a:hover {
+  color: #000;              /* darker on hover */
+  text-decoration: underline;
+}

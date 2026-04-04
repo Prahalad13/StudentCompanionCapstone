@@ -1,0 +1,56 @@
+<div class="courses-container">
+
+  <!-- TOP HEADER -->
+  <div class="courses-header">
+    <div>
+      <h2>My Courses</h2>
+      <a routerLink="/dashboard" class="back-link">← Back</a>
+    </div>
+  </div>
+
+  <!-- ADD COURSE CARD -->
+  <div class="add-course-card">
+
+    <h3>Add New Course</h3>
+
+    <div class="course-form">
+      <input
+        type="text"
+        placeholder="Course Name"
+        [(ngModel)]="newCourse.courseName"
+      />
+
+      <input
+        type="text"
+        placeholder="Term (e.g. Fall 2024)"
+        [(ngModel)]="newCourse.term"
+      />
+
+      <button (click)="addCourse()">Add Course</button>
+    </div>
+
+  </div>
+
+  <!-- COURSES GRID -->
+  <div class="courses-grid">
+
+    @for (c of courses; track c.id) {
+      <div class="course-card">
+
+        <div class="course-info">
+          <h3>{{ c.courseName }}</h3>
+          <p>{{ c.term }}</p>
+        </div>
+
+        <div class="course-actions">
+          <button class="delete-btn" (click)="deleteCourse(c.id)">
+            Delete
+          </button>
+        </div>
+
+      </div>
+    }
+
+  </div>
+
+</div>
