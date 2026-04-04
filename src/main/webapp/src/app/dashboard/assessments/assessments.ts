@@ -6,6 +6,7 @@ import { Component, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HelpService } from '../../help-service';
 
 
 @Component({
@@ -19,6 +20,8 @@ export class Assessments implements OnInit{
   assessments: any[] = [];
   courses: any[] = [];
   studentId!: number;
+  selectedHelp: any[] = [];
+  selectedTopic: string = '';
 
   newAssessment = {
     title: '',
@@ -31,6 +34,7 @@ export class Assessments implements OnInit{
     private assessmentService: AssessmentService,
     private courseService: CourseService,
     private authService: AuthService,
+	private helpService: HelpService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -79,6 +83,22 @@ export class Assessments implements OnInit{
       this.cdr.detectChanges();
     });
   }
+  loadHelp(assessment: any) {
 
+    let topic = assessment.course.courseName.toLowerCase();
 
+    this.selectedTopic = topic;
+
+    this.helpService.getHelp(topic).subscribe(res => {
+      console.log("HELP RESPONSE:", res);   // ✅ ADD THIS
+      this.selectedHelp = res;              // ✅ IMPORTANT FIX
+    });
+  }
+  getIcon(title: string): string {
+    if (title.includes('YouTube')) return '▶️';
+    if (title.includes('Google')) return '🔍';
+    if (title.includes('Khan')) return '📘';
+    if (title.includes('Geeks')) return '💻';
+    return '📚';
+  }
 }
