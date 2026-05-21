@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HelpService } from '../../help-service';
-
+import { Assessment } from '../../assessment';
 
 @Component({
   selector: 'app-assessments',
@@ -17,16 +17,30 @@ import { HelpService } from '../../help-service';
 })
 export class Assessments implements OnInit{
 
-  assessments: any[] = [];
+  assessments: Assessment[] = [];
   courses: any[] = [];
   studentId!: number;
   selectedHelp: any[] = [];
   selectedTopic: string = '';
 
-  newAssessment = {
+  newAssessment: Assessment = {
+
     title: '',
+
     dueDate: '',
+
+    grade: 0,
+
+    totalMarks: 100,
+
+    completed: false,
+
+    studyHours: 0,
+
+    weight: 0,
+
     course: { id: 0 },
+
     student: { id: 0 }
   };
 
@@ -64,12 +78,26 @@ export class Assessments implements OnInit{
     this.assessmentService.create(this.newAssessment).subscribe(a => {
 
       // Reset form
-      this.newAssessment = {
-        title: '',
-        dueDate: '',
-        course: { id: 0 },
-        student: { id: this.studentId }
-      };
+	  this.newAssessment = {
+
+	    title: '',
+
+	    dueDate: '',
+
+	    grade: 0,
+
+	    totalMarks: 100,
+
+	    completed: false,
+
+	    studyHours: 0,
+
+	    weight: 0,
+
+	    course: { id: 0 },
+
+	    student: { id: this.studentId }
+	  };
 
       this.loadAssessments();
       this.cdr.detectChanges();

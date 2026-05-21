@@ -21,6 +21,16 @@ public class Assessment {
 
     @NonNull
     private LocalDate dueDate;
+    
+    private Double grade;
+
+    private Double totalMarks;
+
+    private Boolean completed = false;
+
+    private Integer studyHours = 0;
+
+    private Double weight = 0.0;
 
     @ManyToOne
     @NonNull
@@ -29,4 +39,5 @@ public class Assessment {
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
+    
 }

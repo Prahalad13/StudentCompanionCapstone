@@ -1,15 +1,15 @@
-<div class="container-center">
+<!-- <div class="container-center">
 
   <div class="login-card">
 
-    <!-- LEFT SIDE -->
+    LEFT SIDE
     <div class="left">
       <img src="SCLogo.png" class="logo" />
       <h2>Welcome to Student Companion</h2>
       <p>Stay organized. Stay ahead.</p>
     </div>
 
-    <!-- RIGHT SIDE -->
+    RIGHT SIDE
     <div class="right">
       <h2>Login</h2>
 
@@ -23,7 +23,7 @@
                formControlName="password"
                placeholder="Enter your password" />
 
-        <!-- ERROR -->
+        ERROR
         @if (errorMessage) {
           <div class="error-message">
             {{ errorMessage }}
@@ -40,6 +40,91 @@
         Don't have an account?
         <a routerLink="/register">Create one</a>
       </p>
+    </div>
+
+  </div>
+
+</div> -->
+<div class="container-center">
+
+  <div class="login-container">
+
+    <!-- LEFT SIDE -->
+    <div class="left-panel">
+
+      <div class="logo-box">
+        <img src="SCLogo.png" alt="logo" />
+      </div>
+
+      <h1>
+        Welcome to <br />
+        Student Companion
+      </h1>
+
+      <div class="divider"></div>
+
+      <p>
+        Stay organized. Stay ahead.
+      </p>
+
+      <div class="wave"></div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right-panel">
+
+      <div class="form-box">
+
+        <h2>Login</h2>
+
+        <!-- FORM -->
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="login()"
+        >
+
+          <!-- EMAIL -->
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="Email address"
+          />
+
+          <!-- PASSWORD -->
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Password"
+          />
+
+          <!-- ERROR -->
+          @if (errorMessage) {
+            <div class="error-message">
+              {{ errorMessage }}
+            </div>
+          }
+
+          <!-- BUTTON -->
+          <button
+            type="submit"
+            [disabled]="loading"
+          >
+            {{ loading ? 'Logging in...' : 'Login' }}
+          </button>
+
+        </form>
+
+        <!-- SIGNUP -->
+        <p class="signup">
+          Don't have an account?
+          <a routerLink="/register">
+            Create one
+          </a>
+        </p>
+
+      </div>
+
     </div>
 
   </div>

@@ -65,6 +65,80 @@
     </div>
     <hr>
     <!-- BELOW CARDS -->
+    <!-- ANALYTICS SECTION -->
+	<div class="analytics-grid">
+	
+	  <!-- GPA CARD -->
+	  <div class="card analytics-card">
+	
+	    <h3>🎓 Current GPA</h3>
+	
+	    <div class="gpa-value">
+	      {{ gpa }}
+	    </div>
+	
+	  </div>
+	
+	  <!-- COURSE PROGRESS -->
+	  <div class="card analytics-card">
+	
+	    <h3>📘 Course Progress</h3>
+	
+	    <canvas
+	      baseChart
+	      [data]="{
+	        labels: courseChartLabels,
+	        datasets: [{
+	          data: courseChartData,
+	          label: 'Progress %'
+	        }]
+	      }"
+	      [type]="'bar'">
+	    </canvas>
+	
+	  </div>
+	
+	  <!-- ASSESSMENT COMPLETION -->
+	  <div class="card analytics-card">
+	
+	    <h3>✅ Assessment Completion</h3>
+	
+	    <canvas
+	      baseChart
+	      [data]="{
+	        labels: ['Completed', 'Pending'],
+	        datasets: [{
+	          data: completionChartData
+	        }]
+	      }"
+	      [type]="'doughnut'">
+	    </canvas>
+	
+	  </div>
+	
+	  <!-- WEEKLY PRODUCTIVITY -->
+	  <div class="card analytics-card">
+	
+	    <h3>📈 Weekly Productivity</h3>
+	
+	    <canvas
+	      baseChart
+	      [data]="{
+	        labels: weeklyChartLabels,
+	        datasets: [{
+	          data: weeklyChartData,
+	          label: 'Study Hours'
+	        }]
+	      }"
+	      [type]="'line'">
+	    </canvas>
+	
+	  </div>
+	
+	</div>
+
+	<hr>
+    <!-- Calendar -->
 	<div class="card" *ngIf="student">
 
 	  <h3>📅 Calendar</h3>

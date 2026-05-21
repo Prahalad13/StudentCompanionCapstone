@@ -1,4 +1,4 @@
-.container-center {
+/* .container-center {
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -43,15 +43,15 @@ input,
   border-radius: 8px;
   margin-bottom: 18px;
   border: none;
-  box-sizing: border-box; /* 🔥 IMPORTANT */
-  display: block; /* ensures full width */
+  box-sizing: border-box; 🔥 IMPORTANT
+  display: block; ensures full width
 }
 
 .btn-primary {
   background: #4a90e2;
   color: white;
   cursor: pointer;
-  margin-top: 5px; /* spacing from input */
+  margin-top: 5px; spacing from input
 }
 
 .login-link {
@@ -61,4 +61,15 @@ input,
 .login-link a {
   color: #ddd;
   font-weight: 600;
+} */
+form {
+  width: 100%;
+}
+
+.right h2 {
+  margin-bottom: 25px;
+}
+
+.login-link {
+  margin-top: 18px;
 }

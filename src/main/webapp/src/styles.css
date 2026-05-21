@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-body {
+/* body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #6a11cb, #a4508b);
@@ -15,17 +15,374 @@ body {
 .logo {
   width: 100%;
   max-width: 320px;
-  border-radius: 20px;   /* 👈 soft rounded edges */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25); /* 👈 soft shadow */
+  border-radius: 20px;   👈 soft rounded edges
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25); 👈 soft shadow
 }
 .right a {
-  color: #333;              /* dark gray */
-  font-weight: 600;         /* make it bold */
-  text-decoration: none;    /* remove underline */
+  color: #333;              dark gray
+  font-weight: 600;         make it bold
+  text-decoration: none;    remove underline
   margin-left: 5px;
   transition: 0.2s ease;
 }
 .right a:hover {
-  color: #000;              /* darker on hover */
+  color: #000;              darker on hover
   text-decoration: underline;
+} */
+/* 
+/* =========================================
+   GLOBAL THEME
+========================================= */
+
+body {
+  margin: 0;
+
+  font-family: 'Segoe UI', sans-serif;
+
+  background:
+    linear-gradient(
+      135deg,
+      #17352B 0%,
+      #3B4652 100%
+    );
+
+  color: #F5F7F9;
+}
+
+/* =========================================
+   CENTER CONTAINER
+========================================= */
+
+.container-center {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  min-height: 100vh;
+
+  padding: 20px;
+}
+
+/* =========================================
+   LOGIN / REGISTER CARD
+========================================= */
+
+.login-card {
+
+  display: flex;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(12px);
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 8px 30px rgba(0,0,0,0.25);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+/* =========================================
+   LEFT PANEL
+========================================= */
+
+.left {
+
+  background:
+    linear-gradient(
+      180deg,
+      #17352B,
+      #22473B
+    );
+
+  color: white;
+
+  padding: 50px;
+
+  width: 320px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  text-align: center;
+}
+
+/* =========================================
+   RIGHT PANEL
+========================================= */
+
+.right {
+
+  background: #DDE2E6;
+
+  color: #1A1A1A;
+
+  padding: 50px;
+
+  width: 400px;
+}
+
+/* =========================================
+   LOGO
+========================================= */
+
+.logo {
+
+  width: 100%;
+
+  max-width: 220px;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.25);
+
+  margin-bottom: 25px;
+}
+
+/* =========================================
+   INPUTS
+========================================= */
+
+input {
+
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border-radius: 12px;
+
+  border: 1px solid #BCC6CC;
+
+  background: white;
+
+  font-size: 15px;
+
+  transition: 0.3s;
+
+  box-sizing: border-box;
+}
+
+input:focus {
+
+  outline: none;
+
+  border-color: #22473B;
+
+  box-shadow:
+    0 0 0 4px rgba(34,71,59,0.15);
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button {
+
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 20px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #22473B,
+      #3B6B57
+    );
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+button:hover {
+
+  opacity: 0.95;
+
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   LINKS
+========================================= */
+
+.right a {
+  color: #22473B;
+  
+  font-weight: 600;
+
+  text-decoration: none;
+
+  margin-left: 5px;
+
+  transition: 0.2s ease;
+}
+
+.right a:hover {
+  color: red;
+
+  text-decoration: underline;
+}
+
+/* =========================================
+   ERROR MESSAGE
+========================================= */
+
+.error-message {
+
+  color: #B42318;
+
+  margin-top: 12px;
+
+  margin-bottom: 10px;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}
+
+/* =========================================
+   DASHBOARD / COURSE / ASSESSMENT CARDS
+========================================= */
+
+.card,
+.dashboard-card,
+.course-card,
+.assessment-card {
+
+  background:
+    rgba(255,255,255,0.08);
+
+  border-radius: 20px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 8px 30px rgba(0,0,0,0.2);
+
+  color: white;
+}
+
+/* =========================================
+   TABLES
+========================================= */
+
+table {
+
+  background:
+    rgba(255,255,255,0.08);
+
+  color: white;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+}
+
+th {
+
+  background: #22473B;
+
+  color: white;
+}
+
+td {
+
+  background:
+    rgba(255,255,255,0.03);
+}
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.navbar {
+
+  background:
+    rgba(23,53,43,0.95);
+
+  color: white;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.08);
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+
+  background:
+    linear-gradient(
+      180deg,
+      #17352B,
+      #22473B
+    );
+
+  color: white;
+}
+
+/* =========================================
+   HEADINGS
+========================================= */
+
+h1, h2, h3, h4 {
+
+  margin-top: 0;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .login-card {
+
+    flex-direction: column;
+  }
+
+  .left,
+  .right {
+
+    width: 100%;
+  }
+}
+/* DIVIDER */
+.divider {
+  width: 220px;
+  height: 2px;
+
+  background: rgba(255,255,255,0.2);
+
+  margin: 20px 0;
 }

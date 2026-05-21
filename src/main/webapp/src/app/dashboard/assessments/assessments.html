@@ -35,6 +35,35 @@
           </option>
         }
       </select>
+      <input
+		  type="number"
+		  placeholder="Grade"
+		  [(ngModel)]="newAssessment.grade"
+		/>
+		
+		<input
+		  type="number"
+		  placeholder="Total Marks"
+		  [(ngModel)]="newAssessment.totalMarks"
+		/>
+		
+		<input
+		  type="number"
+		  placeholder="Study Hours"
+		  [(ngModel)]="newAssessment.studyHours"
+		/>
+		
+		<select [(ngModel)]="newAssessment.completed">
+		
+		  <option [ngValue]="true">
+		    Completed
+		  </option>
+		
+		  <option [ngValue]="false">
+		    Pending
+		  </option>
+		
+		</select>
 
       <button (click)="addAssessment()">Add</button>
 
@@ -62,20 +91,9 @@
 			  <button (click)="loadHelp(a)">
 			    Get Help
 			  </button>
-			
-			  <!-- 🔥 SHOW HELP LINKS -->
-			  <!-- <div *ngIf="selectedHelp[a.id]">
-			    <ul>
-			      <li *ngFor="let link of selectedHelp[a.id]">
-			        <a [href]="link.url" target="_blank">
-			          {{ link.title }}
-			        </a>
-			      </li>
-			    </ul>
-			  </div> -->
-			
+						
 			  <!-- EXISTING DELETE BUTTON -->
-			  <button class="delete-btn" (click)="deleteAssessment(a.id)">
+			  <button class="delete-btn" (click)="deleteAssessment(a.id!)">
 			    Delete
 			  </button>
 			
