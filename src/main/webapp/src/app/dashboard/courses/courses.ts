@@ -16,6 +16,9 @@ export class Courses implements OnInit {
 
   courses: any[] = [];
   studentId!: number;
+  isEditing: boolean = false;
+  editingId: number | null = null;
+
 
   newCourse = {
     courseName: '',
@@ -60,11 +63,65 @@ export class Courses implements OnInit {
   });
 }
 
+editCourse(c: any) {
+  this.isEditing = true;
+  this.editingId = c.id;
+
+  this.newCourse = {
+    courseName: c.courseName,
+    term: c.term,
+    student: { id: this.studentId }
+  };
+}
+
+updateCourse() {
+  if (!this.editingId) return;
+
+  this.courseService.update(this.editingId, this.newCourse).subscribe(() => {
+
+    this.isEditing = false;
+    this.editingId = null;
+
+    this.newCourse = {
+      courseName: '',
+      term: '',
+      student: { id: this.studentId }
+    };
+
+    this.loadCourses();
+    this.cdr.detectChanges();
+  });
+}
+
+cancelEdit() {
+  this.isEditing = false;
+  this.editingId = null;
+
+  this.newCourse = {
+    courseName: '',
+    term: '',
+    student: { id: this.studentId }
+  };
+}
+
+
   deleteCourse(id: number) {
-    this.courseService.delete(id).subscribe(() => {
-      this.loadCourses();
-      this.cdr.detectChanges();
-    });
-  }
+  this.courseService.delete(id).subscribe(() => {
+
+    if (this.isEditing && this.editingId === id) {
+      this.isEditing = false;
+      this.editingId = null;
+
+      this.newCourse = {
+        courseName: '',
+        term: '',
+        student: { id: this.studentId }
+      };
+    }
+
+    this.loadCourses();
+    this.cdr.detectChanges();
+  });
+}
 
 }

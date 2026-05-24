@@ -22,25 +22,20 @@ export class Assessments implements OnInit{
   studentId!: number;
   selectedHelp: any[] = [];
   selectedTopic: string = '';
+  isEditing: boolean = false;
+  editingId: number | null = null;
+
 
   newAssessment: Assessment = {
 
     title: '',
-
     dueDate: '',
-
-    grade: 0,
-
-    totalMarks: 100,
-
-    completed: false,
-
-    studyHours: 0,
-
+    grade: undefined,
+    totalMarks: undefined,
+    completed: null,
+    studyHours: undefined,
     weight: 0,
-
     course: { id: 0 },
-
     student: { id: 0 }
   };
 
@@ -81,19 +76,12 @@ export class Assessments implements OnInit{
 	  this.newAssessment = {
 
 	    title: '',
-
 	    dueDate: '',
-
-	    grade: 0,
-
-	    totalMarks: 100,
-
-	    completed: false,
-
-	    studyHours: 0,
-
+	    grade: undefined,
+	    totalMarks: undefined,
+	    completed: null,
+	    studyHours: undefined,
 	    weight: 0,
-
 	    course: { id: 0 },
 
 	    student: { id: this.studentId }
@@ -104,13 +92,97 @@ export class Assessments implements OnInit{
     });
   }
 
-  deleteAssessment(id: number) {
+  editAssessment(a: Assessment) {
+  this.isEditing = true;
+  this.editingId = a.id!;
 
-    this.assessmentService.delete(id).subscribe(() => {
-      this.loadAssessments();
-      this.cdr.detectChanges();
-    });
-  }
+  this.newAssessment = {
+    title: a.title,
+    dueDate: a.dueDate,
+    grade: a.grade,
+    totalMarks: a.totalMarks,
+    completed: a.completed,
+    studyHours: a.studyHours,
+    weight: a.weight,
+    course: { id: a.course.id },
+    student: { id: this.studentId }
+  };
+
+  this.cdr.detectChanges();
+}
+
+updateAssessment() {
+  if (!this.editingId) return;
+
+  this.assessmentService.update(this.editingId, this.newAssessment).subscribe(() => {
+
+    this.isEditing = false;
+    this.editingId = null;
+
+    // Reset form
+    this.newAssessment = {
+      title: '',
+      dueDate: '',
+      grade: undefined,
+      totalMarks: undefined,
+      completed: null,
+      studyHours: undefined,
+      weight: undefined,
+      course: { id: 0 },
+      student: { id: this.studentId }
+    };
+
+    this.loadAssessments();
+    this.cdr.detectChanges();
+  });
+}
+
+
+cancelEdit() {
+  this.isEditing = false;
+  this.editingId = null;
+
+  this.newAssessment = {
+    title: '',
+    dueDate: '',
+    grade: undefined,
+    totalMarks: undefined,
+    completed: null,
+    studyHours: undefined,
+    weight: undefined,
+    course: { id: 0 },
+    student: { id: this.studentId }
+  };
+}
+
+
+  deleteAssessment(id: number) {
+  this.assessmentService.delete(id).subscribe(() => {
+
+    // If the deleted item was being edited, reset the form
+    if (this.isEditing && this.editingId === id) {
+      this.isEditing = false;
+      this.editingId = null;
+
+      this.newAssessment = {
+        title: '',
+        dueDate: '',
+        grade: undefined,
+        totalMarks: undefined,
+        completed: null,
+        studyHours: undefined,
+        weight: undefined,
+        course: { id: 0 },
+        student: { id: this.studentId }
+      };
+    }
+
+    this.loadAssessments();
+    this.cdr.detectChanges();
+  });
+}
+
+
   loadHelp(assessment: any) {
 
     let topic = assessment.course.courseName.toLowerCase();

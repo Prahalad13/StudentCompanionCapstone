@@ -214,6 +214,13 @@ HOVER EFFECT 🔥
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 } */
 
+/* ADD BUTTON */
+
+.add-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* PAGE */
 .assessment-container {
   min-height: 100vh;
@@ -279,7 +286,9 @@ HOVER EFFECT 🔥
 .assessment-form input,
 .assessment-form select {
   flex: 1;
-
+  padding: 10px;
+  border-radius: 8px; 
+  border: none;
   min-width: 220px;
 }
 
@@ -310,29 +319,24 @@ HOVER EFFECT 🔥
   gap: 18px;
 }
 
+
+
 /* ITEM */
 .assessment-item {
   padding: 22px;
-
   border-radius: 18px;
-
   background:
     rgba(255,255,255,0.08);
-
   border:
     1px solid rgba(255,255,255,0.08);
-
   backdrop-filter: blur(12px);
-
   display: flex;
-
   justify-content: space-between;
   align-items: center;
-
   gap: 16px;
-
   transition: 0.3s;
 }
+
 
 .assessment-item:hover {
   transform: translateY(-3px);

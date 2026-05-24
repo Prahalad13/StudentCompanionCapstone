@@ -85,6 +85,13 @@ DELETE BUTTON
   color: white;
 } */
 
+/* ADD BUTTON */
+
+.add-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* PAGE */
 .courses-container {
   min-height: 100vh;

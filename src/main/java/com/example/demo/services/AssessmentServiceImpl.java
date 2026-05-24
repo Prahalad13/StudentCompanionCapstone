@@ -30,6 +30,25 @@ public class AssessmentServiceImpl implements AssessmentService {
     public Assessment save(Assessment assessment) {
         return repo.save(assessment);
     }
+    
+    @Override
+    public Assessment update(Long id, Assessment updated) {
+        Assessment existing = repo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Assessment not found"));
+
+        existing.setTitle(updated.getTitle());
+        existing.setDueDate(updated.getDueDate());
+        existing.setGrade(updated.getGrade());
+        existing.setTotalMarks(updated.getTotalMarks());
+        existing.setCompleted(updated.getCompleted());
+        existing.setStudyHours(updated.getStudyHours());
+        existing.setWeight(updated.getWeight());
+        existing.setCourse(updated.getCourse());
+        existing.setStudent(updated.getStudent());
+
+        return repo.save(existing);
+    }
+
 
 	
 	public void delete(Long id) {
