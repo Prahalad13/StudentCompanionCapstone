@@ -1,0 +1,110 @@
+<div class="create-wellness-container">
+
+    <div class="header">
+        <h2>Create Wellness Entry</h2>
+        <a routerLink="/dashboard/health-wellness" class="back-link">← Back</a>
+    </div>
+
+    <div class="wellness-box create">
+
+        <div class="mood-section">
+
+            <h3>How are you feeling today?</h3>
+
+            <div class="mood-display">
+                <picture class="big-emoji">
+                    <source [srcset]="selectedEmojiWebp" type="image/webp">
+                    <img [src]="selectedEmojiGif" alt="mood" width="120" height="120">
+                </picture>
+            </div>
+
+            <div class="mood-buttons">
+                <button type="button" class="mood-btn" [class.active]="form.mood === 'Happy'"
+                    (click)="selectMood('Happy')">😄 Happy</button>
+
+                <button type="button" class="mood-btn" [class.active]="form.mood === 'Okay'"
+                    (click)="selectMood('Okay')">🙂 Okay</button>
+
+                <button type="button" class="mood-btn" [class.active]="form.mood === 'Neutral'"
+                    (click)="selectMood('Neutral')">😐 Neutral</button>
+
+                <button type="button" class="mood-btn" [class.active]="form.mood === 'Sad'"
+                    (click)="selectMood('Sad')">😞 Sad</button>
+
+                <button type="button" class="mood-btn" [class.active]="form.mood === 'Stressed'"
+                    (click)="selectMood('Stressed')">😡 Stressed</button>
+
+                <button type="button" class="mood-btn" [class.active]="form.mood === 'Tired'"
+                    (click)="selectMood('Tired')">😴 Tired</button>
+            </div>
+
+            <!-- slider for stress-->
+        </div>
+
+        <h3 class="section-title">How stressed are you feeling?</h3>
+
+        <div class="stress-label-container">
+
+            <label class="stress-title">Stress Level</label>
+            <label class="stress-value">{{ slider.value }}</label>
+        </div>
+
+        <mat-slider class="stress-slider" [min]="0" [max]="10" [step]="1" [showTickMarks]="false" [discrete]="false">
+
+            <input matSliderThumb [(ngModel)]="form.stressLevel" name="stressLevel" #slider>
+        </mat-slider>
+
+        <!-- slider for sleep hours -->
+        <h3 class="section-title">How many hours did you sleep?</h3>
+
+        <div class="sleep-value">{{ sleepSlider.value }} hrs</div>
+
+        <mat-slider class="sleep-slider" [min]="0" [max]="12" [step]="0.5">
+            <input matSliderThumb [(ngModel)]="form.sleepHours" #sleepSlider>
+        </mat-slider>
+
+        <!-- slider for energy -->
+        <h3 class="section-title">How much energy do you have today?</h3>
+
+        <div class="energy-value">
+            {{ +energySlider.value === 0 ? 'Low' : +energySlider.value === 1 ? 'Medium' : 'High' }} </div>
+
+        <mat-slider class="energy-slider" [min]="0" [max]="2" [step]="1" [showTickMarks]="false" [discrete]="true">
+
+            <input matSliderThumb [(ngModel)]="form.energyLevel" name="energyLevel" #energySlider>
+        </mat-slider>
+
+        <!-- slider for productivity -->
+        <h3 class="section-title">How productive were you today?</h3>
+
+        <div class="productivity-value">
+            {{ productivitySlider.value }}
+        </div>
+
+        <mat-slider class="productivity-slider" [min]="0" [max]="10" [step]="1" [showTickMarks]="false"
+            [discrete]="true">
+
+            <input matSliderThumb [(ngModel)]="form.productivity" name="productivity" #productivitySlider>
+        </mat-slider>
+
+        <!-- text area for notes -->
+        <h3 class="section-title">Any notes about your day?</h3>
+
+        <textarea class="notes-box" rows="4" [(ngModel)]="form.notes" name="notes"
+            placeholder="Write anything you want to remember…">
+</textarea>
+
+
+        <!-- Date picker for date logged -->
+
+        <h3 class="section-title">Date Logged</h3>
+
+        <input type="date" class="date-input" [(ngModel)]="form.dateLogged" name="dateLogged">
+
+
+
+        <button class="save-btn" (click)="createEntry()">Create Entry</button>
+
+    </div>
+
+</div>

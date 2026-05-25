@@ -25,14 +25,11 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/material-theme.scss", "src/styles.css"],
             "outputMode": "static",
             "security": {
               "allowedHosts": []
             }
-            
           },
           "configurations": {
             "production": {
@@ -73,8 +70,7 @@
           },
           "defaultConfiguration": "development"
         },
-        
-        
+
         "test": {
           "builder": "@angular/build:unit-test"
         }

@@ -1,0 +1,111 @@
+/* PAGE */
+.healthwellness-container {
+  min-height: 100vh;
+
+  padding: 40px;
+
+  color: white;
+}
+
+/* HEADER */
+.healthwellness-header {
+  margin-bottom: 35px;
+}
+
+.healthwellness-header h2 {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.healthwellness-header p {
+  opacity: 0.85;
+  margin-bottom: 12px;
+}
+
+/* BACK LINK */
+.back-link {
+  color: #FFE082;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.back-link:hover {
+  color: #FFF4B1;
+  text-decoration: underline;
+}
+
+
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 3rem;
+  text-align: center;
+  gap: 1rem;
+}
+
+.wellness-box {
+  width: 60%;
+  margin: 3rem auto;
+  padding: 2.5rem;
+
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+
+  border-radius: 18px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  gap: 1.2rem;
+
+  transition: 0.3s;
+}
+
+.wellness-box.empty-state {
+  width: 75%;
+  padding: 3.5rem 2.5rem;
+  min-height: 240px;
+  gap: 1.8rem;
+}
+
+.wellness-box.empty-state p {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.wellness-box.empty-state .create-btn {
+  padding: 14px 32px;
+  font-size: 1.15rem;
+  border-radius: 14px;
+}
+
+
+
+.create-btn {
+  padding: 10px 20px;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #22473B, #3B6B57);
+  color: white;
+
+  border: none;
+  cursor: pointer;
+
+  width: auto; /* prevents stretching */
+  display: inline-block;
+
+  transition: 0.3s;
+}
+
+.create-btn:hover {
+  transform: translateY(-2px);
+}
+

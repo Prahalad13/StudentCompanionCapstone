@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth-service';
+import { AuthService } from '../services/auth-service';
 import { Router, RouterLink } from '@angular/router';
-import { StudentService } from '../student-service';
-import { CalendarService } from '../calendar-service';
+import { StudentService } from '../services/student-service';
+import { CalendarService } from '../services/calendar-service';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { AssessmentService } from '../assessment-service';
+import { AssessmentService } from '../services/assessment-service';
 
 @Component({
   selector: 'app-dashboard',

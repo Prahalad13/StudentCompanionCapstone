@@ -1,0 +1,24 @@
+<div class="healthwellness-container">
+
+
+    <!-- HEADER -->
+    <div class="healthwellness-header">
+        <div>
+            <h2>Health and Wellness</h2>
+            <p>Daily check‑ins for mood, stress, sleep, and overall wellness</p>
+            <a routerLink="/dashboard" class="back-link">← Back</a>
+        </div>
+    </div>
+
+
+
+    @if (wellnessList.length === 0 && !isCreating && !isEditing) {
+  <div class="wellness-box empty-state">
+        <p>No entries yet… Consider adding one</p>
+<button class="create-btn"
+            [routerLink]="['/dashboard/health-wellness/create-health-wellness']">
+      Create
+    </button>    </div>
+    }
+
+</div>

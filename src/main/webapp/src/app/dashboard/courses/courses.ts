@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseService } from '../../course-service';
-import { AuthService } from '../../auth-service';
+import { CourseService } from '../../services/course-service';
+import { AuthService } from '../../services/auth-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';

@@ -1,0 +1,259 @@
+.header {
+  margin-bottom: 25px;
+}
+
+.header h2 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.back-link {
+  color: #FFE082;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.back-link:hover {
+  color: #FFF4B1;
+  text-decoration: underline;
+}
+
+.big-emoji {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+/* adjust size of the emoji */
+.big-emoji img {
+  width: 250px;  
+  height: 250px;
+}
+
+.big-emoji.animate {
+  animation: pop 0.35s ease;
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.8); }
+  50%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.mood-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 per row */
+  gap: 14px;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.mood-btn {
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+
+  transition: 0.25s;
+}
+
+.mood-btn:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+
+.mood-btn.active {
+  background: linear-gradient(135deg, #22473B, #3B6B57);
+  transform: translateY(-2px);
+}
+
+.mood-btn {
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.mood-btn:active {
+  transform: scale(0.92);
+}
+
+.mood-btn.active {
+  animation: pulse 0.6s infinite alternate;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to   { transform: scale(1.05); }
+}
+
+/* Stress level slider */
+.stress-label-container {
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.stress-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.stress-value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.stress-slider {
+  width: 400px;
+}
+
+
+/* Sleep hours slider */
+.sleep-slider {
+  width: 400px;
+  --mdc-slider-active-track-color: #cccccc;
+  --mdc-slider-inactive-track-color: rgba(255,255,255,0.25);
+  --mdc-slider-handle-color: #e0e0e0;
+}
+
+.sleep-value {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: white;
+  text-align: center;
+}
+
+/* Energy slider */
+.energy-slider {
+  width: 400px;
+
+  --mdc-slider-active-track-color: #f4d06f; /* soft yellow */
+  --mdc-slider-inactive-track-color: rgba(255,255,255,0.25);
+  --mdc-slider-handle-color: #f4d06f;
+  --mdc-slider-hover-handle-color: #f7e08a;
+}
+
+.energy-value {
+  font-size: 28px;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Productivity slider */
+.productivity-slider {
+  width: 400px;
+  --mdc-slider-active-track-color: #9aa0a6; /* soft grey */
+  --mdc-slider-inactive-track-color: rgba(255,255,255,0.25);
+  --mdc-slider-handle-color: #c7c9cc;
+}
+
+.productivity-value {
+  font-size: 28px;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Notes textarea */
+.notes-box {
+  width: 100%;
+  max-width: 400px;
+  height: 120px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-size: 16px;
+  resize: vertical;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.notes-box::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+.notes-box:focus {
+  border-color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.12);
+}
+
+/* Date picker */
+
+.date-input {
+  width: 100%;
+  max-width: 430px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.date-input:focus {
+  border-color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.12);
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.8;
+}
+
+
+.wellness-box {
+  width: 80%;
+  margin: 0 auto;
+  padding: 2.5rem;
+
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+
+  border-radius: 18px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.create-wellness-container {
+  min-height: 100vh;
+  padding: 40px;
+  color: white;
+}
+
+
+
+
+.save-btn {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #22473B, #3B6B57);
+  color: white;
+  cursor: pointer;
+  width: fit-content;
+  align-self: center;
+  transition: 0.3s;
+}
+
+
+.save-btn:hover {
+  transform: translateY(-2px);
+}

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Student } from './student';
+import { Student } from '../student';
 
 const studentUrl = '/api/v1/students';
 

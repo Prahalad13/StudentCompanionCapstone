@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { CourseService } from '../../course-service';
-import { AssessmentService } from '../../assessment-service';
-import { AuthService } from '../../auth-service';
+import { CourseService } from '../../services/course-service';
+import { AssessmentService } from '../../services/assessment-service';
+import { AuthService } from '../../services/auth-service';
 import { Component, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HelpService } from '../../help-service';
+import { HelpService } from '../../services/help-service';
 import { Assessment } from '../../assessment';
 
 @Component({
