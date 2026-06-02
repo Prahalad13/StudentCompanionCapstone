@@ -1,75 +1,68 @@
 <div class="assessment-container">
 
-  <!-- HEADER -->
-  <div class="assessment-header">
-    <div>
-      <h2>Assessments</h2>
-      <p>Assignments, Quizzes and exams across all courses</p>
-      <a routerLink="/dashboard" class="back-link">← Back</a>
-    </div>
-  </div>
+	<!-- HEADER -->
+	<div class="assessment-header">
+		<div>
+			<h2>Assessments</h2>
+			<p>Assignments, Quizzes and exams across all courses</p>
+			<a routerLink="/dashboard" class="back-link">← Back</a>
+		</div>
+	</div>
 
-  <!-- MAIN CARD -->
-  <div class="assessment-card">
+	<!-- MAIN CARD -->
+	<div class="assessment-card">
 
-    <!-- ADD FORM -->
-    <div class="assessment-form">
+		<!-- ADD FORM -->
+		<div class="assessment-form">
 
-      <input
-        type="text"
-        placeholder="Assessment Title"
-        [(ngModel)]="newAssessment.title"
-      />
+			<input type="text" placeholder="Assessment Title" [(ngModel)]="newAssessment.title" />
 
-      <input
-        type="date"
-        [(ngModel)]="newAssessment.dueDate"
-      />
+			<input type="date" [(ngModel)]="newAssessment.dueDate" />
 
-      <select [(ngModel)]="newAssessment.course.id">
-        <option value="0" disabled>Select Course</option>
+			<select [(ngModel)]="newAssessment.course.id">
+				<option value="0" disabled>Select Course</option>
 
-        @for (c of courses; track c.id) {
-          <option [value]="c.id">
-            {{ c.courseName }} — {{ c.term }}
-          </option>
-        }
-      </select>
-      <input
-		  type="number"
-		  placeholder="Grade"
-		  [(ngModel)]="newAssessment.grade"
-		/>
-		
-		<input
-		  type="number"
-		  placeholder="Total Marks"
-		  [(ngModel)]="newAssessment.totalMarks"
-		/>
-		
-		<input
-		  type="number"
-		  placeholder="Study Hours"
-		  [(ngModel)]="newAssessment.studyHours"
-		/>
-		
-		<select [(ngModel)]="newAssessment.completed">
-		
-		  <option [ngValue]="true">
-		    Completed
-		  </option>
-		
-		  <option [ngValue]="false">
-		    Pending
-		  </option>
-		
-		</select>
+				@for (c of courses; track c.id) {
+				<option [value]="c.id">
+					{{ c.courseName }} — {{ c.term }}
+				</option>
+				}
+			</select>
+			<input type="number" placeholder="Grade" min="0" max="100" [(ngModel)]="newAssessment.grade" />
 
-      <button (click)="addAssessment()">Add</button>
+			<input type="number" placeholder="Total Marks" min="0" max="100" [(ngModel)]="newAssessment.totalMarks" />
 
-    </div>
+			<input type="number" placeholder="Study Hours" min="0" max="100" [(ngModel)]="newAssessment.studyHours" />
 
-    <!-- CONTENT -->
+			<select [(ngModel)]="newAssessment.completed">
+  				<option [ngValue]="null" disabled selected>Select Status</option>
+				<option [ngValue]="true">
+					Completed
+				</option>
+
+				<option [ngValue]="false">
+					Pending
+				</option>
+
+			</select>
+
+			<button 
+    		[disabled]="isEditing"
+    		class="add-btn"
+    		(click)="addAssessment()">
+    		Add
+  			</button>
+
+			<!-- ADD / UPDATE BUTTONS -->
+			@if (isEditing) {
+			
+  			<button class="update-btn" (click)="updateAssessment()">Update</button>
+  			<button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+			}
+
+		</div>
+
+		<!-- CONTENT -->
     <div class="assessment-content">
 
       <!-- LEFT SIDE (LIST) -->
@@ -91,6 +84,11 @@
 			  <button (click)="loadHelp(a)">
 			    Get Help
 			  </button>
+
+			<!-- EDIT BUTTON -->
+					<button class="edit-btn" (click)="editAssessment(a)">
+  						Edit
+					</button>
 						
 			  <!-- EXISTING DELETE BUTTON -->
 			  <button class="delete-btn" (click)="deleteAssessment(a.id!)">
@@ -102,42 +100,42 @@
 
       </div>
 
-      <!-- RIGHT SIDE (SUMMARY BOX like Figma) -->
-      <div class="summary-box">
-        <h4>Quick Summary</h4>
-        <p>Total: {{ assessments.length }}</p>
-      </div>
+			<!-- RIGHT SIDE (SUMMARY BOX like Figma) -->
+			<div class="summary-box">
+				<h4>Quick Summary</h4>
+				<p>Total: {{ assessments.length }}</p>
+			</div>
 
-    </div>
+		</div>
 
-  </div>
-  <!-- 🔥 HELP SECTION (BOTTOM OF PAGE) -->
+	</div>
+	<!-- 🔥 HELP SECTION (BOTTOM OF PAGE) -->
 	@if (selectedHelp.length > 0) {
 
-	  <div class="help-section">
-	
-	    <h3>📚 Help Resources for {{ selectedTopic }}</h3>
-	
-	    <ul class="help-list">
-		  @for (link of selectedHelp; track link) {
-		    <li>
-		      <a class="help-btn" [href]="link.url" target="_blank">
-		        
-		        <span class="icon">
-		          {{ getIcon(link.title) }}
-		        </span>
-		
-		        <span class="text">
-		          {{ link.title }}
-		        </span>
-		
-		        <span class="arrow">↗</span>
-		
-		      </a>
-		    </li>
-		  }
-		</ul>	
-	  </div>	
+	<div class="help-section">
+
+		<h3>📚 Help Resources for {{ selectedTopic }}</h3>
+
+		<ul class="help-list">
+			@for (link of selectedHelp; track link) {
+			<li>
+				<a class="help-btn" [href]="link.url" target="_blank">
+
+					<span class="icon">
+						{{ getIcon(link.title) }}
+					</span>
+
+					<span class="text">
+						{{ link.title }}
+					</span>
+
+					<span class="arrow">↗</span>
+
+				</a>
+			</li>
+			}
+		</ul>
+	</div>
 	}
 
 </div>

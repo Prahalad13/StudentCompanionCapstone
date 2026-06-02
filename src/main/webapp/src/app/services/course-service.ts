@@ -39,6 +39,20 @@ export class CourseService {
     );
   }
 
+  // UPDATE a course
+update(id: number, course: any): Observable<any> {
+  const token = localStorage.getItem('token');
+
+  return this.http.put(
+    `${courseUrl}/${id}`,
+    course,
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+}
+
+
   // DELETE a course
   delete(id: number): Observable<void> {
     const token = localStorage.getItem('token');

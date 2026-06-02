@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from './user';
+import { User } from '../user';
 
 const authUrl = '/api/v1/auth';
 

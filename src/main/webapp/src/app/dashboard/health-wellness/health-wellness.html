@@ -1,0 +1,90 @@
+<div class="healthwellness-container">
+
+
+    <div class="healthwellness-header">
+
+        <!-- LEFT SIDE -->
+        <div class="header-left">
+            <h2>Health and Wellness</h2>
+            <p>Daily check‑ins for mood, stress, sleep, and overall wellness</p>
+            <a routerLink="/dashboard" class="back-link">← Back</a>
+        </div>
+
+        <!-- RIGHT SIDE -->
+        @if (wellnessList.length > 0) {
+        <button class="create-btn header-create" [routerLink]="['/dashboard/health-wellness/create-health-wellness']">
+            Create
+        </button>
+        }
+
+    </div>
+
+
+
+
+
+    @if (wellnessList.length === 0 && !isCreating && !isEditing) {
+    <div class="wellness-box empty-state">
+        <p>No entries yet… Consider adding one</p>
+        <button class="create-btn" [routerLink]="['/dashboard/health-wellness/create-health-wellness']">
+            Create
+        </button>
+    </div>
+    }
+
+
+    <div class="cards-grid">
+        @for (entry of wellnessList; track entry.id) {
+        <mat-card class="wellness-card" appearance="outlined">
+
+            <mat-card-header>
+                <!-- <div mat-card-avatar class="mood-avatar">
+        <img [src]="getMoodEmojiStatic(entry.mood)" alt="mood">
+      </div> -->
+
+                <mat-card-title>{{ entry.mood }}</mat-card-title>
+                <mat-card-subtitle>{{ entry.dateLogged | date:'mediumDate' }}</mat-card-subtitle>
+            </mat-card-header>
+
+            <img [src]="getMoodEmoji(entry.mood)" alt="Mood emoji" class="mood-image">
+
+            <mat-card-content>
+                <p><strong>Stress:</strong> {{ entry.stressLevel }}/10</p>
+                <p><strong>Sleep:</strong> {{ entry.sleepHours }} hrs</p>
+                <p><strong>Energy:</strong> {{ entry.energyLevel }}</p>
+                <p><strong>Productivity:</strong> {{ entry.productivity }}/10</p>
+
+                @if (entry.notes) {
+                <p class="notes">
+                    <strong>Notes:</strong> {{ entry.notes }}
+                </p>
+                }
+            </mat-card-content>
+
+            <mat-card-actions>
+                <button class="hw-edit-btn" (click)="editEntry(entry.id)">Edit</button>
+                <button class="hw-delete-btn" (click)="openDeleteConfirm(entry.id)">Delete</button>
+            </mat-card-actions>
+
+        </mat-card>
+        }
+
+    </div>
+
+    <!-- alert box -->
+    @if (confirmDeleteId !== null) {
+    <div class="delete-overlay">
+        <div class="delete-box">
+            <p>Delete this entry?</p>
+
+            <div class="delete-actions">
+                <button class="cancel-btn" (click)="closeDeleteConfirm()">Cancel</button>
+                <button class="delete-btn" (click)="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+    }
+
+
+
+</div>

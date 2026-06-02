@@ -1,19 +1,12 @@
 export interface Assessment {
 
   id?: number;
-
   title: string;
-
   dueDate: string;
-
-  grade?: number;
-
-  totalMarks?: number;
-
-  completed?: boolean;
-
-  studyHours?: number;
-
+  grade?: number | undefined;
+  totalMarks?: number | undefined;
+  completed?: null;
+  studyHours?: number | undefined;
   weight?: number;
 
   course: {

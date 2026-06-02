@@ -34,6 +34,18 @@ export class AssessmentService {
     );
   }
 
+  update(id: number, assessment: any) {
+  const token = localStorage.getItem('token');
+
+  return this.http.put<any>(
+    `${assessmentsUrl}/${id}`,
+    assessment,
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+}
+
   delete(id: number) {
     const token = localStorage.getItem('token');
 

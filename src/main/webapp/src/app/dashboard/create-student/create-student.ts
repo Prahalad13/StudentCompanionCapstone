@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Student } from '../../student';
-import { StudentService } from '../../student-service';
+import { StudentService } from '../../services/student-service';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth-service';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-create-student',

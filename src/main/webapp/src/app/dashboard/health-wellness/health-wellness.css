@@ -1,0 +1,290 @@
+/* PAGE */
+.healthwellness-container {
+  min-height: 100vh;
+
+  padding: 40px;
+
+  color: white;
+}
+
+/* HEADER */
+.healthwellness-header {
+  margin-bottom: 35px;
+}
+
+.healthwellness-header h2 {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.healthwellness-header p {
+  opacity: 0.85;
+  margin-bottom: 12px;
+}
+
+/* BACK LINK */
+.back-link {
+  color: #FFE082;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.back-link:hover {
+  color: #FFF4B1;
+  text-decoration: underline;
+}
+
+
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 3rem;
+  text-align: center;
+  gap: 1rem;
+}
+
+.mood-image {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
+.mood-avatar img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+
+
+.wellness-box {
+  width: 60%;
+  margin: 3rem auto;
+  padding: 2.5rem;
+
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+
+  border-radius: 18px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  gap: 1.2rem;
+
+  transition: 0.3s;
+}
+
+.wellness-box.empty-state {
+  width: 75%;
+  padding: 3.5rem 2.5rem;
+  min-height: 240px;
+  gap: 1.8rem;
+}
+
+.wellness-box.empty-state p {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.wellness-box.empty-state .create-btn {
+  padding: 14px 32px;
+  font-size: 1.15rem;
+  border-radius: 14px;
+}
+
+.wellness-card {
+  width: 350px;
+  margin: 20px auto;
+  padding-bottom: 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+}
+
+.healthwellness-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* Left side stays stacked */
+.header-left {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Right side: Back + Create aligned horizontally */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Small header create button */
+.header-create {
+    padding: 8px 18px;
+    border-radius: 8px;
+    background: #3B6B57;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.header-create:hover {
+    transform: translateY(-2px);
+    background: #2f5646;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 80px;
+    margin-top: 20px;
+}
+
+.create-btn {
+  padding: 10px 20px;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #22473B, #3B6B57);
+  color: white;
+
+  border: none;
+  cursor: pointer;
+
+  width: auto; /* prevents stretching */
+  display: inline-block;
+
+  transition: 0.3s;
+}
+
+.create-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* mat card actions */
+mat-card-actions {
+  display: flex;
+  gap: 12px; /* adjust to your liking */
+  padding: 0 16px 16px 16px; /* optional: cleaner spacing */
+}
+
+/* edit button */
+.hw-edit-btn {
+  background: linear-gradient(135deg, #22473B, #3B6B57);
+  padding: 10px 16px;
+  border-radius: 12px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease; /* smoothness */
+}
+
+.hw-edit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px rgba(59, 107, 87, 0.45);
+}
+
+/* delete button */
+.hw-delete-btn {
+  background: linear-gradient(135deg, #B42318, #D92D20);
+  padding: 10px 16px;
+  border-radius: 12px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease; /* smoothness */
+}
+
+.hw-delete-btn:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 4px 12px rgba(217, 45, 32, 0.4);
+}
+
+/* alert box */
+
+.delete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.delete-box {
+  background: #213b30;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  text-align: center;
+  width: 260px;
+  animation: popIn 0.25s ease forwards;
+}
+
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.delete-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.cancel-btn {
+  padding: 8px 16px;
+  background: #ccc;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.cancel-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+
+.delete-btn {
+  padding: 8px 16px;
+  background: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
