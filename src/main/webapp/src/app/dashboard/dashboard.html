@@ -6,14 +6,27 @@
       <img src="SCLogo.png" />
       <h3>Student Companion</h3>
     </div>
-
     <nav>
-      <a routerLink="/dashboard" class="active">Dashboard</a>
-      <a routerLink="/dashboard/courses">Courses</a>
-      <a routerLink="/dashboard/assessments">Assessments</a>
-      <a routerLink="/dashboard/create-student">Create Student</a>
-    </nav>
-
+	  <a routerLink="/dashboard" class="active">
+	    📊 Dashboard
+	  </a>
+	
+	  <a routerLink="/dashboard/courses">
+	    📚 Courses
+	  </a>
+	
+	  <a routerLink="/dashboard/assessments">
+	    📝 Assessments
+	  </a>
+	
+	  <a routerLink="/dashboard/jobs">
+	    💼 Job Search
+	  </a>
+	
+	  <a routerLink="/dashboard/create-student">
+	    👨‍🎓 Create Student
+	  </a>
+	</nav>
     <div class="logout-section">
       <button (click)="logout()">Logout</button>
     </div>
