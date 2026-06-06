@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Course;
+import com.example.demo.repositories.AssessmentRepository;
 import com.example.demo.repositories.CourseRepository;
 
 @Service
@@ -13,6 +14,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseRepository repo;
+    
+    @Autowired
+    private AssessmentRepository assessmentRepository;
 
     public List<Course> findAll() {
         return repo.findAll();
@@ -36,4 +40,11 @@ public class CourseServiceImpl implements CourseService {
     public void delete(Long id) {
         repo.deleteById(id);
     }
+    
+    @Override
+    public boolean hasAssessments(Long courseId) {
+        return assessmentRepository.existsByCourseId(courseId);
+    }
+    
+    
 }

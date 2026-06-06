@@ -362,6 +362,47 @@ h1, h2, h3, h4 {
 }
 
 /* =========================================
+   SNACK BAR
+========================================= */
+.custom-snackbar {
+  background: rgba(0, 0, 0, 0.35) !important;
+  color: #fff !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  animation: slideDown 0.25s ease-out;
+}
+
+/* ⭐ This removes the INNER white box */
+.custom-snackbar .mdc-snackbar__surface {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Close button */
+.custom-snackbar .mat-mdc-snack-bar-action {
+  color: #a8ffbf !important;
+  font-weight: bold;
+}
+
+/* Slide animation */
+@keyframes slideDown {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+
+/* =========================================
    RESPONSIVE
 ========================================= */
 

@@ -8,12 +8,16 @@ import { MatSliderModule } from '@angular/material/slider';
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 
+// alerts
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
+
 // date imports
-import {ChangeDetectionStrategy} from '@angular/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-create-health-wellness',
@@ -32,10 +36,10 @@ export class CreateHealthWellness implements OnInit {
   isEditing = false;
 
   form: any = {
-    mood: '',
+    mood: 'Okay',
     stressLevel: 5,
     sleepHours: 0,
-    energyLevel: '',
+    energyLevel: 1,
     productivity: 5,
     notes: '',
     dateLogged: '',
@@ -49,27 +53,27 @@ export class CreateHealthWellness implements OnInit {
   emojiMap: any = {
     Happy: {
       webp: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f604/512.webp",
-      gif:  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f604/512.gif"
+      gif: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f604/512.gif"
     },
     Okay: {
       webp: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f642/512.webp",
-      gif:  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f642/512.gif"
+      gif: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f642/512.gif"
     },
     Neutral: {
       webp: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f610/512.webp",
-      gif:  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f610/512.gif"
+      gif: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f610/512.gif"
     },
     Sad: {
       webp: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61e/512.webp",
-      gif:  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61e/512.gif"
+      gif: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61e/512.gif"
     },
     Stressed: {
       webp: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f620/512.webp",
-      gif:  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f620/512.gif"
+      gif: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f620/512.gif"
     },
     Tired: {
       webp: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62a/512.webp",
-      gif:  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62a/512.gif"
+      gif: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62a/512.gif"
     }
   };
 
@@ -78,8 +82,9 @@ export class CreateHealthWellness implements OnInit {
     private authService: AuthService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private snackBar: MatSnackBar,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.studentId = this.authService.getStudentId();
@@ -103,7 +108,7 @@ export class CreateHealthWellness implements OnInit {
         // Default mood + emoji
         this.form.mood = "Okay";
         this.selectedEmojiWebp = this.emojiMap["Okay"].webp;
-        this.selectedEmojiGif  = this.emojiMap["Okay"].gif;
+        this.selectedEmojiGif = this.emojiMap["Okay"].gif;
 
         this.cdr.detectChanges(); // ⭐ force Angular to update the DOM
 
@@ -119,7 +124,7 @@ export class CreateHealthWellness implements OnInit {
     this.form.mood = mood;
 
     this.selectedEmojiWebp = this.emojiMap[mood].webp;
-    this.selectedEmojiGif  = this.emojiMap[mood].gif;
+    this.selectedEmojiGif = this.emojiMap[mood].gif;
 
     const emojiEl = document.querySelector('.big-emoji') as HTMLElement | null;
     if (emojiEl) {
@@ -130,15 +135,11 @@ export class CreateHealthWellness implements OnInit {
   }
 
   createEntry() {
-    if (!this.form.mood || this.form.energyLevel === '' || this.form.sleepHours === null) {
-      alert("Please complete all required fields.");
-      return;
-    }
 
     this.form.energyLevel = Number(this.form.energyLevel);
 
     if (!this.form.notes || this.form.notes.trim() === "") {
-      this.form.notes = "No notes added.";
+      this.form.notes = "No notes added."; // if user didn't add notes, notes will be defaulted to No notes added
     }
 
     if (this.form.dateLogged instanceof Date) {
@@ -146,8 +147,18 @@ export class CreateHealthWellness implements OnInit {
     }
 
     this.wellnessService.create(this.form).subscribe(() => {
-      this.router.navigate(['/dashboard/health-wellness']);
+
+      setTimeout(() => {
+        this.router.navigate(
+          ['/dashboard/health-wellness'],
+          { state: { wellnessMessage: "created" } }
+        ).then(() => {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        });
+      }, 120);
+
     });
+
   }
 
   // ⭐ Edit mode loads the entry + emoji correctly
@@ -159,9 +170,35 @@ export class CreateHealthWellness implements OnInit {
       };
 
       this.selectedEmojiWebp = this.emojiMap[entry.mood].webp;
-      this.selectedEmojiGif  = this.emojiMap[entry.mood].gif;
+      this.selectedEmojiGif = this.emojiMap[entry.mood].gif;
 
       this.cdr.detectChanges();
     });
   }
+
+  updateEntry() {
+
+  this.form.energyLevel = Number(this.form.energyLevel);
+
+  if (!this.form.notes || this.form.notes.trim() === "") {
+    this.form.notes = "No notes added.";
+  }
+
+  if (this.form.dateLogged instanceof Date) {
+    this.form.dateLogged = this.form.dateLogged.toISOString().substring(0, 10);
+  }
+
+  this.wellnessService.update(this.form.id, this.form).subscribe(() => {
+
+    setTimeout(() => {
+      this.router.navigate(
+        ['/dashboard/health-wellness'],
+        { state: { wellnessMessage: "updated" } }
+      ).then(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      });
+    }, 120);
+  });
+}
+
 }

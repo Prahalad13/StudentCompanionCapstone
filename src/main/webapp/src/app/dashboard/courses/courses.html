@@ -43,12 +43,26 @@
 
       <div class="course-actions">
         <button class="edit-btn" (click)="editCourse(c)">Edit</button>
-        <button class="delete-btn" (click)="deleteCourse(c.id)">Delete</button>
+        <button class="delete-btn" (click)="openDeleteConfirm(c.id)">Delete</button>
       </div>
 
     </div>
     }
 
   </div>
+
+  <!-- alert box -->
+	@if (confirmDeleteId !== null) {
+	<div class="delete-overlay">
+		<div class="delete-box">
+			<p>Delete this entry?</p>
+
+			<div class="delete-actions">
+				<button class="confirm-cancel-btn" (click)="closeDeleteConfirm()">Cancel</button>
+				<button class="confirm-delete-btn" (click)="confirmDelete()">Delete</button>
+			</div>
+		</div>
+	</div>
+	}
 
 </div>
