@@ -9,6 +9,7 @@ import { JobSearchComponent } from './job-search/job-search';
 
 import { HealthWellness } from './dashboard/health-wellness/health-wellness';
 import { CreateHealthWellness } from './dashboard/health-wellness/create-health-wellness/create-health-wellness';
+import { Calendar } from './dashboard/calendar/calendar';
 
 export const routes: Routes = [
     { path: 'register', component: CreateAccount},
@@ -20,5 +21,6 @@ export const routes: Routes = [
 	{ path: 'dashboard/jobs', component: JobSearchComponent},
     { path: 'dashboard/health-wellness', component: HealthWellness, runGuardsAndResolvers: 'always'},
     { path: 'dashboard/health-wellness/create-health-wellness', component: CreateHealthWellness, runGuardsAndResolvers: 'always'},
+    { path: 'dashboard/calendar', component: Calendar},
     { path: '', redirectTo: 'login', pathMatch: 'full'}
 ];

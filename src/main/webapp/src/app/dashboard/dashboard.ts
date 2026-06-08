@@ -9,228 +9,241 @@ import { BaseChartDirective } from 'ng2-charts';
 import { AssessmentService } from '../services/assessment-service';
 
 @Component({
-  selector: 'app-dashboard',
-  imports: [RouterLink, CommonModule, BaseChartDirective],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css'
+	selector: 'app-dashboard',
+	imports: [RouterLink, CommonModule, BaseChartDirective],
+	templateUrl: './dashboard.html',
+	styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit {
 
-  student: any = null;
-  studentName: string | null = null;
-  email: string | null = null;
-  assessments: any[] = [];
-  today: Date = new Date();
-  // GPA
-  gpa: number = 0;
+	student: any = null;
+	studentName: string | null = null;
+	email: string | null = null;
+	assessments: any[] = [];
+	today: Date = new Date();
+	// GPA
+	gpa: number = 0;
 
-  // COURSE PROGRESS
-  courseChartLabels: string[] = [];
-  courseChartData: number[] = [];
+	// COURSE PROGRESS
+	courseChartLabels: string[] = [];
+	courseChartData: number[] = [];
 
-  // COMPLETION CHART
-  completionChartData: number[] = [];
+	// COMPLETION CHART
+	completionChartData: number[] = [];
 
-  // WEEKLY PRODUCTIVITY
-  weeklyChartLabels: string[] = [
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun'
-  ];
+	// WEEKLY PRODUCTIVITY
+	weeklyChartLabels: string[] = [
+		'Mon',
+		'Tue',
+		'Wed',
+		'Thu',
+		'Fri',
+		'Sat',
+		'Sun'
+	];
 
-  weeklyChartData: number[] = [];
+	weeklyChartData: number[] = [];
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private studentService: StudentService,
-	private calendarService: CalendarService,
-	private cdr: ChangeDetectorRef,
-	private assessmentService: AssessmentService,
-  ) {}
+	constructor(
+		private authService: AuthService,
+		public router: Router,
+		private studentService: StudentService,
+		private calendarService: CalendarService,
+		private cdr: ChangeDetectorRef,
+		private assessmentService: AssessmentService,
+	) { }
 
-  ngOnInit() {
+	ngOnInit() {
 
-    console.log("Dashboard loaded");
+		console.log("Dashboard loaded");
 
-    // ✅ STEP 1: Load from localStorage FIRST (instant UI)
-    const savedStudent = this.authService.getStudent();
-    if (savedStudent) {
-      this.student = savedStudent;
-      this.studentName = savedStudent.name;
-	  if (savedStudent.id) {
-	    this.loadCalendar(savedStudent.id);
-		this.loadAnalytics(savedStudent.id);
-	  }
-    }
+		// ✅ STEP 1: Load from localStorage FIRST (instant UI)
+		const savedStudent = this.authService.getStudent();
+		if (savedStudent) {
+			this.student = savedStudent;
+			this.studentName = savedStudent.name;
+			if (savedStudent.id) {
+				this.loadCalendar(savedStudent.id);
+				this.loadAnalytics(savedStudent.id);
+			}
+		}
 
-    // ✅ STEP 2: Call backend to refresh latest data
-    this.studentService.getMyStudent().subscribe({
-      next: (res) => {
-        console.log("STUDENT RESPONSE 👉", res);
+		// ✅ STEP 2: Call backend to refresh latest data
+		this.studentService.getMyStudent().subscribe({
+			next: (res) => {
+				console.log("STUDENT RESPONSE 👉", res);
 
-        if (res) {
-          this.student = res;
-          this.studentName = res.name;
+				if (res) {
+					this.student = res;
+					this.studentName = res.name;
 
-          // ✅ SAVE for future refresh
-          this.authService.saveStudent(res);
-		  if (res.id) {
-		    this.loadCalendar(res.id);
-			this.loadAnalytics(res.id);
-		  }
-        }
-      },
-      error: (err) => {
-        console.log("ERROR 👉", err);
-      }
-    });
+					// ✅ SAVE for future refresh
+					this.authService.saveStudent(res);
+					if (res.id) {
+						this.loadCalendar(res.id);
+						this.loadAnalytics(res.id);
+					}
+				}
+			},
+			error: (err) => {
+				console.log("ERROR 👉", err);
+			}
+		});
 
-    // ✅ STEP 3: Load email
-	const token = this.authService.getToken();
-	    if (token) {
-	      const payload = JSON.parse(atob(token.split('.')[1]));
-	      this.email = payload.sub;
-	      console.log("EMAIL 👉", this.email);
-	    }
-	
-  }
-  isOverdue(date: string): boolean {
-  	  return new Date(date) < new Date();
-  	}
+		// ✅ STEP 3: Load email
+		const token = this.authService.getToken();
+		if (token) {
+			const payload = JSON.parse(atob(token.split('.')[1]));
+			this.email = payload.sub;
+			console.log("EMAIL 👉", this.email);
+		}
 
-  	isUpcoming(date: string): boolean {
-  	  return new Date(date) >= new Date();
-  	}
-	loadCalendar(studentId: number) {
-	  this.calendarService.getCalendar(studentId).subscribe({
-	    next: (data) => {
-	      console.log("CALENDAR 👉", data);
-
-	      this.assessments = data;
-		  //this.generateAnalytics();
-	      this.cdr.detectChanges(); 
-	    },
-	    error: (err) => {
-	      console.error(err);
-	    }
-	  });
 	}
+
+	isOverdue(date: string): boolean {
+		return new Date(date) < new Date();
+	}
+
+	isUpcoming(date: string): boolean {
+		return new Date(date) >= new Date();
+	}
+	loadCalendar(studentId: number) {
+		this.calendarService.getCalendar(studentId).subscribe({
+			next: (data) => {
+				console.log("CALENDAR 👉", data);
+
+				this.assessments = data;
+				//this.generateAnalytics();
+				this.cdr.detectChanges();
+			},
+			error: (err) => {
+				console.error(err);
+			}
+		});
+	}
+
+	// Show only the first 3 assessments on the dashboard
+	get limitedAssessments() {
+		return this.assessments.slice(0, 3);
+	}
+
+	// Check if there are more than 3 assessments
+	get hasMoreAssessments() {
+		return this.assessments.length > 3;
+	}
+
+
 	loadAnalytics(studentId: number) {
 
-	  this.assessmentService
-	    .getByStudent(studentId)
-	    .subscribe((data: any[]) => {
+		this.assessmentService
+			.getByStudent(studentId)
+			.subscribe((data: any[]) => {
 
-	      this.assessments = data;
+				this.assessments = data;
 
-	      // =========================
-	      // GPA CALCULATION
-	      // =========================
+				// =========================
+				// GPA CALCULATION
+				// =========================
 
-	      let totalPercentage = 0;
-	      let gradedCount = 0;
+				let totalPercentage = 0;
+				let gradedCount = 0;
 
-	      data.forEach(a => {
+				data.forEach(a => {
 
-	        if (a.grade && a.totalMarks) {
+					if (a.grade && a.totalMarks) {
 
-	          const percentage =
-	            (a.grade / a.totalMarks) * 100;
+						const percentage =
+							(a.grade / a.totalMarks) * 100;
 
-	          totalPercentage += percentage;
+						totalPercentage += percentage;
 
-	          gradedCount++;
-	        }
-	      });
+						gradedCount++;
+					}
+				});
 
-	      const average =
-	        gradedCount > 0
-	          ? totalPercentage / gradedCount
-	          : 0;
+				const average =
+					gradedCount > 0
+						? totalPercentage / gradedCount
+						: 0;
 
-	      // Convert percentage → GPA
-	      this.gpa =
-	        Number(((average / 100) * 4).toFixed(2));
+				// Convert percentage → GPA
+				this.gpa =
+					Number(((average / 100) * 4).toFixed(2));
 
-	      // =========================
-	      // COURSE PROGRESS
-	      // =========================
+				// =========================
+				// COURSE PROGRESS
+				// =========================
 
-	      const courseMap: any = {};
+				const courseMap: any = {};
 
-	      data.forEach(a => {
+				data.forEach(a => {
 
-	        const course =
-	          a.course?.courseName || 'Unknown';
+					const course =
+						a.course?.courseName || 'Unknown';
 
-	        if (!courseMap[course]) {
+					if (!courseMap[course]) {
 
-	          courseMap[course] = {
-	            total: 0,
-	            completed: 0
-	          };
-	        }
+						courseMap[course] = {
+							total: 0,
+							completed: 0
+						};
+					}
 
-	        courseMap[course].total++;
+					courseMap[course].total++;
 
-	        if (a.completed) {
-	          courseMap[course].completed++;
-	        }
-	      });
+					if (a.completed) {
+						courseMap[course].completed++;
+					}
+				});
 
-	      this.courseChartLabels =
-	        Object.keys(courseMap);
+				this.courseChartLabels =
+					Object.keys(courseMap);
 
-	      this.courseChartData =
-	        Object.values(courseMap).map((c: any) =>
-	          Math.round((c.completed / c.total) * 100)
-	        );
+				this.courseChartData =
+					Object.values(courseMap).map((c: any) =>
+						Math.round((c.completed / c.total) * 100)
+					);
 
-	      // =========================
-	      // COMPLETION CHART
-	      // =========================
+				// =========================
+				// COMPLETION CHART
+				// =========================
 
-	      const completed =
-	        data.filter(a => a.completed).length;
+				const completed =
+					data.filter(a => a.completed).length;
 
-	      const pending =
-	        data.length - completed;
+				const pending =
+					data.length - completed;
 
-	      this.completionChartData = [
-	        completed,
-	        pending
-	      ];
+				this.completionChartData = [
+					completed,
+					pending
+				];
 
-	      // =========================
-	      // WEEKLY PRODUCTIVITY
-	      // =========================
+				// =========================
+				// WEEKLY PRODUCTIVITY
+				// =========================
 
-	      const weekly = [0,0,0,0,0,0,0];
+				const weekly = [0, 0, 0, 0, 0, 0, 0];
 
-	      data.forEach(a => {
+				data.forEach(a => {
 
-	        const hours =
-	          a.studyHours || 0;
+					const hours =
+						a.studyHours || 0;
 
-	        const day =
-	          Math.floor(Math.random() * 7);
+					const day =
+						Math.floor(Math.random() * 7);
 
-	        weekly[day] += hours;
-	      });
+					weekly[day] += hours;
+				});
 
-	      this.weeklyChartData = weekly;
+				this.weeklyChartData = weekly;
 
-	      this.cdr.detectChanges();
-	    });
+				this.cdr.detectChanges();
+			});
 	}
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
-  
+	logout() {
+		this.authService.logout();
+		this.router.navigate(['/login']);
+	}
+
 }

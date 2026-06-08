@@ -1,0 +1,129 @@
+<div class="calendar-container">
+
+    <div class="calendar-header">
+        <div>
+            <h2>Calendar</h2>
+            <p class="calendar-slogan">Your day, organized in one place</p>
+            <a routerLink="/dashboard" class="back-link">← Back</a>
+        </div>
+    </div>
+
+    <div class="calendar-page">
+
+        <!-- LEFT SIDE: Calendar grid placeholder -->
+        <div class="calendar-left">
+
+            <!-- MONTH + YEAR NAVIGATION -->
+            <div class="calendar-nav">
+                <button class="nav-btn" (click)="prevMonth()">←</button>
+
+                <!-- DAY VIEW -->
+                @if (viewMode === 'day') {
+                <div class="month-year-wrapper" (click)="enterMonthMode()">
+                    {{ selectedDate | date:'MMMM yyyy' }}
+                </div>
+                }
+
+                <!-- MONTH VIEW -->
+                @if (viewMode === 'month') {
+                <div class="month-year-wrapper" (click)="enterYearMode()">
+                    {{ selectedDate | date:'yyyy' }}
+                </div>
+                }
+
+                <!-- YEAR VIEW -->
+                @if (viewMode === 'year') {
+                <div class="month-year-wrapper">
+                    {{ selectedDate | date:'yyyy' }}
+                </div>
+                }
+
+                <button class="nav-btn" (click)="nextMonth()">→</button>
+            </div>
+
+
+            @if (viewMode === 'month') {
+            <div class="month-grid fade-in">
+                @for (m of months; let i = $index; track m) {
+                <div class="month-cell" [class.today]="m.isToday" [class.selected]="m.isSelected"
+                    (click)="selectMonth(i)" [class.normal]="!m.isToday && !m.isSelected">
+                    {{ m.name }}
+                </div>
+
+                }
+            </div>
+            }
+
+            @if (viewMode === 'year') {
+            <div class="year-grid fade-in">
+                @for (y of yearGrid; let i = $index; track i) {
+                <div class="year-cell" [class.today]="y === today.getFullYear()"
+                    [class.selected]="y === selectedDate.getFullYear()"
+                    [class.normal]="y !== today.getFullYear() && y !== selectedDate.getFullYear()"
+                    (click)="selectYear(y)">
+                    {{ y }}
+                </div>
+                }
+            </div>
+            }
+
+            @if (viewMode === 'day') {
+            <div class="calendar-grid-wrapper">
+                <div class="calendar-grid">
+                    @for (day of weekdays; track day) {
+                    <div class="weekday">{{ day }}</div>
+                    }
+
+                    @for (d of daysInMonth; track d.date) {
+                    <div class="day-cell" [class.today]="d.isToday" [class.selected]="d.isSelected"
+                        [class.overflow]="d.isOverflow" [class.normal]="!d.isToday && !d.isSelected && !d.isOverflow">
+                        {{ d.day }}
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+
+        </div>
+
+
+        <!-- RIGHT SIDE: Details -->
+        <div class="calendar-right">
+
+            <div class="big-date">
+                {{ selectedDate | date:'MMMM d' }}
+            </div>
+
+            <div class="details-section">
+                <h3>Assessments Due</h3>
+
+                @if (assessmentsForDate.length === 0) {
+                <div>No assessments due.</div>
+                }
+
+                @for (a of assessmentsForDate; track a.id) {
+                <div class="assessment-item">
+                    {{ a.title }} — {{ a.course?.courseName }}
+                </div>
+                }
+            </div>
+
+            <div class="details-section">
+                <h3>Health & Wellness</h3>
+
+                @if (wellnessForDate.length === 0) {
+                <div>No wellness entries.</div>
+                }
+
+                @for (w of wellnessForDate; track w.id) {
+                <div class="wellness-item">
+                    {{ w.type }} — {{ w.notes }}
+                </div>
+                }
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
