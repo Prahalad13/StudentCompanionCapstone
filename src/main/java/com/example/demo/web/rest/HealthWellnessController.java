@@ -1,5 +1,6 @@
 package com.example.demo.web.rest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
@@ -38,4 +39,11 @@ public class HealthWellnessController {
     public void delete(@PathVariable Long id) {
         wellnessService.delete(id);
     }
+    
+    @GetMapping("/date/{date}")
+    public List<HealthWellness> getByDate(@PathVariable String date) {
+        LocalDate parsed = LocalDate.parse(date);
+        return wellnessService.getByDate(parsed);
+    }
+
 }

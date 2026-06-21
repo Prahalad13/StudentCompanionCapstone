@@ -11,119 +11,174 @@
     <div class="calendar-page">
 
         <!-- LEFT SIDE: Calendar grid placeholder -->
-        <div class="calendar-left">
+        <div class="calendar-left-box">
+            <div class="calendar-left">
 
-            <!-- MONTH + YEAR NAVIGATION -->
-            <div class="calendar-nav">
-                <button class="nav-btn" (click)="prevMonth()">←</button>
+                <!-- MONTH + YEAR NAVIGATION -->
+                <div class="calendar-nav">
+                    <button class="nav-btn" (click)="prevMonth()">←</button>
 
-                <!-- DAY VIEW -->
-                @if (viewMode === 'day') {
-                <div class="month-year-wrapper" (click)="enterMonthMode()">
-                    {{ selectedDate | date:'MMMM yyyy' }}
-                </div>
-                }
-
-                <!-- MONTH VIEW -->
-                @if (viewMode === 'month') {
-                <div class="month-year-wrapper" (click)="enterYearMode()">
-                    {{ selectedDate | date:'yyyy' }}
-                </div>
-                }
-
-                <!-- YEAR VIEW -->
-                @if (viewMode === 'year') {
-                <div class="month-year-wrapper">
-                    {{ selectedDate | date:'yyyy' }}
-                </div>
-                }
-
-                <button class="nav-btn" (click)="nextMonth()">→</button>
-            </div>
-
-
-            @if (viewMode === 'month') {
-            <div class="month-grid fade-in">
-                @for (m of months; let i = $index; track m) {
-                <div class="month-cell" [class.today]="m.isToday" [class.selected]="m.isSelected"
-                    (click)="selectMonth(i)" [class.normal]="!m.isToday && !m.isSelected">
-                    {{ m.name }}
-                </div>
-
-                }
-            </div>
-            }
-
-            @if (viewMode === 'year') {
-            <div class="year-grid fade-in">
-                @for (y of yearGrid; let i = $index; track i) {
-                <div class="year-cell" [class.today]="y === today.getFullYear()"
-                    [class.selected]="y === selectedDate.getFullYear()"
-                    [class.normal]="y !== today.getFullYear() && y !== selectedDate.getFullYear()"
-                    (click)="selectYear(y)">
-                    {{ y }}
-                </div>
-                }
-            </div>
-            }
-
-            @if (viewMode === 'day') {
-            <div class="calendar-grid-wrapper">
-                <div class="calendar-grid">
-                    @for (day of weekdays; track day) {
-                    <div class="weekday">{{ day }}</div>
+                    @if (viewMode === 'day') {
+                    <div class="month-year-wrapper" (click)="enterMonthMode()">
+                        {{ selectedDate | date:'MMMM yyyy' }}
+                    </div>
                     }
 
-                    @for (d of daysInMonth; track d.date) {
-                    <div class="day-cell" [class.today]="d.isToday" [class.selected]="d.isSelected"
-                        [class.overflow]="d.isOverflow" [class.normal]="!d.isToday && !d.isSelected && !d.isOverflow">
-                        {{ d.day }}
+                    @if (viewMode === 'month') {
+                    <div class="month-year-wrapper" (click)="enterYearMode()">
+                        {{ monthViewYear }}
+                    </div>
+                    }
+
+                    @if (viewMode === 'year') {
+                    <div class="month-year-wrapper">
+                        {{ yearRangeLabel }}
+                    </div>
+                    }
+
+                    <button class="nav-btn" (click)="nextMonth()">→</button>
+                </div>
+
+                @if (viewMode === 'month') {
+                <div class="month-grid fade-in">
+                    @for (m of months; let i = $index; track m) {
+                    <div class="month-cell" [class.today]="m.isToday && monthViewYear === today.getFullYear()"
+                        [class.selected]="m.isSelected" [class.normal]="!m.isToday && !m.isSelected"
+                        (click)="selectMonth(i)">
+                        {{ m.name }}
                     </div>
                     }
                 </div>
-            </div>
-            }
+                }
 
+                @if (viewMode === 'year') {
+                <div class="year-grid fade-in">
+                    @for (y of yearGrid; track y) {
+                    <div class="year-cell" [class.today]="y === today.getFullYear()"
+                        [class.selected]="isYearInRange(selectedDate.getFullYear()) && y === selectedDate.getFullYear()"
+                        [class.normal]="y !== today.getFullYear() && y !== selectedDate.getFullYear()"
+                        (click)="selectYear(y)">
+                        {{ y }}
+                    </div>
+                    }
+                </div>
+                }
+
+                @if (viewMode === 'day') {
+                <div class="calendar-grid-wrapper">
+                    <div class="calendar-grid">
+                        @for (day of weekdays; track day) {
+                        <div class="weekday">{{ day }}</div>
+                        }
+
+                        @for (d of daysInMonth; let i = $index; track i) {
+                        <div class="day-cell" [class.today]="d.isToday" [class.selected]="d.isSelected"
+                            [class.overflow]="d.isOverflow"
+                            [class.normal]="!d.isToday && !d.isSelected && !d.isOverflow" (click)="handleDayClick(d)">
+                            {{ d.day }}
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+
+            </div>
         </div>
 
 
-        <!-- RIGHT SIDE: Details -->
+
         <div class="calendar-right">
 
-            <div class="big-date">
-                {{ selectedDate | date:'MMMM d' }}
-            </div>
-
-            <div class="details-section">
-                <h3>Assessments Due</h3>
-
-                @if (assessmentsForDate.length === 0) {
-                <div>No assessments due.</div>
-                }
-
-                @for (a of assessmentsForDate; track a.id) {
-                <div class="assessment-item">
-                    {{ a.title }} — {{ a.course?.courseName }}
-                </div>
-                }
-            </div>
-
-            <div class="details-section">
-                <h3>Health & Wellness</h3>
-
-                @if (wellnessForDate.length === 0) {
-                <div>No wellness entries.</div>
-                }
-
-                @for (w of wellnessForDate; track w.id) {
-                <div class="wellness-item">
-                    {{ w.type }} — {{ w.notes }}
-                </div>
-                }
-            </div>
-
-        </div>
-
+    <div class="big-date">
+        <p><strong>Today's date:</strong> {{ todayLabel }}</p>
+        <p><strong>User selected date:</strong> {{ selectedLabel }}</p>
     </div>
+
+    <!-- ASSESSMENTS GLASS CARD -->
+    <div class="glass-card">
+    <h3>Assessments Due</h3>
+
+    <div class="details-section">
+        <table class="assessment-table">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Assessment</th>
+                    <th>Grade</th>
+                    <th>Marks</th>
+                    <th>Study Hours</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (assessmentsForDate.length === 0) {
+                    <tr>
+                        <td colspan="6" class="no-data">No assessments due.</td>
+                    </tr>
+                } @else {
+                    @for (a of assessmentsForDate; track a.id) {
+                    <tr>
+                        <td>{{ a.course?.courseName }}</td>
+                        <td>{{ a.title }}</td>
+                        <td>{{ a.grade ?? '-' }}</td>
+                        <td>{{ a.totalMarks ?? '-' }}</td>
+                        <td>{{ a.studyHours ?? '-' }}</td>
+                        <td>{{ a.completed ? 'Completed' : 'Pending' }}</td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+    <!-- WELLNESS GLASS CARD -->
+<div class="glass-card">
+  <h3>Health & Wellness</h3>
+
+  <div class="details-section">
+    <table class="wellness-table">
+      <thead>
+        <tr>
+          <th>Mood</th>
+          <th>Stress</th>
+          <th>Sleep</th>
+          <th>Energy</th>
+          <th>Productivity</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+
+      <tbody>
+  @if (wellnessForDate.length === 0) {
+    <tr>
+      <td colspan="6" class="no-data">No wellness entries.</td>
+    </tr>
+  } @else {
+    @for (w of wellnessForDate; track w.id) {
+      <tr>
+        <td class="mood-cell">
+          <img [src]="getMoodEmoji(w.mood)" class="mood-emoji">
+          <span>{{ w.mood }}</span>
+        </td>
+        <td>{{ w.stressLevel }}</td>
+        <td>{{ w.sleepHours }} hrs</td>
+        <td>{{ w.energyLevel }}</td>
+        <td>{{ w.productivity }}</td>
+        <td class="notes-cell">{{ w.notes }}</td>
+      </tr>
+    }
+  }
+</tbody>
+
+    </table>
+  </div>
+</div>
+
+
+
 
 </div>

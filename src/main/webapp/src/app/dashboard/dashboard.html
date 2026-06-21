@@ -146,6 +146,102 @@
 		</div>
 
 		<hr>
+
+		<!-- ANALYTICS GRID -->
+		<div class="analytics-grid">
+
+
+
+			<!-- ⭐ AVERAGE MOOD -->
+			<div class="card analytics-card">
+				<h3>💚 Average Mood</h3>
+
+				<div class="mood-emoji">
+					<img [src]="averageMoodGif" alt="Mood" />
+				</div>
+
+				<div class="mood-label">{{ averageMood }}</div>
+
+				<p class="mood-message">{{ averageMoodMessage }}</p>
+			</div>
+
+			<!-- ⭐ WELL-BEING STABILITY -->
+			<div class="card analytics-card stability-card">
+				<h3>🧠 Well‑Being Stability</h3>
+
+				<div class="stability-emoji">
+					<img [src]="stabilityGif" alt="Stability" />
+				</div>
+
+				<div class="stability-score">
+					{{ stabilityScore }} / 100
+				</div>
+
+				<p class="stability-summary">
+					{{ stabilitySummary }}
+				</p>
+
+				<div class="stability-breakdown">
+					<div class="breakdown-row">
+						<span>Stress</span>
+						<div class="bar">
+							<div class="fill" [ngClass]="{ 'has-value': stressPercent > 0 }"
+								[style.width.%]="stressPercent > 0 ? stressPercent : 0">
+							</div>
+						</div>
+						<span>{{ stressPercent }}%</span>
+					</div>
+
+					<div class="breakdown-row">
+						<span>Energy</span>
+						<div class="bar">
+							<div class="fill" [ngClass]="{ 'has-value': energyPercent > 0 }"
+								[style.width.%]="energyPercent > 0 ? energyPercent : 0">
+							</div>
+						</div>
+						<span>{{ energyPercent }}%</span>
+					</div>
+
+					<div class="breakdown-row">
+						<span>Productivity</span>
+						<div class="bar">
+							<div class="fill" [ngClass]="{ 'has-value': productivityPercent > 0 }"
+								[style.width.%]="productivityPercent > 0 ? productivityPercent : 0">
+							</div>
+						</div>
+						<span>{{ productivityPercent }}%</span>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- ⭐ ENERGY TREND -->
+			<div class="card analytics-card">
+				<h3>⚡ Energy Trend</h3>
+
+				<canvas baseChart [data]="{
+    labels: energyLabels,
+    datasets: [{ data: energyData, label: 'Energy Level' }]
+  }" [type]="'line'" [options]="energyOptions">
+				</canvas>
+
+			</div>
+
+			<!-- ⭐ PRODUCTIVITY FLOW -->
+			<div class="card analytics-card">
+				<h3>📊 Productivity Flow</h3>
+
+				<canvas baseChart [data]="{
+    labels: productivityLabels,
+    datasets: [{ data: productivityData, label: 'Productivity' }]
+  }" [type]="'bar'" [options]="productivityOptions">
+				</canvas>
+
+			</div>
+
+		</div>
+
+		<hr>
 		<!-- Calendar -->
 		<div class="card calendar-card" *ngIf="student" (click)="router.navigate(['/dashboard/calendar'])">
 
@@ -187,8 +283,16 @@
 			</div>
 			}
 
+
+
 		</div>
 
+
+
+
 	</div>
+
+
+
 
 </div>

@@ -1,5 +1,6 @@
 package com.example.demo.web.rest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,4 +66,11 @@ public class AssessmentController {
     public void delete(@PathVariable Long id) {
         assessmentService.delete(id);
     }
+    
+    @GetMapping("/date/{date}")
+    public List<Assessment> getByDate(@PathVariable String date) {
+        LocalDate parsedDate = LocalDate.parse(date);
+        return assessmentService.getByDate(parsedDate);
+    }
+
 }
