@@ -216,16 +216,17 @@
 
 
 			<!-- ⭐ ENERGY TREND -->
-			<div class="card analytics-card">
-				<h3>⚡ Energy Trend</h3>
+<div class="card analytics-card">
+    <h3>⚡ Energy Trend</h3>
 
-				<canvas baseChart [data]="{
-    labels: energyLabels,
-    datasets: [{ data: energyData, label: 'Energy Level' }]
-  }" [type]="'line'" [options]="energyOptions">
-				</canvas>
+    <canvas baseChart 
+        [data]="energyChartData"
+        [type]="'line'"
+        [options]="energyOptions">
+    </canvas>
+</div> <!-- ✅ FIXED -->
 
-			</div>
+
 
 			<!-- ⭐ PRODUCTIVITY FLOW -->
 			<div class="card analytics-card">

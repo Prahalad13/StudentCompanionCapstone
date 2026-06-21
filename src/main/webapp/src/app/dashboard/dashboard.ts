@@ -92,7 +92,53 @@ export class Dashboard implements OnInit {
 	};
 
 	// Energy Trend options
-	energyOptions = {};
+	energyChartData: any = {
+  labels: [],
+  datasets: [
+    {
+      data: [],
+      showLine: false,
+      pointRadius: 8,
+      pointBackgroundColor: '#36A2EB',
+      pointBorderWidth: 0
+    }
+  ]
+};
+
+energyOptions = {
+  plugins: {
+    legend: { display: true },
+    tooltip: {
+      callbacks: {
+        label: (context: any) => `Energy: ${context.raw}`
+      }
+    },
+    chartArea: {
+      backgroundColor: 'transparent'
+    }
+  },
+  elements: {
+    line: { tension: 0 },
+    point: {
+      radius: 8,
+      backgroundColor: '#36A2EB',
+      hoverRadius: 10
+    }
+  },
+  scales: {
+    y: {
+      min: 0,
+      max: 3,
+      beginAtZero: true,
+      ticks: { stepSize: 1 }
+    }
+  }
+};
+
+
+
+
+
 
 	// Productivity Flow options
 
@@ -370,6 +416,23 @@ export class Dashboard implements OnInit {
       this.energyLabels = energy.labels;
       this.energyData = energy.data;
 
+	  this.energyChartData = {
+  labels: this.energyLabels,
+  datasets: [
+    {
+	  type: 'line',
+      label: 'Energy',
+      data: this.energyData,
+      showLine: false,
+      pointRadius: 8,
+      pointBackgroundColor: '#36A2EB',
+      pointBorderWidth: 0
+    }
+  ]
+};
+
+
+
       const productivity = this.getProductivityFlow(this.wellnessEntries);
       this.productivityLabels = productivity.labels;
       this.productivityData = productivity.data;
@@ -496,6 +559,8 @@ export class Dashboard implements OnInit {
 	getEnergyTrend(entries: WellnessEntry[]) {
     return this.mapEntriesToWeek(entries, e => this.toNumber(e.energy ?? e.energyLevel));
 }
+
+
 
 
 
