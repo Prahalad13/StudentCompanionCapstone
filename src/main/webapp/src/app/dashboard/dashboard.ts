@@ -107,7 +107,9 @@ export class Dashboard implements OnInit {
 
 energyOptions = {
   plugins: {
-    legend: { display: true },
+    legend: { display: true,
+		
+	 },
     tooltip: {
       callbacks: {
         label: (context: any) => `Energy: ${context.raw}`
@@ -134,11 +136,6 @@ energyOptions = {
     }
   }
 };
-
-
-
-
-
 
 	// Productivity Flow options
 
@@ -425,7 +422,8 @@ energyOptions = {
       data: this.energyData,
       showLine: false,
       pointRadius: 8,
-      pointBackgroundColor: '#36A2EB',
+      pointBackgroundColor: 'rgba(54, 162, 235, 0.5)',   // ⭐ pale blue
+      backgroundColor: 'rgba(54, 162, 235, 0.5)',        // ⭐ pale legend box
       pointBorderWidth: 0
     }
   ]
@@ -559,11 +557,6 @@ energyOptions = {
 	getEnergyTrend(entries: WellnessEntry[]) {
     return this.mapEntriesToWeek(entries, e => this.toNumber(e.energy ?? e.energyLevel));
 }
-
-
-
-
-
 	// helper function
 
 	private getCurrentWeekRange(): Date[] {
@@ -612,7 +605,6 @@ energyOptions = {
 // pick the LAST entry for that day
 const entry = dayEntries[dayEntries.length - 1];
 
-
     if (entry) {
       console.log("✅ MATCH FOUND:", rawDay, "energy:", selector(entry));
     } else {
@@ -626,17 +618,9 @@ const entry = dayEntries[dayEntries.length - 1];
   return { labels, data };
 }
 
-
-
-
-
 	getProductivityFlow(entries: WellnessEntry[]) {
 		return this.mapEntriesToWeek(entries, e => this.toNumber(e.productivity));
 	}
-
-
-
-
 
 	logout() {
 		this.authService.logout();
