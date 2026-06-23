@@ -366,6 +366,15 @@ energyOptions = {
 			});
 	}
 
+	// calendar route
+
+	goToCalendar() {
+  this.router.navigate(['/dashboard/calendar']).then(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  });
+}
+
+
 	// health and wellness logic
 
 	loadWellness(studentId: number) {
