@@ -107,35 +107,38 @@ export class Dashboard implements OnInit {
 
 energyOptions = {
   plugins: {
-    legend: { display: true,
-		
-	 },
-    tooltip: {
-      callbacks: {
-        label: (context: any) => `Energy: ${context.raw}`
+    legend: {
+      display: true,
+      labels: {
+		color: '#9ca3af',
+        boxWidth: 40,
+        boxHeight: 12,
+        borderWidth: 0,
       }
     },
-    chartArea: {
-      backgroundColor: 'transparent'
-    }
-  },
-  elements: {
-    line: { tension: 0 },
-    point: {
-      radius: 8,
-      backgroundColor: '#36A2EB',
-      hoverRadius: 10
+    tooltip: {
+      callbacks: {
+        label: (ctx: any) => `Energy: ${ctx.raw}`
+      }
     }
   },
   scales: {
+    x: {
+      grid: { color: 'rgba(255,255,255,0.1)' },
+      ticks: { color: '#9ca3af' }
+    },
     y: {
       min: 0,
       max: 3,
-      beginAtZero: true,
-      ticks: { stepSize: 1 }
+      ticks: {
+        stepSize: 1,
+        color: '#9ca3af'
+      },
+      grid: { color: 'rgba(255,255,255,0.1)' }
     }
   }
 };
+
 
 	// Productivity Flow options
 
@@ -393,10 +396,16 @@ energyOptions = {
       });
 
       // Step 3 — pick the LAST entry for each day
-      const finalEntries = Object.values(grouped).map(list => list[list.length - 1]);
+let finalEntries = Object.values(grouped).map(list => list[list.length - 1]);
 
-      // Step 4 — normalize
-      this.wellnessEntries = this.normalizeEntries(finalEntries);
+// ⭐ If no entries this week → fallback to ALL entries
+if (finalEntries.length === 0) {
+  console.log("⚠️ No entries this week — using ALL entries for mood & stability");
+  finalEntries = entries; // use full history
+}
+
+// Step 4 — normalize
+this.wellnessEntries = this.normalizeEntries(finalEntries);
 
       // Step 5 — compute dashboard values
       this.averageMood = this.calculateAverageMood(this.wellnessEntries);
@@ -413,21 +422,41 @@ energyOptions = {
       this.energyLabels = energy.labels;
       this.energyData = energy.data;
 
-	  this.energyChartData = {
-  labels: this.energyLabels,
-  datasets: [
-    {
-	  type: 'line',
-      label: 'Energy',
-      data: this.energyData,
-      showLine: false,
-      pointRadius: 8,
-      pointBackgroundColor: 'rgba(54, 162, 235, 0.5)',   // ⭐ pale blue
-      backgroundColor: 'rgba(54, 162, 235, 0.5)',        // ⭐ pale legend box
-      pointBorderWidth: 0
-    }
-  ]
-};
+	// ⭐ If no data, show a harmless placeholder so Chart.js doesn't crash
+if (this.energyData.length === 0) {
+  this.energyChartData = {
+    labels: ['No Data'],
+    datasets: [
+      {
+        label: 'Energy',
+        data: [0],
+        fill: true,
+        tension: 0.5,
+        borderColor: 'rgba(54,162,235,0.3)',
+        backgroundColor: 'rgba(54,162,235,0.1)',
+        pointRadius: 0
+      }
+    ]
+  };
+} else {
+  // ⭐ Normal wave chart
+  this.energyChartData = {
+    labels: this.energyLabels,
+    datasets: [
+      {
+        label: 'Energy',
+        data: this.energyData,
+        fill: true,
+        tension: 0.5,
+        borderColor: 'rgba(54,162,235,0.8)',
+        backgroundColor: 'rgba(54,162,235,0.25)',
+        pointRadius: 0,
+        pointHoverRadius: 6
+      }
+    ]
+  };
+}
+
 
 
 
@@ -575,7 +604,7 @@ energyOptions = {
 		return week;
 	}
 
-	private mapEntriesToWeek(
+private mapEntriesToWeek(
   entries: WellnessEntry[],
   selector: (e: WellnessEntry) => number
 ) {
@@ -583,40 +612,78 @@ energyOptions = {
   const labels: string[] = [];
   const data: number[] = [];
 
-  console.log("🗓️ WEEK RANGE:");
-  week.forEach(d => console.log("  →", d.toDateString()));
-
-  console.log("📘 RAW ENTRIES:");
-  entries.forEach(e => {
-    console.log("  →", e.date ?? e.dateLogged, "energy:", e.energy);
-  });
-
+  // -----------------------------
+  // 1️⃣ TRY USING THIS WEEK'S DATA
+  // -----------------------------
   week.forEach(day => {
-    const rawDay = day.toDateString();
-
     const dayEntries = entries.filter(e => {
-  const raw = e.date ?? e.dateLogged!;
-  const onlyDate = raw.split('T')[0];
-  const [y, m, d] = onlyDate.split('-').map(Number);
-  const entryDate = new Date(y, m - 1, d);
-  return entryDate.toDateString() === day.toDateString();
-});
+      const raw = e.date ?? e.dateLogged!;
+      const onlyDate = raw.split('T')[0];
+      const [y, m, d] = onlyDate.split('-').map(Number);
+      const entryDate = new Date(y, m - 1, d);
+      return entryDate.toDateString() === day.toDateString();
+    });
 
-// pick the LAST entry for that day
-const entry = dayEntries[dayEntries.length - 1];
-
-    if (entry) {
-      console.log("✅ MATCH FOUND:", rawDay, "energy:", selector(entry));
-    } else {
-      console.log("❌ NO MATCH for:", rawDay);
-    }
+    const entry = dayEntries[dayEntries.length - 1] ?? null;
 
     labels.push(day.toLocaleDateString('en-US', { weekday: 'short' }));
     data.push(entry ? selector(entry) : 0);
   });
 
-  return { labels, data };
+  // If ANY real data exists this week → use it
+  if (data.some(v => v > 0)) {
+    return { labels, data };
+  }
+
+  // ---------------------------------------------------
+  // 2️⃣ FALLBACK: NO WEEKLY DATA → USE LAST 7 ENTRIES
+  // ---------------------------------------------------
+  // ⭐ Fallback: map last 7 entries to their REAL weekday
+console.log("⚠️ No weekly data — using last entries instead");
+
+const sorted = [...entries].sort((a, b) => {
+  const rawA = (a.date ?? a.dateLogged)!;
+  const rawB = (b.date ?? b.dateLogged)!;
+
+  const [yA, mA, dA] = rawA.split('T')[0].split('-').map(Number);
+  const [yB, mB, dB] = rawB.split('T')[0].split('-').map(Number);
+
+  const da = new Date(yA, mA - 1, dA);
+  const db = new Date(yB, mB - 1, dB);
+
+  return da.getTime() - db.getTime();
+});
+
+const last7 = sorted.slice(-7);
+
+// Reset data but KEEP Mon–Sun labels
+data.length = 0;
+
+// Build a map: weekday → value
+const weekdayMap: Record<number, number> = {};
+
+last7.forEach(e => {
+  const raw = e.date ?? e.dateLogged!;
+  const [y, m, dNum] = raw.split('T')[0].split('-').map(Number);
+  const d = new Date(y, m - 1, dNum);   // 👈 LOCAL date, no UTC shift
+
+  const weekday = d.getDay();           // 0=Sun,1=Mon,...6=Sat
+  const normalized = (weekday + 6) % 7; // Mon=0..Sun=6
+
+  weekdayMap[normalized] = selector(e);
+});
+
+// Fill Mon–Sun using the map
+for (let i = 0; i < 7; i++) {
+  data.push(weekdayMap[i] ?? 0);
 }
+
+return { labels, data };
+
+}
+
+
+
 
 	getProductivityFlow(entries: WellnessEntry[]) {
 		return this.mapEntriesToWeek(entries, e => this.toNumber(e.productivity));
