@@ -259,6 +259,17 @@ Colors
   opacity: 0.9;
 }
 
+.card {
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  background-color: rgba(255,255,255,0.05);
+}
+
+
 /* BUTTON */
 .card-btn {
   display: inline-block;
@@ -334,6 +345,25 @@ Colors
   color: #A5D6A7;
 }
 
+/* VIEW FULL CALENDAR ROUTER LINK */
+
+.footer-link {
+  display: block;
+  text-align: right;
+  margin-top: 8px;
+  font-weight: bold;
+  color: #7ec8a1;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #a8ffd0;
+}
+
+
+
+
 /* HR */
 hr {
   border:
@@ -380,6 +410,7 @@ hr {
   padding: 25px;
 
   min-height: 320px;
+  
 }
 
 /* GPA */
@@ -405,4 +436,94 @@ hr {
 
   max-height: 220px;
 }
+
+/* Wellness Emoji */
+.mood-emoji {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.mood-emoji img {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+}
+
+/* Mood Label */
+.mood-label {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* Mood Message */
+.mood-message {
+  text-align: center;
+  margin-top: 10px;
+  opacity: 0.9;
+  font-size: 15px;
+}
+
+/* Stability Score */
+/* Stability Card */
+.stability-card {
+  padding-bottom: 30px;
+}
+
+.stability-emoji {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.stability-emoji img {
+  width: 70px;
+  height: 70px;
+}
+
+.stability-score {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 10px;
+  color: #d7f5e8;
+}
+
+.stability-summary {
+  text-align: center;
+  margin-top: 10px;
+  opacity: 0.9;
+  font-size: 15px;
+}
+
+/* Breakdown */
+.stability-breakdown {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.breakdown-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.bar {
+  height: 12px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: #4cd964;
+  border-radius: 6px;
+  width: 0%; 
+}
+
 

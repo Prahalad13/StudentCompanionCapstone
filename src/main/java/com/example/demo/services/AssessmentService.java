@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.example.demo.domain.Assessment;
@@ -11,6 +12,9 @@ public interface AssessmentService {
     Assessment save(Assessment assessment);
     Assessment update(Long id, Assessment updated);
     void delete(Long id);
+    
+    List<Assessment> getByDate(LocalDate date);
+
 
     
 }

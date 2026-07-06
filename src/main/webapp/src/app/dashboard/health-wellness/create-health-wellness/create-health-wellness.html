@@ -107,9 +107,18 @@
         <!-- text area for notes -->
         <h3 class="section-title">Any notes about your day?</h3>
 
-        <textarea class="notes-box" rows="4" [(ngModel)]="form.notes" name="notes"
+        <textarea class="notes-box" rows="4" [(ngModel)]="form.notes" name="notes" maxlength="200"
             placeholder="Write anything you want to remember…">
-</textarea>
+        </textarea>
+
+        @if (form.notes?.length >= 200) {
+        <div class="char-warning">
+            Notes cannot exceed 200 characters.
+        </div>
+        }
+
+
+
 
         <div class="divider"></div>
 
@@ -118,7 +127,17 @@
         <h3 class="section-title">Date Logged</h3>
         <input type="date" class="date-input" [(ngModel)]="form.dateLogged" name="dateLogged">
 
+        <!-- if user is creating an entry -->
+        @if (!isEditing) {
         <button class="save-btn" (click)="createEntry()">Create Entry</button>
+        }
+
+
+        <!-- if user is editing an entry -->
+        @if (isEditing) {
+        <button class="save-btn" (click)="updateEntry()">Update Entry</button>
+        }
+
 
     </div>
 

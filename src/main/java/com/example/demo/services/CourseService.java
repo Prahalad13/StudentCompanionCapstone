@@ -10,4 +10,6 @@ public interface CourseService {
 	    Course save(Course course);
 	    Course update(Long id, Course course);
 	    void delete(Long id);
+	    boolean hasAssessments(Long courseId);
+
 }

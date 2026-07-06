@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,4 +56,10 @@ public class AssessmentServiceImpl implements AssessmentService {
 		repo.deleteById(id);
 		
 	}
+	
+	@Override
+	public List<Assessment> getByDate(LocalDate date) {
+	    return repo.findByDueDate(date);
+	}
+
 }

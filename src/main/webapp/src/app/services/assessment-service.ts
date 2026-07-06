@@ -56,4 +56,17 @@ export class AssessmentService {
       }
     );
   }
+
+  getByDate(date: string) {
+  const token = localStorage.getItem('token');
+
+  return this.http.get<any[]>(
+    `${assessmentsUrl}/date/${date}`,
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+}
+
+
 }

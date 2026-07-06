@@ -1,179 +1,299 @@
 <div class="dashboard-container">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <div class="logo-section">
-      <img src="SCLogo.png" />
-      <h3>Student Companion</h3>
-    </div>
+	<!-- SIDEBAR -->
+	<div class="sidebar">
+		<div class="logo-section">
+			<img src="SCLogo.png" />
+			<h3>Student Companion</h3>
+		</div>
+		<nav>
+			<a routerLink="/dashboard" class="active">
+				📊 Dashboard
+			</a>
 
-    <nav>
-      <a routerLink="/dashboard" class="active">Dashboard</a>
-      <a routerLink="/dashboard/courses">Courses</a>
-      <a routerLink="/dashboard/assessments">Assessments</a>
-      <a routerLink="/dashboard/create-student">Create Student</a>
-	<a routerLink="/dashboard/health-wellness">Health and Wellness</a>
-	</nav>
+			<a routerLink="/dashboard/courses">
+				📚 Courses
+			</a>
 
-    <div class="logout-section">
-      <button (click)="logout()">Logout</button>
-    </div>
-  </div>
+			<a routerLink="/dashboard/assessments">
+				📝 Assessments
+			</a>
 
-  <!-- MAIN CONTENT -->
-  <div class="main-content">
+			<a routerLink="/dashboard/jobs">
+				💼 Job Search
+			</a>
 
-<div class="topbar">
+			<a routerLink="/dashboard/create-student">
+				👨‍🎓 Create Student
+			</a>
 
-  <h1>
-    Welcome, {{ student?.name || email }}!
-  </h1>
+			<a routerLink="/dashboard/health-wellness">
+				💚 Health & Wellness
+			</a>
+		</nav>
+		<div class="logout-section">
+			<button (click)="logout()">Logout</button>
+		</div>
+	</div>
 
-  <div *ngIf="!student" class="no-student">
-    <p>No student profile found.</p>
-    <a routerLink="/dashboard/create-student" class="card-btn">
-      Create Student
-    </a>
-  </div>
+	<!-- MAIN CONTENT -->
+	<div class="main-content">
 
-</div>
+		<div class="topbar">
 
-    <!-- CARDS -->
-    <div class="cards">
+			<h1>
+				Welcome, {{ student?.name || email }}!
+			</h1>
 
-      <div class="card">
-        <h3>Courses</h3>
-        <p>Manage your courses</p>
-        <a routerLink="/dashboard/courses" class="card-btn">
-          View Courses
-        </a>
-      </div>
+			<div *ngIf="!student" class="no-student">
+				<p>No student profile found.</p>
+				<a routerLink="/dashboard/create-student" class="card-btn">
+					Create Student
+				</a>
+			</div>
 
-      <div class="card">
-        <h3>Assessments</h3>
-        <p>Track your assessments</p>
-        <a routerLink="/dashboard/assessments" class="card-btn">
-          View Assessments
-        </a>
-      </div>
-      <div class="card">
-        <h3>Students</h3>
-        <p>Create and manage students</p>
-        <a routerLink="/dashboard/create-student" class="card-btn">
-          Create Student
-        </a>
-      </div>
-    </div>
-    <hr>
-    <!-- BELOW CARDS -->
-    <!-- ANALYTICS SECTION -->
-	<div class="analytics-grid">
-	
-	  <!-- GPA CARD -->
-	  <div class="card analytics-card">
-	
-	    <h3>🎓 Current GPA</h3>
-	
-	    <div class="gpa-value">
-	      {{ gpa }}
-	    </div>
-	
-	  </div>
-	
-	  <!-- COURSE PROGRESS -->
-	  <div class="card analytics-card">
-	
-	    <h3>📘 Course Progress</h3>
-	
-	    <canvas
-	      baseChart
-	      [data]="{
+		</div>
+
+		<!-- CARDS -->
+		<div class="cards">
+
+			<div class="card">
+				<h3>Courses</h3>
+				<p>Manage your courses</p>
+				<a routerLink="/dashboard/courses" class="card-btn">
+					View Courses
+				</a>
+			</div>
+
+			<div class="card">
+				<h3>Assessments</h3>
+				<p>Track your assessments</p>
+				<a routerLink="/dashboard/assessments" class="card-btn">
+					View Assessments
+				</a>
+			</div>
+			<div class="card">
+				<h3>Students</h3>
+				<p>Create and manage students</p>
+				<a routerLink="/dashboard/create-student" class="card-btn">
+					Create Student
+				</a>
+			</div>
+		</div>
+		<hr>
+		<!-- BELOW CARDS -->
+		<!-- ANALYTICS SECTION -->
+		<div class="analytics-grid">
+
+			<!-- GPA CARD -->
+			<div class="card analytics-card">
+
+				<h3>🎓 Current GPA</h3>
+
+				<div class="gpa-value">
+					{{ gpa }}
+				</div>
+
+			</div>
+
+			<!-- COURSE PROGRESS -->
+			<div class="card analytics-card">
+
+				<h3>📘 Course Progress</h3>
+
+				<canvas baseChart [data]="{
 	        labels: courseChartLabels,
 	        datasets: [{
 	          data: courseChartData,
 	          label: 'Progress %'
 	        }]
-	      }"
-	      [type]="'bar'">
-	    </canvas>
-	
-	  </div>
-	
-	  <!-- ASSESSMENT COMPLETION -->
-	  <div class="card analytics-card">
-	
-	    <h3>✅ Assessment Completion</h3>
-	
-	    <canvas
-	      baseChart
-	      [data]="{
+	      }" [type]="'bar'">
+				</canvas>
+
+			</div>
+
+			<!-- ASSESSMENT COMPLETION -->
+			<div class="card analytics-card">
+
+				<h3>✅ Assessment Completion</h3>
+
+				<canvas baseChart [data]="{
 	        labels: ['Completed', 'Pending'],
 	        datasets: [{
 	          data: completionChartData
 	        }]
-	      }"
-	      [type]="'doughnut'">
-	    </canvas>
-	
-	  </div>
-	
-	  <!-- WEEKLY PRODUCTIVITY -->
-	  <div class="card analytics-card">
-	
-	    <h3>📈 Weekly Productivity</h3>
-	
-	    <canvas
-	      baseChart
-	      [data]="{
+	      }" [type]="'doughnut'">
+				</canvas>
+
+			</div>
+
+			<!-- WEEKLY PRODUCTIVITY -->
+			<div class="card analytics-card">
+
+				<h3>📈 Weekly Productivity</h3>
+
+				<canvas baseChart [data]="{
 	        labels: weeklyChartLabels,
 	        datasets: [{
 	          data: weeklyChartData,
 	          label: 'Study Hours'
 	        }]
-	      }"
-	      [type]="'line'">
-	    </canvas>
-	
-	  </div>
-	
-	</div>
+	      }" [type]="'line'">
+				</canvas>
 
-	<hr>
-    <!-- Calendar -->
-	<div class="card" *ngIf="student">
+			</div>
 
-	  <h3>📅 Calendar</h3>
-	
-	  <div *ngFor="let a of assessments" class="calendar-row">
-
-		  <div>
-		    <div class="title">
-		      {{ a.title || a.course?.courseName }}
-		    </div>
-		    <div class="course">
-		      📘 {{ a.course?.courseName }}
-		    </div>
-		  </div>
-		
-		  <span class="date">
-		    {{ a.dueDate | date:'mediumDate' }}
-		  </span>
-		
-		  <span 
-		    class="status"
-		    [ngClass]="{
-		      'overdue': isOverdue(a.dueDate),
-		      'upcoming': isUpcoming(a.dueDate)
-		    }">
-		
-		    {{ isOverdue(a.dueDate) ? 'Overdue' : 'Upcoming' }}
-		
-		  </span>
-		
 		</div>
-	
+
+		<hr>
+
+		<!-- ANALYTICS GRID -->
+		<div class="analytics-grid">
+
+
+
+			<!-- ⭐ AVERAGE MOOD -->
+			<div class="card analytics-card">
+				<h3>💚 Average Mood</h3>
+
+				<div class="mood-emoji">
+					<img [src]="averageMoodGif" alt="Mood" />
+				</div>
+
+				<div class="mood-label">{{ averageMood }}</div>
+
+				<p class="mood-message">{{ averageMoodMessage }}</p>
+			</div>
+
+			<!-- ⭐ WELL-BEING STABILITY -->
+			<div class="card analytics-card stability-card">
+				<h3>🧠 Well‑Being Stability</h3>
+
+				<div class="stability-emoji">
+					<img [src]="stabilityGif" alt="Stability" />
+				</div>
+
+				<div class="stability-score">
+					{{ stabilityScore }} / 100
+				</div>
+
+				<p class="stability-summary">
+					{{ stabilitySummary }}
+				</p>
+
+				<div class="stability-breakdown">
+					<div class="breakdown-row">
+						<span>Stress</span>
+						<div class="bar">
+							<div class="fill" [ngClass]="{ 'has-value': stressPercent > 0 }"
+								[style.width.%]="stressPercent > 0 ? stressPercent : 0">
+							</div>
+						</div>
+						<span>{{ stressPercent }}%</span>
+					</div>
+
+					<div class="breakdown-row">
+						<span>Energy</span>
+						<div class="bar">
+							<div class="fill" [ngClass]="{ 'has-value': energyPercent > 0 }"
+								[style.width.%]="energyPercent > 0 ? energyPercent : 0">
+							</div>
+						</div>
+						<span>{{ energyPercent }}%</span>
+					</div>
+
+					<div class="breakdown-row">
+						<span>Productivity</span>
+						<div class="bar">
+							<div class="fill" [ngClass]="{ 'has-value': productivityPercent > 0 }"
+								[style.width.%]="productivityPercent > 0 ? productivityPercent : 0">
+							</div>
+						</div>
+						<span>{{ productivityPercent }}%</span>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- ⭐ ENERGY TREND -->
+<div class="card analytics-card">
+    <h3>⚡ Energy Trend</h3>
+
+    <canvas baseChart 
+        [data]="energyChartData"
+        [type]="'line'"
+        [options]="energyOptions">
+    </canvas>
+</div> <!-- ✅ FIXED -->
+
+
+
+			<!-- ⭐ PRODUCTIVITY FLOW -->
+			<div class="card analytics-card">
+				<h3>📊 Productivity Flow</h3>
+
+				<canvas baseChart [data]="{
+    labels: productivityLabels,
+    datasets: [{ data: productivityData, label: 'Productivity' }]
+  }" [type]="'bar'" [options]="productivityOptions">
+				</canvas>
+
+			</div>
+
+		</div>
+
+		<hr>
+		<!-- Calendar -->
+		<div class="card calendar-card" *ngIf="student" (click)="goToCalendar()">
+
+			<h3>📅 Calendar</h3>
+
+			@for (a of limitedAssessments; track a.id) {
+
+			<div class="calendar-row">
+
+				<div>
+					<div class="title">
+						{{ a.title || a.course?.courseName }}
+					</div>
+					<div class="course">
+						📘 {{ a.course?.courseName }}
+					</div>
+				</div>
+
+				<span class="date">
+					{{ a.dueDate | date:'mediumDate' }}
+				</span>
+
+				<span class="status" [ngClass]="{
+        'overdue': isOverdue(a.dueDate),
+        'upcoming': isUpcoming(a.dueDate)
+      }">
+
+					{{ isOverdue(a.dueDate) ? 'Overdue' : 'Upcoming' }}
+
+				</span>
+
+			</div>
+			}
+
+			<!-- if there are 3 assessments (refer to hasMoreAssessments() )-->
+			@if (hasMoreAssessments) {
+			<div class="footer-link">
+				View full calendar →
+			</div>
+			}
+
+
+
+		</div>
+
+
+
+
 	</div>
 
-  </div>
- 
+
+
+
 </div>

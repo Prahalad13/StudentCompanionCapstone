@@ -6,8 +6,10 @@ import { AuthService } from '../../services/auth-service';
 import { HealthWellnessService } from '../../services/health-wellness-service';
 import { ChangeDetectorRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 
+// alerts
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-health-wellness',
@@ -39,35 +41,67 @@ export class HealthWellness implements OnInit {
   // alert box (cancel and delete button)
 
   confirmDeleteId: number | null = null;
-  
 
-openDeleteConfirm(id: number) {
-  this.confirmDeleteId = id;
-}
 
-closeDeleteConfirm() {
-  this.confirmDeleteId = null;
-}
+  openDeleteConfirm(id: number) {
+    this.confirmDeleteId = id;
+  }
 
-confirmDelete() {
+  closeDeleteConfirm() {
+    this.confirmDeleteId = null;
+  }
+
+  confirmDelete() {
   if (!this.confirmDeleteId) return;
 
   this.wellnessService.delete(this.confirmDeleteId).subscribe(() => {
+
+    // Close the popup
     this.confirmDeleteId = null;
+
+    // ⭐ SUCCESS SNACKBAR
+    this.snackBar.open("Wellness entry deleted.", "Close", {
+      duration: 3000,
+      verticalPosition: "top",
+      panelClass: ['custom-snackbar']
+    });
+
+    // Reload list
     this.loadWellnessList();
   });
 }
+
 
   constructor(
     private wellnessService: HealthWellnessService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
-    private router: Router
-  ) {}
+    private router: Router,
+    private snackBar: MatSnackBar,
+
+  ) { }
 
   ngOnInit(): void {
     this.studentId = this.authService.getStudentId();
     this.loadWellnessList();
+
+    const navState = history.state;
+
+  if (navState?.wellnessMessage === "created") {
+    this.snackBar.open("Wellness entry created successfully!", "Close", {
+      duration: 3000,
+      verticalPosition: "top",
+      panelClass: ['custom-snackbar']
+    });
+  }
+
+  if (navState?.wellnessMessage === "updated") {
+    this.snackBar.open("Wellness entry updated successfully!", "Close", {
+      duration: 3000,
+      verticalPosition: "top",
+      panelClass: ['custom-snackbar']
+    });
+  }
   }
 
   // LOAD ALL ENTRIES
@@ -87,11 +121,11 @@ confirmDelete() {
   // no create function since we're not creating in the same component
 
   editEntry(id: number) {
-  this.router.navigate(
-    ['dashboard/health-wellness/create-health-wellness'],
-    { queryParams: { id } }
-  );
-}
+    this.router.navigate(
+      ['dashboard/health-wellness/create-health-wellness'],
+      { queryParams: { id } }
+    );
+  }
 
 
   // UPDATE ENTRY
@@ -108,7 +142,16 @@ confirmDelete() {
 
   // DELETE ENTRY
   deleteEntry(id: number) {
+
     this.wellnessService.delete(id).subscribe(() => {
+
+      this.snackBar.open("Wellness entry deleted.", "Close", {
+        duration: 3000,
+        verticalPosition: "top",
+        panelClass: ['custom-snackbar']
+      });
+
+
       if (this.editingId === id) {
         this.isEditing = false;
         this.editingId = null;
@@ -125,30 +168,17 @@ confirmDelete() {
     this.editingId = null;
   }
 
-//   getMoodEmojiStatic(mood: string): string {
-//   const emojiMap: any = {
-//     Happy: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f604/512.webp",
-//     Okay: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f642/512.webp",
-//     Neutral: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f610/512.webp",
-//     Sad: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61e/512.webp",
-//     Stressed: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f620/512.webp",
-//     Tired: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62a/512.webp"
-//   };
-
-//   return emojiMap[mood] || emojiMap["Okay"];
-// }
-
   getMoodEmoji(mood: string): string {
-  const emojiMap: any = {
-    Happy: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f604/512.gif",
-    Okay: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f642/512.gif",
-    Neutral: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f610/512.gif",
-    Sad: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61e/512.gif",
-    Stressed: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f620/512.gif",
-    Tired: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62a/512.gif"
-  };
+    const emojiMap: any = {
+      Happy: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f604/512.gif",
+      Okay: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f642/512.gif",
+      Neutral: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f610/512.gif",
+      Sad: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61e/512.gif",
+      Stressed: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f620/512.gif",
+      Tired: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62a/512.gif"
+    };
 
-  return emojiMap[mood] || emojiMap["Okay"];
-}
+    return emojiMap[mood] || emojiMap["Okay"];
+  }
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.example.demo.domain.HealthWellness;
@@ -10,6 +11,9 @@ public interface HealthWellnessService {
 	HealthWellness save(HealthWellness healthWellness);
 	HealthWellness update(Long id, HealthWellness healthWellness);
     void delete(Long id);
+    
+    List<HealthWellness> getByDate(LocalDate date);
+
 
 }
 

@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 const healthWellnessUrl = '/api/v1/healthwellness'
 @Injectable({
@@ -69,4 +69,43 @@ export class HealthWellnessService {
         }
       );
     }
+
+    getByDate(date: string) {
+    const token = localStorage.getItem('token');
+
+    return this.http.get<any[]>(
+      `${healthWellnessUrl}/date/${date}`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
+  }
+
+  getByStudentForWeek(studentId: number) {
+    const token = localStorage.getItem('token');
+
+    return this.http.get<any[]>(
+      `${healthWellnessUrl}/student/${studentId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    ).pipe(
+      map(entries => {
+        const now = new Date();
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+        return entries.filter(e => {
+          const d = new Date(e.date || e.dateLogged);
+          return d >= startOfWeek && d < endOfWeek;
+        });
+      })
+    );
+  }
+
+
+
 }
