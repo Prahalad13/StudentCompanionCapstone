@@ -1,0 +1,75 @@
+<div class="chat-page">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo-section">
+      <img src="SCLogo.png" alt="Logo" />
+      <h3>Student Companion</h3>
+    </div>
+    <nav>
+      <a routerLink="/dashboard">Dashboard</a>
+      <a routerLink="/dashboard/courses">Courses</a>
+      <a routerLink="/dashboard/assessments">Assessments</a>
+      <a routerLink="/dashboard/jobs">Job Search</a>
+      <a routerLink="/dashboard/health-wellness">Health and Wellness</a>
+      <a routerLink="/dashboard/chat" class="active">AI Assistant</a>
+      <a routerLink="/dashboard/summarizer">Summarizer</a>
+    </nav>
+    <div class="logout-section">
+      <a routerLink="/login" class="logout-btn">Logout</a>
+    </div>
+  </div>
+
+  <!-- MAIN CHAT AREA -->
+  <div class="chat-main">
+
+    <div class="chat-header">
+      <h2>AI Academic Assistant</h2>
+      <span class="context-badge">Context-aware: your courses &amp; assessments loaded</span>
+    </div>
+
+    <!-- MESSAGE LIST -->
+    <div class="message-list" #messageList>
+
+      @for (msg of messages; track $index) {
+        <div class="message-row" [class.user-row]="msg.role === 'user'" [class.ai-row]="msg.role === 'ai'">
+          <div class="message-bubble" [class.user-bubble]="msg.role === 'user'" [class.ai-bubble]="msg.role === 'ai'">
+            <div class="bubble-text">{{ msg.text }}</div>
+            <div class="bubble-time">{{ msg.timestamp | date:'shortTime' }}</div>
+          </div>
+        </div>
+      }
+
+      @if (loading) {
+        <div class="message-row ai-row">
+          <div class="message-bubble ai-bubble loading-bubble">
+            <span class="thinking-dots">Thinking...</span>
+          </div>
+        </div>
+      }
+
+    </div>
+
+    <!-- INPUT AREA -->
+    <div class="chat-input-area">
+      <div class="chat-input-wrapper">
+        <textarea
+          class="chat-input"
+          [(ngModel)]="inputText"
+          (keydown)="onKeyDown($event)"
+          rows="2"
+          [disabled]="loading"
+          placeholder="Ask your AI assistant... (Enter to send, Shift+Enter for new line)"
+        ></textarea>
+      </div>
+      <button
+        class="send-btn"
+        (click)="sendMessage()"
+        [disabled]="loading || !inputText.trim()"
+      >
+        Send
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,9 +1,212 @@
+/* ==========================
+   Page Container
+========================== */
+
+.container {
+    width: 100%;
+    padding: 30px 25px;
+    box-sizing: border-box;
+}
+
+/* ==========================
+   Main Heading
+========================== */
+
+.container > h2:first-child {
+    font-size: 42px;
+    font-weight: bold;
+    color: white;
+    margin: 0 0 25px 0;
+}
+
+/* ==========================
+   Search Controls
+========================== */
+
+input,
+select,
+button {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 15px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+/* Text fields */
+
+input {
+    width: 320px;
+    height: 50px;
+    padding: 12px;
+    font-size: 18px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Placeholder */
+
+input::placeholder {
+    font-size: 18px;
+}
+
+/* Dropdown */
+
+select {
+    width: 220px;
+    height: 50px;
+
+    padding: 10px;
+
+    font-size: 18px;
+
+    border-radius: 6px;
+}
+
+/* Button */
+
+button {
+
+    width: 260px;
+
+    height: 50px;
+
+    background: #3d6c56;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 6px;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+button:hover {
+
+    background: #2a4f3f;
+}
+
+/* ==========================
+   Job Card
+========================== */
+
 .job-card {
 
-    background-color: white;
-    padding: 20px;
-    margin-top: 20px;
+    width: 100%;
+
+    background: white;
+
     border-radius: 10px;
 
-    color: black;
+    padding: 20px;
+
+    margin-top: 18px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,.15);
+
+    box-sizing: border-box;
+}
+
+/* ==========================
+   Job Title
+========================== */
+
+.job-card h2 {
+
+    margin: 0 0 15px;
+
+    color: #143d2d;
+
+    font-size: 34px;
+
+    font-weight: bold;
+
+    white-space: normal;
+
+    overflow: visible;
+
+    word-break: normal;
+}
+
+/* ==========================
+   Job Details
+========================== */
+
+.job-card p {
+
+    margin: 6px 0;
+
+    color: #555;
+
+    font-size: 18px;
+}
+
+/* ==========================
+   Apply Button
+========================== */
+
+.apply-btn {
+
+    display: inline-block;
+
+    margin-top: 15px;
+
+    padding: 10px 22px;
+
+    background: #2f5d4b;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    border-radius: 6px;
+
+    transition: 0.3s;
+}
+
+.apply-btn:hover {
+
+    background: #214536;
+}
+
+/* ==========================
+   Responsive
+========================== */
+
+@media (max-width: 992px) {
+
+    input,
+    select,
+    button {
+
+        display: block;
+
+        width: 100%;
+
+        margin-right: 0;
+    }
+
+    .job-card h2 {
+
+        font-size: 28px;
+    }
+}
+.search-bar {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
 }

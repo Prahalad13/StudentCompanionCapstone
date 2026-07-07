@@ -2,39 +2,29 @@
 
   <h2>Job Search</h2>
 
-  <input
-    type="text"
-    [(ngModel)]="title"
-    placeholder="Job Title">
+  <div class="search-bar">
 
-  <input
-    type="text"
-    [(ngModel)]="city"
-    placeholder="City">
-
-  <select
-    [(ngModel)]="type">
-
-    <option value="remote">
-      Remote
-    </option>
-
-    <option value="hybrid">
-      Hybrid
-    </option>
-
-    <option value="inperson">
-      In Person
-    </option>
-
-  </select>
-
-  <button
-    (click)="searchJobs()">
-
-    Search Jobs
-
-  </button><br><br>
+	  <input
+	    type="text"
+	    [(ngModel)]="title"
+	    placeholder="Job Title">
+	
+	  <input
+	    type="text"
+	    [(ngModel)]="city"
+	    placeholder="City">
+	
+	  <select [(ngModel)]="type">
+	    <option value="remote">Remote</option>
+	    <option value="hybrid">Hybrid</option>
+	    <option value="inperson">In Person</option>
+	  </select>
+	
+	  <button (click)="searchJobs()">
+	    Search Jobs
+	  </button>
+	
+	</div><br><br>
   <div *ngFor="let job of jobs">
 
     <div class="job-card">

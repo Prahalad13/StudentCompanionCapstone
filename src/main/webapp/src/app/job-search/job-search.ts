@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { JobService } from '../job.service';
-
 import { Job } from '../job';
 import { ChangeDetectorRef } from '@angular/core';
 

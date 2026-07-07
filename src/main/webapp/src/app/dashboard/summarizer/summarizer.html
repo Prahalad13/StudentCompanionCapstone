@@ -1,0 +1,118 @@
+<div class="summarizer-page">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo-section">
+      <img src="SCLogo.png" alt="Logo" />
+      <h3>Student Companion</h3>
+    </div>
+    <nav>
+      <a routerLink="/dashboard">Dashboard</a>
+      <a routerLink="/dashboard/courses">Courses</a>
+      <a routerLink="/dashboard/assessments">Assessments</a>
+      <a routerLink="/dashboard/jobs">Job Search</a>
+      <a routerLink="/dashboard/health-wellness">Health and Wellness</a>
+      <a routerLink="/dashboard/chat">AI Assistant</a>
+      <a routerLink="/dashboard/summarizer" class="active">Summarizer</a>
+    </nav>
+    <div class="logout-section">
+      <a routerLink="/login" class="logout-btn">Logout</a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="summarizer-main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <h2>📄 AI Note Summarizer</h2>
+      <p>Upload your lecture notes and get an instant AI-generated summary</p>
+    </div>
+
+    <!-- ERROR BANNER -->
+    @if (error) {
+      <div class="error-banner">
+        ⚠️ {{ error }}
+        <button class="close-error" (click)="error = null">✕</button>
+      </div>
+    }
+
+    <!-- ── STEP 1: DROP ZONE (no file selected yet) ── -->
+    @if (!selectedFile && !summary) {
+      <div
+        class="drop-zone"
+        [class.dragging]="isDragging"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave()"
+        (drop)="onDrop($event)"
+      >
+        <div class="drop-icon">📁</div>
+        <h3>Drag & drop your file here</h3>
+        <p class="drop-sub">or click the button below to browse</p>
+        <p class="supported-types">Supports &nbsp;<strong>PDF</strong>, <strong>DOCX</strong>, <strong>TXT</strong> &nbsp;• max 15 MB</p>
+
+        <label class="browse-btn">
+          Browse Files
+          <input
+            type="file"
+            accept=".pdf,.docx,.txt"
+            (change)="onFileSelect($event)"
+            hidden
+          />
+        </label>
+      </div>
+    }
+
+    <!-- ── STEP 2: FILE SELECTED, READY TO SUMMARIZE ── -->
+    @if (selectedFile && !summary && !loading) {
+      <div class="file-card">
+        <span class="file-icon-lg">{{ getFileIcon(selectedFile.name) }}</span>
+        <div class="file-meta">
+          <div class="file-name">{{ selectedFile.name }}</div>
+          <div class="file-size">{{ getFileSize(selectedFile.size) }}</div>
+        </div>
+        <button class="remove-btn" (click)="reset()" title="Remove file">✕</button>
+      </div>
+
+      <div class="action-row">
+        <button class="summarize-btn" (click)="summarize()">
+          ✨ Summarize with AI
+        </button>
+      </div>
+    }
+
+    <!-- ── STEP 3: LOADING ── -->
+    @if (loading) {
+      <div class="loading-card">
+        <div class="spinner"></div>
+        <p class="loading-title">AI is reading your notes…</p>
+        <p class="loading-hint">This usually takes 5–15 seconds</p>
+      </div>
+    }
+
+    <!-- ── STEP 4: SUMMARY RESULT ── -->
+    @if (summary && !loading) {
+      <div class="summary-card">
+
+        <div class="summary-card-header">
+          <div class="summary-title">
+            <span>{{ getFileIcon(fileName ?? '') }}</span>
+            <span>{{ fileName }}</span>
+          </div>
+          <div class="summary-actions">
+            <button class="copy-btn" (click)="copyToClipboard()">
+              {{ copied ? '✅ Copied!' : '📋 Copy' }}
+            </button>
+            <button class="new-btn" (click)="reset()">
+              📄 New File
+            </button>
+          </div>
+        </div>
+
+        <div class="summary-body" [innerHTML]="formatSummary(summary)"></div>
+
+      </div>
+    }
+
+  </div>
+</div>

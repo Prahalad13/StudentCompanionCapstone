@@ -6,10 +6,11 @@ import { CreateStudent } from './dashboard/create-student/create-student';
 import { Courses } from './dashboard/courses/courses';
 import { Assessments } from './dashboard/assessments/assessments';
 import { JobSearchComponent } from './job-search/job-search';
-
 import { HealthWellness } from './dashboard/health-wellness/health-wellness';
 import { CreateHealthWellness } from './dashboard/health-wellness/create-health-wellness/create-health-wellness';
 import { Calendar } from './dashboard/calendar/calendar';
+import { Chat } from './dashboard/chat/chat';
+import { Summarizer } from './dashboard/summarizer/summarizer';
 
 export const routes: Routes = [
     { path: 'register', component: CreateAccount},
@@ -21,6 +22,8 @@ export const routes: Routes = [
 	{ path: 'dashboard/jobs', component: JobSearchComponent},
     { path: 'dashboard/health-wellness', component: HealthWellness, runGuardsAndResolvers: 'always'},
     { path: 'dashboard/health-wellness/create-health-wellness', component: CreateHealthWellness, runGuardsAndResolvers: 'always'},
+	{ path: 'dashboard/chat', component: Chat},
+	{ path: 'dashboard/summarizer', component: Summarizer},
     { path: 'dashboard/calendar', component: Calendar},
     { path: '', redirectTo: 'login', pathMatch: 'full'}
 ];
