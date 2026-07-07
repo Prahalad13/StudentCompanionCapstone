@@ -246,14 +246,14 @@ energyOptions = {
 		});
 	}
 
-	// Show only the first 3 assessments on the dashboard
+	// Show only the first 6 assessments on the dashboard
 	get limitedAssessments() {
-		return this.assessments.slice(0, 3);
+		return this.assessments.slice(0, 6);
 	}
 
-	// Check if there are more than 3 assessments
+	// Check if there are more than 6 assessments
 	get hasMoreAssessments() {
-		return this.assessments.length > 3;
+		return this.assessments.length > 6;
 	}
 
 
