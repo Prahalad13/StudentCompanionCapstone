@@ -16,4 +16,6 @@ public class Job {
     private String type;
     
     private String applyLink;
+    
+    private String companyName;
 }
