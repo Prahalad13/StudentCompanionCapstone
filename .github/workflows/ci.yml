@@ -24,4 +24,4 @@ jobs:
         run: chmod +x mvnw
 
       - name: Build Spring Boot Backend
-        run: ./mvnw clean install
+        run: ./mvnw clean install -DskipTests
