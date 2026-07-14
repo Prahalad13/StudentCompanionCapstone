@@ -57,7 +57,43 @@
 			<button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
 			}
 
-		</div>
+			<!-- SEARCH + FILTER BAR -->
+<div class="search-filter-bar">
+  <div class="search-box">
+    <label>Search:</label>
+    <input type="text"
+           [(ngModel)]="searchQuery"
+           (input)="applySearch()"
+           placeholder="Search assessments..." />
+  </div>
+
+<div class="filter-bar">
+  <label>Filter by:</label>
+  <select class="assessment-form-select"
+          [(ngModel)]="selectedFilter"
+          (change)="applyFilter()">
+
+      <option value="titleAsc">Assessment Title A–Z</option>
+      <option value="titleDesc">Assessment Title Z–A</option>
+      <option value="dateAsc">Date ↑</option>
+      <option value="dateDesc">Date ↓</option>
+      <option value="courseAsc">Course A–Z</option>
+      <option value="courseDesc">Course Z–A</option>
+    </select>
+  </div>
+
+  <button class="reset-btn" (click)="resetFilters()">Reset</button>
+
+
+</div>
+
+  
+
+</div>
+
+@if (filteredAssessments.length === 0) {
+  <p class="no-results">No assessments found.</p>
+}
 
 		<!-- CONTENT -->
 		<div class="assessment-content">
@@ -65,7 +101,7 @@
 			<!-- LEFT SIDE (LIST) -->
 			<div class="assessment-list">
 
-				@for (a of assessments; track a.id) {
+				@for (a of filteredAssessments; track a.id) {
 				<div class="assessment-item">
 
 					<div class="assessment-info">
@@ -86,15 +122,13 @@
 					<button class="edit-btn" (click)="editAssessment(a)">
 						Edit
 					</button>
-					<!-- AI SUMMARIZE BUTTON -->
-					  <button routerLink="/dashboard/summarizer">
-					    AI Summarize
-					  </button>
 
 					<!-- EXISTING DELETE BUTTON -->
 					<button class="delete-btn" (click)="openDeleteConfirm(a.id!)">
 						Delete
 					</button>
+
+
 				</div>
 				}
 
@@ -140,17 +174,17 @@
 
 	<!-- alert box -->
 	@if (confirmDeleteId !== null) {
-  <div class="delete-overlay">
-    <div class="delete-box">
-      <p>Delete this entry?</p>
+	<div class="delete-overlay">
+		<div class="delete-box">
+			<p>Delete this entry?</p>
 
-      <div class="delete-actions">
-        <button class="confirm-cancel-btn" (click)="closeDeleteConfirm()">Cancel</button>
-        <button class="confirm-delete-btn" (click)="confirmDelete()">Delete</button>
-      </div>
-    </div>
-  </div>
-}
+			<div class="delete-actions">
+				<button class="confirm-cancel-btn" (click)="closeDeleteConfirm()">Cancel</button>
+				<button class="confirm-delete-btn" (click)="confirmDelete()">Delete</button>
+			</div>
+		</div>
+	</div>
+	}
 
 
 </div>

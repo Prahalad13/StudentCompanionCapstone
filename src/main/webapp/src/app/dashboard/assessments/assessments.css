@@ -595,6 +595,75 @@ HOVER EFFECT 🔥
   font-size: 18px;
 }
 
+/* SEARCH + FILTER BAR (same as Courses) */
+.search-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-top: 20px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-box input,
+.filter-bar select {
+  width: 220px;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Dropdown list options (visible) */
+.filter-bar select option {
+  color: black;
+  background: #ffffff;
+}
+
+/* Dropdown box (frosted like Courses) */
+.filter-bar select {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Reset button (same as Courses) */
+.reset-btn {
+  border: none;
+  border-radius: 10px;
+  background: #214e41;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.25s ease;
+  width: auto;
+  flex-shrink: 0;
+  margin-top: -2px;
+  align-self: center;
+  height: auto !important;
+  padding: 10px 16px !important;
+}
+
+.reset-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
 

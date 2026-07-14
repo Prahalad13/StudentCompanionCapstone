@@ -9,31 +9,62 @@
   </div>
 
   <!-- ADD COURSE CARD -->
-  <div class="add-course-card">
+<div class="add-course-card">
 
-    <h3>Add New Course</h3>
+  <h3>Add New Course</h3>
 
-    <div class="course-form">
-      <input type="text" placeholder="Course Name" [(ngModel)]="newCourse.courseName" />
+  <div class="course-form">
+    <input type="text" placeholder="Course Name" [(ngModel)]="newCourse.courseName" />
+    <input type="text" placeholder="Term (e.g. Fall 2024)" [(ngModel)]="newCourse.term" />
 
-      <input type="text" placeholder="Term (e.g. Fall 2024)" [(ngModel)]="newCourse.term" />
+    <button class="add-btn" [disabled]="isEditing" (click)="addCourse()">Add Course</button>
 
-      <button class="add-btn" [disabled]="isEditing" (click)="addCourse()">
-        Add Course
-      </button>
-
-      @if (isEditing) {
+    @if (isEditing) {
       <button class="update-btn" (click)="updateCourse()">Update</button>
       <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
-      }
-    </div>
-
+    }
   </div>
+
+  <!-- SEARCH + FILTER BAR -->
+  <div class="search-filter-bar">
+    
+  <div class="search-box">
+    <label>Search:</label>
+    <input type="text"
+           [(ngModel)]="searchQuery"
+           (input)="applySearch()"
+           placeholder="Search courses..." />
+  </div>
+
+  <div class="filter-bar">
+    <label>Filter by:</label>
+    <select [(ngModel)]="selectedFilter" (change)="applyFilter()">
+      <option value="courseNameAsc">Course Name ↑</option>
+      <option value="courseNameDesc">Course Name ↓</option>
+      <option value="termAsc">Term ↑</option>
+      <option value="termDesc">Term ↓</option>
+    </select>
+  </div>
+
+  <button class="reset-btn" (click)="resetFilters()">Reset</button>
+
+</div>
+
+
+
+</div>
+
+
+@if (filteredCourses.length === 0) {
+  <p class="no-results">No courses found.</p>
+}
+
+
 
   <!-- COURSES GRID -->
   <div class="courses-grid">
 
-    @for (c of courses; track c.id) {
+    @for (c of filteredCourses; track c.id) {
     <div class="course-card">
 
       <div class="course-info">
