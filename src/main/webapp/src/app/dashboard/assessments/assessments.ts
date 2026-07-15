@@ -45,6 +45,7 @@ export class Assessments implements OnInit {
   selectedFilter: string = 'titleAsc';
 
   filteredAssessments: Assessment[] = [];
+  showHelpModal = false;
 
   // ============================
   // NEW ASSESSMENT OBJECT
@@ -951,7 +952,7 @@ export class Assessments implements OnInit {
   }
   loadHelp(assessment: any) {
 
-    const topic = assessment.course.courseName.toLowerCase();
+    const topic = (assessment.course.courseName ?? '').toLowerCase();
 
     this.selectedTopic = topic;
 
@@ -959,9 +960,16 @@ export class Assessments implements OnInit {
 
       this.selectedHelp = res;
 
+      this.showHelpModal = true;
+
       this.cdr.detectChanges();
 
     });
+
+  }
+  closeHelpModal() {
+
+    this.showHelpModal = false;
 
   }
   getIcon(title: string): string {

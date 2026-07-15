@@ -235,6 +235,11 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+.back-link {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 14px;
+}
 
 /* ── RESPONSIVE ──────────────────────────────────────── */
 @media (max-width: 900px) {
@@ -259,4 +264,4 @@
     flex-direction: row;
     flex-wrap: wrap;
   }
-}
+ }

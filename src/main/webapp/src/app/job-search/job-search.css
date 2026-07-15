@@ -210,3 +210,8 @@ button:hover {
     flex-wrap: wrap;
     margin-bottom: 25px;
 }
+.back-link {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 14px;
+}

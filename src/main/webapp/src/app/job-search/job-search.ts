@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
-
+import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { JobService } from '../job.service';
@@ -18,7 +18,7 @@ import { ChangeDetectorRef } from '@angular/core';
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule, RouterModule
   ],
 
   templateUrl: './job-search.html',

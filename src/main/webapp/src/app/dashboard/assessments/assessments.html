@@ -146,7 +146,7 @@
            (input)="applySearch()"
            placeholder="Search assessments..." />
   </div>
-
+<br>
 <div class="filter-bar">
   <label>Filter by:</label>
   <select class="assessment-form-select"
@@ -240,28 +240,24 @@
 						
 						}
 					</div>
-
 					<!-- 🔥 NEW BUTTON -->
-					<button (click)="loadHelp(a)">
-						Get Help
-					</button>
-
-					<!-- EDIT BUTTON -->
-					<button class="edit-btn" (click)="editAssessment(a)">
-						Edit
-					</button>
-
-					<!-- EXISTING DELETE BUTTON -->
-					<button class="delete-btn" (click)="openDeleteConfirm(a.id!)">
-						Delete
-					</button>
-
-
+					<div class="action-buttons">					
+					    <button class="help-btn"
+					            (click)="loadHelp(a)">
+					        Get Help
+					    </button>					
+					    <button class="edit-btn"
+					            (click)="editAssessment(a)">
+					        Edit
+					    </button>					
+					    <button class="delete-btn"
+					            (click)="openDeleteConfirm(a.id!)">
+					        Delete
+					    </button>					
+					</div>
 				</div>
 				}
-
 			</div>
-
 			<!-- RIGHT SIDE (SUMMARY BOX like Figma) -->
 			<div class="summary-box">
 				<h4>Quick Summary</h4>
@@ -271,35 +267,45 @@
 		</div>
 
 	</div>
-	<!-- 🔥 HELP SECTION (BOTTOM OF PAGE) -->
-	@if (selectedHelp.length > 0) {
-
-	<div class="help-section">
-
-		<h3>📚 Help Resources for {{ selectedTopic }}</h3>
-
-		<ul class="help-list">
-			@for (link of selectedHelp; track link) {
-			<li>
-				<a class="help-btn" [href]="link.url" target="_blank">
-
-					<span class="icon">
-						{{ getIcon(link.title) }}
-					</span>
-
-					<span class="text">
-						{{ link.title }}
-					</span>
-
-					<span class="arrow">↗</span>
-
-				</a>
-			</li>
-			}
-		</ul>
-	</div>
-	}
-
+	<!-- 🔥 HELP SECTION-->
+	@if (showHelpModal) {		
+		<div class="help-overlay">		
+		    <div class="help-modal">		
+		        <div class="help-header">		
+		            <h3>
+		                📚 Help Resources for {{ selectedTopic | titlecase }}
+		            </h3>		
+		        </div>		
+		        <ul class="help-list">		
+		            @for (link of selectedHelp; track link) {		
+		            <li>		
+		                <a
+		                    class="help-btn"
+		                    [href]="link.url"
+		                    target="_blank">		
+		                    <span class="icon">
+		                        {{ getIcon(link.title) }}
+		                    </span>		
+		                    <span class="text">
+		                        {{ link.title }}
+		                    </span>		
+		                    <span class="arrow">
+		                        ↗
+		                    </span>		
+		                </a>		
+		            </li>		
+		            }		
+		        </ul>		
+		        <div class="help-footer">		
+		            <button
+		                class="close-help-btn"
+		                (click)="closeHelpModal()">		
+		                Close		
+		            </button>		
+		        </div>		
+		    </div>		
+		</div>		
+		}
 	<!-- alert box -->
 	@if (confirmDeleteId !== null) {
 	<div class="delete-overlay">

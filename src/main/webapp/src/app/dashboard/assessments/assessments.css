@@ -66,20 +66,6 @@ LIST
   flex-direction: column;
   gap: 15px;
 }
-
-.assessment-item {
-  background: rgba(255,255,255,0.1);
-  padding: 15px;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.assessment-info h3 {
-  margin: 0;
-}
-
 .details {
   display: flex;
   gap: 15px;
@@ -160,35 +146,17 @@ HOVER EFFECT
   transform: translateX(5px);
 }
 LIST RESET
-.help-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 15px;
+.help-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    width:100%;
 }
 
 EACH ITEM
-.help-list li {
-  margin-bottom: 12px;
-}
-
-FULL WIDTH BUTTON LINK
-.help-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  width: 100%;
-  text-decoration: none;
-
-  background: rgba(255,255,255,0.9);
-  color: #2c2c2c;
-
-  padding: 12px 16px;
-  border-radius: 12px;
-
-  font-weight: 500;
-
-  transition: all 0.25s ease;
+.help-list li{
+    width:100%;
+    margin-bottom:12px;
 }
 
 LEFT SIDE (ICON + TEXT)
@@ -196,11 +164,6 @@ LEFT SIDE (ICON + TEXT)
   margin-right: 10px;
   font-size: 18px;
 }
-
-.help-btn .text {
-  flex: 1;
-}
-
 RIGHT ARROW
 .help-btn .arrow {
   opacity: 0.6;
@@ -246,7 +209,6 @@ HOVER EFFECT 🔥
 
   margin-bottom: 12px;
 }
-
 /* BACK LINK */
 .back-link {
   color: #FFE082;
@@ -393,6 +355,17 @@ HOVER EFFECT 🔥
   cursor: pointer;
 
   transition: 0.3s;
+}
+.assessment-item button{
+    width:100px;
+    height:42px;
+}
+.edit-btn,
+.delete-btn,
+.help-btn{
+    width:100px;
+    height:42px;
+    justify-self: center;
 }
 
 .assessment-item button:not(.delete-btn):hover {
@@ -541,31 +514,20 @@ HOVER EFFECT 🔥
 }
 
 /* HELP BUTTON */
-.help-btn {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  width: 100%;
-
-  text-decoration: none;
-
-  background:
-    rgba(255,255,255,0.08);
-
-  border:
-    1px solid rgba(255,255,255,0.08);
-
-  color: white;
-
-  padding: 16px 20px;
-
-  border-radius: 16px;
-
-  transition: 0.3s;
+.help-btn{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    box-sizing:border-box;
+    text-decoration:none;
+    background:rgba(255,255,255,.10);
+    color:white;
+    border-radius:10px;
+    padding:14px 18px;
+    transition:.25s;
+    overflow:hidden;
 }
-
 /* HOVER */
 .help-btn:hover {
   background:
@@ -594,7 +556,124 @@ HOVER EFFECT 🔥
 
   font-size: 18px;
 }
+.help-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    backdrop-filter:blur(3px);
+}
 
+.help-modal{
+    width:620px;
+    max-width:90%;
+    padding:28px;
+    box-sizing:border-box;
+}
+@keyframes popup{
+    from{
+        transform:scale(.9);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+.help-header{
+    text-align:center;
+    margin-bottom:20px;
+    border-bottom:1px solid rgba(255,255,255,.15);
+    padding-bottom:15px;
+}
+.help-header h3{
+    margin:0;
+    color:white;
+    font-size:24px;
+    font-weight:700;
+    white-space:nowrap;
+}
+.help-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+.help-list li{
+    margin-bottom:12px;
+}
+.help-btn{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    text-decoration:none;
+    background:rgba(255,255,255,.10);
+    color:white;
+    border-radius:12px;
+    padding:14px 18px;
+    transition:.25s;
+}
+.help-btn:hover{
+    background:#4d685f;
+    transform:translateY(-2px);
+}
+.help-btn .icon{
+    font-size:22px;
+    margin-right:15px;
+}
+.help-btn .text{
+    flex:1;
+    margin:0 12px;
+    font-size:16px;
+    font-weight:600;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.help-btn .arrow{
+    font-size:18px;
+}
+
+.help-footer{
+    display:flex;
+    justify-content:center;
+    margin-top:24px;
+}
+.close-help-btn{
+    background:#2f5d50;
+    color:white;
+    border:none;
+    padding:12px 36px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+.close-help-btn:hover{
+    background:#3d7463;
+}
+.assessment-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px;
+}
+.assessment-info{
+    flex:1;
+}
+.action-buttons{
+    display:flex;
+    gap:18px;
+    flex-shrink:0;
+}
+.action-buttons button{
+    width:100px;
+    height:42px;
+}
 /* RESPONSIVE */
 @media (max-width: 900px) {
 
@@ -609,13 +688,6 @@ HOVER EFFECT 🔥
   .assessment-form button {
     width: 100%;
   }
-
-  .assessment-item {
-    flex-direction: column;
-
-    align-items: flex-start;
-  }
-
   .details {
     flex-direction: column;
 
