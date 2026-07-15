@@ -40,6 +40,11 @@ export class Assessments implements OnInit {
   editingId: number | null = null;
 
   confirmDeleteId: number | null = null;
+  searchQuery: string = '';
+
+  selectedFilter: string = 'titleAsc';
+
+  filteredAssessments: Assessment[] = [];
 
   // ============================
   // NEW ASSESSMENT OBJECT
@@ -136,6 +141,7 @@ export class Assessments implements OnInit {
         return new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime();
 
       });
+	  this.filteredAssessments = [...this.assessments];
 
       this.cdr.detectChanges();
 
@@ -873,6 +879,75 @@ export class Assessments implements OnInit {
 
         });
 
+  }
+  applySearch() {
+      this.applyFilter();
+  }
+
+  applyFilter() {
+
+      let list = [...this.assessments];
+
+      // Search
+      if (this.searchQuery.trim()) {
+
+          const q = this.searchQuery.toLowerCase();
+
+		  list = list.filter(a =>
+		      a.title.toLowerCase().includes(q) ||
+		      (a.course.courseName ?? "").toLowerCase().includes(q)
+		  );
+      }
+
+      switch (this.selectedFilter) {
+
+          case 'titleAsc':
+              list.sort((a, b) =>
+                  a.title.localeCompare(b.title));
+              break;
+
+          case 'titleDesc':
+              list.sort((a, b) =>
+                  b.title.localeCompare(a.title));
+              break;
+
+          case 'dateAsc':
+              list.sort((a, b) =>
+                  new Date(a.dueDate).getTime() -
+                  new Date(b.dueDate).getTime());
+              break;
+
+          case 'dateDesc':
+              list.sort((a, b) =>
+                  new Date(b.dueDate).getTime() -
+                  new Date(a.dueDate).getTime());
+              break;
+
+			  case 'courseAsc':
+			      list.sort((a, b) =>
+			          (a.course.courseName ?? "")
+			              .localeCompare(b.course.courseName ?? "")
+			      );
+			      break;
+
+			  case 'courseDesc':
+			      list.sort((a, b) =>
+			          (b.course.courseName ?? "")
+			              .localeCompare(a.course.courseName ?? "")
+			      );
+			      break;
+      }
+
+      this.filteredAssessments = list;
+  }
+
+  resetFilters() {
+
+      this.searchQuery = '';
+
+      this.selectedFilter = 'titleAsc';
+
+      this.filteredAssessments = [...this.assessments];
   }
   loadHelp(assessment: any) {
 
