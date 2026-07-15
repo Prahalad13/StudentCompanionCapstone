@@ -67,6 +67,19 @@ export class AssessmentService {
     }
   );
 }
-
-
+getAssessmentCompletion(
+    studentId: number,
+    term: string,
+    courseName: string
+) {
+    const token = localStorage.getItem('token');
+    return this.http.get<any>(
+        `${assessmentsUrl}/student/${studentId}/completion/${encodeURIComponent(term)}/${encodeURIComponent(courseName)}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+}
 }

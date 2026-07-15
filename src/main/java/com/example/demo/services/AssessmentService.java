@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.example.demo.domain.Assessment;
+import com.example.demo.dto.AssessmentCompletionDTO;
 
 public interface AssessmentService {
     List<Assessment> findAll();
@@ -14,7 +15,9 @@ public interface AssessmentService {
     void delete(Long id);
     
     List<Assessment> getByDate(LocalDate date);
-
-
+    AssessmentCompletionDTO getAssessmentCompletion(
+            Long studentId,
+            String term,
+            String courseName);
     
 }

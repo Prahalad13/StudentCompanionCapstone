@@ -22,15 +22,31 @@ public class Assessment {
     @NonNull
     private LocalDate dueDate;
     
-    private Double grade;
+    @Enumerated(EnumType.STRING)
+    private AssessmentType assessmentType;
 
+    // Maximum marks
     private Double totalMarks;
+
+    // Marks obtained
+    private Double achievedMarks;
+
+    // Calculated percentage
+    private Double percentage;
+
+    // Letter grade
+    private String letterGrade;
+
+    // Automatically assigned
+    private Double weight = 0.0;
 
     private Boolean completed = false;
 
-    private Integer studyHours = 0;
+    // Planned study hours
+    private Integer allocatedStudyHours = 0;
 
-    private Double weight = 0.0;
+    // Actual study hours
+    private Integer hoursSpent = 0;
 
     @ManyToOne
     @NonNull

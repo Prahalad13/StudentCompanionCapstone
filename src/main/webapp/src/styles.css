@@ -36,15 +36,13 @@
 
 body {
   margin: 0;
-
   font-family: 'Segoe UI', sans-serif;
 
-  background:
-    linear-gradient(
-      135deg,
-      #17352B 0%,
-      #3B4652 100%
-    );
+  background: linear-gradient(
+    135deg,
+    #2F5D50 0%,
+    #70808E 100%
+  );
 
   color: #F5F7F9;
 }
@@ -95,13 +93,11 @@ body {
    LEFT PANEL
 ========================================= */
 
-.left {
-
-  background:
-    linear-gradient(
-      180deg,
-      #17352B,
-      #22473B
+.left{
+    background:linear-gradient(
+        180deg,
+        #2F5D50,
+        #4C7B69
     );
 
   color: white;
@@ -203,11 +199,10 @@ button {
 
   border-radius: 12px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #22473B,
-      #3B6B57
+  background:linear-gradient(
+        135deg,
+        #3F6D5B,
+        #5D8F7A
     );
 
   color: white;
@@ -226,6 +221,11 @@ button:hover {
   opacity: 0.95;
 
   transform: translateY(-2px);
+  background:linear-gradient(
+        135deg,
+        #477966,
+        #699B86
+    );
 }
 
 /* =========================================
@@ -234,6 +234,7 @@ button:hover {
 
 .right a {
   color: #22473B;
+  background:#F4F7F8;
   
   font-weight: 600;
 

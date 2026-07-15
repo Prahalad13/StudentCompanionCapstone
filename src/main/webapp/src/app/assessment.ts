@@ -1,13 +1,28 @@
 export interface Assessment {
 
   id?: number;
+
   title: string;
+
   dueDate: string;
-  grade?: number | undefined;
-  totalMarks?: number | undefined;
-  completed?: null;
-  studyHours?: number | undefined;
+
+  assessmentType?: 'QUIZ' | 'ASSIGNMENT' | 'MIDTERM' | 'FINAL' | 'PROJECT';
+
+  totalMarks?: number;
+
+  achievedMarks?: number;
+
+  percentage?: number;
+
+  letterGrade?: string;
+
   weight?: number;
+
+  completed?: boolean | null;
+
+  allocatedStudyHours?: number;
+
+  hoursSpent?: number;
 
   course: {
     id: number;
@@ -18,4 +33,5 @@ export interface Assessment {
   student: {
     id: number;
   };
+
 }

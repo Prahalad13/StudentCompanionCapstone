@@ -15,48 +15,126 @@
 		<!-- ADD FORM -->
 		<div class="assessment-form">
 
-			<input type="text" placeholder="Assessment Title" [(ngModel)]="newAssessment.title" />
-
-			<input type="date" [(ngModel)]="newAssessment.dueDate" />
-
-			<select [(ngModel)]="newAssessment.course.id">
-				<option value="0" disabled>Select Course</option>
-
-				@for (c of courses; track c.id) {
-				<option [value]="c.id">
-					{{ c.courseName }} — {{ c.term }}
-				</option>
-				}
-			</select>
-			<input type="number" placeholder="Grade" min="0" max="100" [(ngModel)]="newAssessment.grade" />
-
-			<input type="number" placeholder="Total Marks" min="0" max="100" [(ngModel)]="newAssessment.totalMarks" />
-
-			<input type="number" placeholder="Study Hours" min="0" max="100" [(ngModel)]="newAssessment.studyHours" />
-
-			<select [(ngModel)]="newAssessment.completed">
-				<option [ngValue]="null" disabled selected>Select Status</option>
-				<option [ngValue]="true">
-					Completed
-				</option>
-
-				<option [ngValue]="false">
-					Pending
-				</option>
-
-			</select>
-
-			<button [disabled]="isEditing" class="add-btn" (click)="addAssessment()">
-				Add
-			</button>
-
-			<!-- ADD / UPDATE BUTTONS -->
-			@if (isEditing) {
-
-			<button class="update-btn" (click)="updateAssessment()">Update</button>
-			<button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
-			}
-
+		    <input
+		        type="text"
+		        placeholder="Assessment Title"
+		        [(ngModel)]="newAssessment.title" />
+		
+		    <input
+		        type="date"
+		        [(ngModel)]="newAssessment.dueDate" />
+		
+		    <!-- Assessment Type -->
+		    <select [(ngModel)]="newAssessment.assessmentType">
+		
+		        <option [ngValue]="undefined" disabled>
+		            Select Assessment Type
+		        </option>
+		
+		        <option value="QUIZ">Quiz</option>
+		        <option value="ASSIGNMENT">Assignment</option>
+		        <option value="MIDTERM">Midterm</option>
+		        <option value="FINAL">Final</option>
+		        <option value="PROJECT">Project</option>
+		
+		    </select>
+		
+		    <!-- Course -->
+		    <select [(ngModel)]="newAssessment.course.id">
+		
+		        <option value="0" disabled>
+		            Select Course
+		        </option>
+		
+		        @for (c of courses; track c.id) {
+		
+		        <option [value]="c.id">
+		
+		            {{ c.courseName }} — {{ c.term }}
+		
+		        </option>
+		
+		        }
+		
+		    </select>
+		
+		    <!-- Total Marks -->
+		    <input
+		        type="number"
+		        placeholder="Total Marks"
+		        min="0"
+		        [(ngModel)]="newAssessment.totalMarks" />
+		
+		    <!-- Allocated Study Hours -->
+		    <input
+		        type="number"
+		        placeholder="Allocated Study Hours"
+		        min="0"
+		        [(ngModel)]="newAssessment.allocatedStudyHours" />
+		
+		    <!-- Status -->
+		    <select [(ngModel)]="newAssessment.completed">
+		
+		        <option [ngValue]="null" disabled>
+		            Select Status
+		        </option>
+		
+		        <option [ngValue]="true">
+		            Completed
+		        </option>
+		
+		        <option [ngValue]="false">
+		            Pending
+		        </option>
+		
+		    </select>
+		
+		    <!-- Only visible when completed -->
+		    @if(newAssessment.completed){
+		
+		    <input
+		        type="number"
+		        placeholder="Achieved Marks"
+		        min="0"
+		        [(ngModel)]="newAssessment.achievedMarks" />
+		
+		    <input
+		        type="number"
+		        placeholder="Hours Spent"
+		        min="0"
+		        [(ngModel)]="newAssessment.hoursSpent" />
+		
+		    }
+		
+		    <button
+		        [disabled]="isEditing"
+		        class="add-btn"
+		        (click)="addAssessment()">
+		
+		        Add
+		
+		    </button>
+		
+		    @if(isEditing){
+		
+		    <button
+		        class="update-btn"
+		        (click)="updateAssessment()">
+		
+		        Update
+		
+		    </button>
+		
+		    <button
+		        class="cancel-btn"
+		        (click)="cancelEdit()">
+		
+		        Cancel
+		
+		    </button>
+		
+		    }
+		
 		</div>
 
 		<!-- CONTENT -->
@@ -72,9 +150,57 @@
 						<h3>{{ a.title }}</h3>
 
 						<div class="details">
-							<span>📅 {{ a.dueDate }}</span>
-							<span>📘 {{ a.course.courseName }}</span>
+
+						    <span>📅 {{ a.dueDate }}</span>
+						
+						    <span>📘 {{ a.course.courseName }}</span>
+						
+						    <span>🏷 {{ a.assessmentType }}</span>
+						
+						    <span>⚖ Weight: {{ a.weight }}%</span>
+						
+						    <span>🎯 Total Marks: {{ a.totalMarks }}</span>
+						
+						    <span>
+						        📚 Planned Hours:
+						        {{ a.allocatedStudyHours }}
+						    </span>
+						
+						    <span>
+						
+						        {{ a.completed ? '✅ Completed' : '⏳ Pending' }}
+						
+						    </span>
+						
 						</div>
+						
+						@if(a.completed){
+						
+						<div class="details">
+						
+						    <span>
+						        🏆 Achieved:
+						        {{ a.achievedMarks }}
+						    </span>
+						
+						    <span>
+						        📈 Percentage:
+						        {{ a.percentage | number:'1.0-2' }}%
+						    </span>
+						
+						    <span>
+						        🎓 Grade:
+						        {{ a.letterGrade }}
+						    </span>
+						
+						    <span>
+						        ⏱ Hours Spent:
+						        {{ a.hoursSpent }}
+						    </span>
+						
+						</div>
+						
+						}
 					</div>
 
 					<!-- 🔥 NEW BUTTON -->

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.Assessment;
+import com.example.demo.dto.AssessmentCompletionDTO;
 import com.example.demo.services.AssessmentService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -72,5 +73,19 @@ public class AssessmentController {
         LocalDate parsedDate = LocalDate.parse(date);
         return assessmentService.getByDate(parsedDate);
     }
-
+    @GetMapping(
+    		"/student/{studentId}/completion/{term}/{course}"
+    		)
+    		public AssessmentCompletionDTO getCompletion(
+    		        @PathVariable Long studentId,
+    		        @PathVariable String term,
+    		        @PathVariable String course
+    		){
+    		    return assessmentService
+    		            .getAssessmentCompletion(
+    		                    studentId,
+    		                    term,
+    		                    course
+    		            );
+    		}
 }

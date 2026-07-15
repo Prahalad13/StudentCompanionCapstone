@@ -2,7 +2,10 @@ package com.example.demo.web.rest;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.dto.CoursePerformanceDTO;
+import com.example.demo.dto.CourseProgressDTO;
+import com.example.demo.dto.TermPerformanceDTO;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,5 +67,31 @@ public class CourseController {
         courseService.delete(id);
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/student/{studentId}/performance")
+    public List<TermPerformanceDTO> getTermPerformance(
+            @PathVariable Long studentId) {
+
+        return courseService.getTermPerformance(studentId);
+    }
+    @GetMapping("/student/{studentId}/performance/{term}")
+    public List<CoursePerformanceDTO> getCoursesForTerm(
+            @PathVariable Long studentId,
+            @PathVariable String term) {
+
+        return courseService.getCoursesForTerm(studentId, term);
+    }
+    @GetMapping(
+    		"/student/{studentId}/term/{term}/course/{courseName}")
+    		public List<CourseProgressDTO> getCourseProgress(
+
+    		        @PathVariable Long studentId,
+    		        @PathVariable String term,
+    		        @PathVariable String courseName){
+
+    		    return courseService.getCourseProgress(
+    		            studentId,
+    		            term,
+    		            courseName);
+    		}
 
 }

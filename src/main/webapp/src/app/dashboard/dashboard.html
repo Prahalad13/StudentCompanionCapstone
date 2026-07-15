@@ -89,68 +89,213 @@
 		<!-- ANALYTICS SECTION -->
 		<div class="analytics-grid">
 
-			<!-- GPA CARD -->
-			<div class="card analytics-card">
+	    <!-- ========================= -->
+	    <!-- ACADEMIC PERFORMANCE -->
+	    <!-- ========================= -->
+	
+	    <div class="card analytics-card academic-card">
 
-				<h3>🎓 Current GPA</h3>
-
-				<div class="gpa-value">
-					{{ gpa }}
-				</div>
-
-			</div>
-
+		    <h3>🎓 Academic Performance</h3>
+		
+		    <select
+		        class="term-select"
+		        [(ngModel)]="selectedTermName"
+		        (change)="changeTerm(selectedTermName)">
+		
+		        @for (term of termPerformance; track term.term) {
+		
+		            <option [value]="term.term">
+		
+		                {{ term.term }}
+		
+		            </option>		
+		        }		
+		    </select>
+		
+		    @if(selectedTerm){
+		
+		        <div class="term-name">
+		
+		            {{ selectedTerm.term }}		
+		        </div>		
+		        <div class="performance-value">
+		
+		            {{ selectedTerm.averagePercentage | number:'1.0-1' }}%
+		
+		        </div>		
+		        <div class="performance-grade">		
+		            Current Grade:
+		            <strong>{{ selectedTerm.letterGrade }}</strong>		
+		        </div>		
+		        <div class="performance-status">		
+		            @if(selectedTerm.completed){
+		
+		                ✅ Final Grade
+		
+		            } @else {
+		
+		                ⏳ Current Average		
+		            }		
+		        </div>
+		
+		        <div class="performance-summary">
+		
+		            Completed Courses:
+		            {{ selectedTerm.completedCourses }}
+		            /
+		            {{ selectedTerm.totalCourses }}
+		
+		        </div>		
+		        <hr>		
+		        <h4>Courses This Term</h4>		
+		        @if(coursePerformance.length > 0){
+		
+		            <div class="course-header">
+		
+		                <span>Course</span>
+		
+		                <span>Percentage</span>
+		
+		                <span>Grade</span>		
+		            </div>		
+		            @for(course of coursePerformance; track course.courseName){		
+		                <div class="course-row">
+		
+		                    <span>{{course.courseName}}</span>
+		
+		                    <span>{{course.percentage | number:'1.0-0'}}%</span>
+		
+		                    <span>{{course.letterGrade}}</span>		
+		                </div>		
+		            }		
+		        } @else {		
+		            <p class="no-course">		
+		                No courses found for this term.		
+		            </p>		
+		        }		
+		    }		
+		</div>
+		
 			<!-- COURSE PROGRESS -->
-			<div class="card analytics-card">
+			<div class="card analytics-card course-progress-card">
 
 				<h3>📘 Course Progress</h3>
-
-				<canvas baseChart [data]="{
-	        labels: courseChartLabels,
-	        datasets: [{
-	          data: courseChartData,
-	          label: 'Progress %'
-	        }]
-	      }" [type]="'bar'">
+				<div class="course-selector">				
+				    <label>Course</label>				
+				    <select
+				        [(ngModel)]="selectedCourseName"
+				        (change)="loadCourseProgress()">				
+				        @for(course of coursePerformance; track course.courseName){				
+				            <option [value]="course.courseName">
+				                {{ course.courseName }}
+				            </option>				
+				        }				
+				    </select>				
+				</div>				
+				<h2 class="course-title">
+				    {{ selectedCourseName }}
+				</h2>
+				<canvas
+					baseChart					
+					[data]="courseChart"					
+					[options]="courseChartOptions"					
+					[type]="'bar'">					
 				</canvas>
-
+				<div class="course-summary">					
+					Completed:					
+					<strong>					
+					{{completedAssessments}}					
+					/					
+					{{totalAssessments}}					
+					</strong>					
+					assessments					
+				</div>
 			</div>
-
 			<!-- ASSESSMENT COMPLETION -->
-			<div class="card analytics-card">
-
-				<h3>✅ Assessment Completion</h3>
-
-				<canvas baseChart [data]="{
-	        labels: ['Completed', 'Pending'],
-	        datasets: [{
-	          data: completionChartData
-	        }]
-	      }" [type]="'doughnut'">
-				</canvas>
-
+			<div class="card analytics-card">			
+			    <h3>✅ Assessment Completion</h3>			
+			    <div class="course-selector">			
+			        <label>Course</label>			
+			        <select
+			            [(ngModel)]="selectedCourseName"
+			            (change)="loadAssessmentCompletion()">			
+			            @for(course of coursePerformance;
+			                  track course.courseName){			
+			                <option
+			                    [value]="course.courseName">			
+			                    {{course.courseName}}			
+			                </option>			
+			            }			
+			        </select>			
+			    </div>			
+			    <!-- Selected Course -->
+			    <h2 class="course-title">			
+			        {{ selectedCourseName }}			
+			    </h2>			
+			    <canvas
+			        baseChart
+			        [data]="completionChart"
+			        [type]="'doughnut'">			
+			    </canvas>			
+			    <div class="completion-summary">			
+			        <div>			
+			            <span>✅ Completed</span>			
+			            <strong>{{completedCount}}</strong>			
+			        </div>			
+			        <div>			
+			            <span>🔵 Upcoming</span>			
+			            <strong>{{upcomingCount}}</strong>			
+			        </div>			
+			        <div>			
+			            <span>🔴 Overdue</span>			
+			            <strong>{{overdueCount}}</strong>			
+			        </div>			
+			    </div>			
 			</div>
-
 			<!-- WEEKLY PRODUCTIVITY -->
-			<div class="card analytics-card">
-
-				<h3>📈 Weekly Productivity</h3>
-
-				<canvas baseChart [data]="{
-	        labels: weeklyChartLabels,
-	        datasets: [{
-	          data: weeklyChartData,
-	          label: 'Study Hours'
-	        }]
-	      }" [type]="'line'">
-				</canvas>
-
+			<div class="card analytics-card">			
+			    <h3>📈 Weekly Productivity</h3>			
+			    <div class="course-selector">			
+			        <label>Course</label>			
+			        <select
+			            [(ngModel)]="selectedCourseName"
+			            (change)="loadCourseProgress()">			
+			            @for(course of coursePerformance;
+			                  track course.courseName){			
+			                <option
+			                    [value]="course.courseName">			
+			                    {{course.courseName}}			
+			                </option>			
+			            }			
+			        </select>			
+			    </div>			
+			    <!-- Selected Course -->
+			    <h2 class="course-title">			
+			        {{ selectedCourseName }}			
+			    </h2>			
+			    <canvas
+			        baseChart
+			        [data]="weeklyChart"
+			        [options]="weeklyChartOptions"
+			        [type]="'bar'">
+			    </canvas>			
+			    <div class="weekly-summary">			
+			        <div>			
+			            <span>Allocated Hours</span>			
+			            <strong>{{allocatedHours}}</strong>			
+			        </div>			
+			        <div>			
+			            <span>Hours Spent</span>			
+			            <strong>{{spentHours}}</strong>			
+			        </div>			
+			        <div>			
+			            <span>Study Efficiency</span>			
+			            <strong>{{studyEfficiency}}%</strong>			
+			        </div>			
+			    </div>			
 			</div>
-
 		</div>
-
 		<hr>
-
 		<!-- ANALYTICS GRID -->
 		<div class="analytics-grid">
 
@@ -251,36 +396,48 @@
 		<div class="card calendar-card" *ngIf="student" (click)="goToCalendar()">
 
 			<h3>📅 Calendar</h3>
-
-			@for (a of limitedAssessments; track a.id) {
-
+			<h4 class="calendar-heading">
+			    Upcoming
+			</h4>			
+			@for (a of upcomingAssessments.slice(0,3); track a.id) {			
 			<div class="calendar-row">
-
-				<div>
-					<div class="title">
-						{{ a.title || a.course?.courseName }}
-					</div>
-					<div class="course">
-						📘 {{ a.course?.courseName }}
-					</div>
-				</div>
-
-				<span class="date">
-					{{ a.dueDate | date:'mediumDate' }}
-				</span>
-
-				<span class="status" [ngClass]="{
-        'overdue': isOverdue(a.dueDate),
-        'upcoming': isUpcoming(a.dueDate)
-      }">
-
-					{{ isOverdue(a.dueDate) ? 'Overdue' : 'Upcoming' }}
-
-				</span>
-
-			</div>
+			    <div class="assessment-info">			
+			        <div class="title">
+			            {{a.title}}
+			        </div>			
+			        <div class="course">
+			            📘 {{a.course?.courseName}}
+			        </div>			
+			    </div>			
+			    <div class="date">
+			        {{a.dueDate | date:'mediumDate'}}
+			    </div>			
+			    <div class="status upcoming">
+			        Upcoming
+			    </div>			
+			</div>		
 			}
-
+			<h4 class="calendar-heading">
+			    Past Due
+			</h4>			
+			@for (a of overdueAssessments.slice(0,3); track a.id) {			
+			<div class="calendar-row">
+			    <div class="assessment-info">			
+			        <div class="title">
+			            {{a.title}}
+			        </div>			
+			        <div class="course">
+			            📘 {{a.course?.courseName}}
+			        </div>			
+			    </div>			
+			    <div class="date">
+			        {{a.dueDate | date:'mediumDate'}}
+			    </div>			
+			    <div class="status overdue">
+			        Overdue
+			    </div>			
+			</div>			
+			}
 			<!-- if there are 3 assessments (refer to hasMoreAssessments() )-->
 			@if (hasMoreAssessments) {
 			<div class="footer-link">

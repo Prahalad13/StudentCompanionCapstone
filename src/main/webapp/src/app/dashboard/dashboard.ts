@@ -4,10 +4,15 @@ import { Router, RouterLink } from '@angular/router';
 import { StudentService } from '../services/student-service';
 import { CalendarService } from '../services/calendar-service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { AssessmentService } from '../services/assessment-service';
 import { HealthWellnessService } from '../services/health-wellness-service';
+import { TermPerformance } from '../term-performance';
+import { CourseService } from '../services/course-service';
+import { CoursePerformance } from '../course-performance';
+import { CourseProgress } from '../course-progress';
 
 interface WellnessEntry {
 	mood: string;
@@ -23,7 +28,7 @@ interface WellnessEntry {
 
 @Component({
 	selector: 'app-dashboard',
-	imports: [RouterLink, CommonModule, BaseChartDirective],
+	imports: [RouterLink, CommonModule, BaseChartDirective, FormsModule],
 	templateUrl: './dashboard.html',
 	styleUrl: './dashboard.css'
 })
@@ -33,30 +38,126 @@ export class Dashboard implements OnInit {
 	studentName: string | null = null;
 	email: string | null = null;
 	assessments: any[] = [];
+	upcomingAssessments: any[] = [];
+	overdueAssessments: any[] = [];
 	today: Date = new Date();
-	// GPA
-	gpa: number = 0;
+	termPerformance: TermPerformance[] = [];
 
+	selectedTerm?: TermPerformance;
+	
+	overallPercentage = 0;
+	overallGrade = '';
+	overallCompleted = false;
+	coursePerformance: CoursePerformance[] = [];
+	selectedTermName = '';
 	// COURSE PROGRESS
 	courseChartLabels: string[] = [];
 	courseChartData: number[] = [];
-
+	courseProgress: CourseProgress[] = [];
+	selectedCourseName = "";
+	courseChart:any;
+	completedAssessments = 0;
+	totalAssessments = 0;
+	courseChartOptions: any = {
+		    responsive:true,
+		    maintainAspectRatio:false,
+		    plugins:{
+		        legend:{
+		            display:false
+		        }
+		    },
+		    scales:{
+		        y:{
+		            min:0,
+		            max:100,
+		            ticks:{
+		                stepSize:20,
+		                color:"#F3F3F3",
+		                font:{
+		                    size:13,
+		                    weight:"bold"
+		                }
+		            },
+		            grid:{
+		                color:"rgba(255,255,255,.1)"
+		            }
+		        },
+				x: {
+				    ticks: {
+				        autoSkip: false,      // IMPORTANT
+				        maxRotation: 0,
+				        minRotation: 0,
+				        color: "#F3F3F3",
+				        font: {
+				            size: 12,
+				            weight: "bold"
+				        }
+				    },
+				    grid: {
+				        display: false
+				    }
+				}
+		    }
+		};
 	// COMPLETION CHART
 	completionChartData: number[] = [];
-
+	completionChart: any;
+	completedCount = 0;
+	upcomingCount = 0;
+	overdueCount = 0;
 	// WEEKLY PRODUCTIVITY
-	weeklyChartLabels: string[] = [
-		'Mon',
-		'Tue',
-		'Wed',
-		'Thu',
-		'Fri',
-		'Sat',
-		'Sun'
+	weeklyChartLabels = [
+	    "Mon",
+	    "Tue",
+	    "Wed",
+	    "Thu",
+	    "Fri",
+	    "Sat",
+	    "Sun"
 	];
-
-	weeklyChartData: number[] = [];
-
+	weeklyChartOptions: any = {
+	    responsive:true,
+	    maintainAspectRatio:false,
+	    plugins:{
+	        legend:{
+	            labels:{
+	                color:"#F4F4F4",
+	                font:{
+	                    size:13,
+	                    weight:"bold"
+	                }
+	            }
+	        }
+	    },
+	    scales:{
+	        y:{
+	            beginAtZero:true,
+	            ticks:{
+	                color:"#F4F4F4",
+	                stepSize:2
+	            },
+	            grid:{
+	                color:"rgba(255,255,255,.08)"
+	            }
+	        },
+	        x:{
+	            ticks:{
+	                color:"#F4F4F4",
+	                font:{
+	                    size:12,
+	                    weight:"bold"
+	                }
+	            },
+	            grid:{
+	                display:false
+	            }
+	        }
+	    }
+	};
+	weeklyChart: any;
+	allocatedHours = 0;
+	spentHours = 0;
+	studyEfficiency = 0;
 	// HEALTH & WELLNESS DASHBOARD
 	wellnessEntries: WellnessEntry[] = [];
 
@@ -138,8 +239,6 @@ energyOptions = {
     }
   }
 };
-
-
 	// Productivity Flow options
 
 	productivityOptions = {
@@ -153,16 +252,11 @@ energyOptions = {
 			}
 		}
 	};
-
-
-
 	stabilitySummary: string = '';
 
 	stressPercent: number = 0;
 	energyPercent: number = 0;
 	productivityPercent: number = 0;
-
-
 	constructor(
 		private authService: AuthService,
 		public router: Router,
@@ -170,7 +264,8 @@ energyOptions = {
 		private calendarService: CalendarService,
 		private cdr: ChangeDetectorRef,
 		private assessmentService: AssessmentService,
-		private wellnessService: HealthWellnessService
+		private wellnessService: HealthWellnessService,
+		private courseService: CourseService
 	) { }
 
 	ngOnInit() {
@@ -185,10 +280,10 @@ energyOptions = {
 			if (savedStudent.id) {
 				this.loadCalendar(savedStudent.id);
 				this.loadAnalytics(savedStudent.id);
+				this.loadTermPerformance(savedStudent.id);
 				this.loadWellness(savedStudent.id);
 			}
 		}
-
 		// ✅ STEP 2: Call backend to refresh latest data
 		this.studentService.getMyStudent().subscribe({
 			next: (res) => {
@@ -203,6 +298,7 @@ energyOptions = {
 					if (res.id) {
 						this.loadCalendar(res.id);
 						this.loadAnalytics(res.id);
+						this.loadTermPerformance(res.id);
 						this.loadWellness(res.id);
 					}
 				}
@@ -219,9 +315,6 @@ energyOptions = {
 			this.email = payload.sub;
 			console.log("EMAIL 👉", this.email);
 		}
-
-
-
 	}
 
 	isOverdue(date: string): boolean {
@@ -255,115 +348,230 @@ energyOptions = {
 	get hasMoreAssessments() {
 		return this.assessments.length > 6;
 	}
-
-
-	loadAnalytics(studentId: number) {
-
-		this.assessmentService
-			.getByStudent(studentId)
-			.subscribe((data: any[]) => {
-
-				this.assessments = data;
-
-				// =========================
-				// GPA CALCULATION
-				// =========================
-
-				let totalPercentage = 0;
-				let gradedCount = 0;
-
-				data.forEach(a => {
-
-					if (a.grade && a.totalMarks) {
-
-						const percentage =
-							(a.grade / a.totalMarks) * 100;
-
-						totalPercentage += percentage;
-
-						gradedCount++;
+	loadAnalytics(studentId:number){
+	    this.assessmentService
+	        .getByStudent(studentId)
+	        .subscribe((data:any[])=>{
+	            this.assessments = data;
+	            const today = new Date();
+	            today.setHours(0,0,0,0);
+	            // Upcoming
+	            this.upcomingAssessments =
+	                data
+	                    .filter(a => {
+	                        const due = new Date(a.dueDate);
+	                        due.setHours(0,0,0,0);
+	                        return due >= today;
+	                    })
+	                    .sort((a,b)=>
+	                        new Date(a.dueDate).getTime()
+	                        -
+	                        new Date(b.dueDate).getTime()
+	                    );
+	            // Overdue
+	            this.overdueAssessments =
+	                data
+	                    .filter(a => {
+	                        const due = new Date(a.dueDate);
+	                        due.setHours(0,0,0,0);
+	                        return due < today;
+	                    })
+	                    .sort((a,b)=>
+	                        new Date(b.dueDate).getTime()
+	                        -
+	                        new Date(a.dueDate).getTime()
+	                    );
+	            this.cdr.detectChanges();
+	        });
+	}
+	loadTermPerformance(studentId: number) {
+	  this.courseService
+	      .getTermPerformance(studentId)
+	      .subscribe((terms) => {
+	        this.termPerformance = terms;
+			if (terms.length > 0) {
+			    // Select Summer 2026 if it exists,
+			    // otherwise select the first term
+			    this.selectedTerm =
+			        terms.find(t => t.term === "Summer 2026")
+			        ?? terms[0];
+			    this.selectedTermName =
+			        this.selectedTerm.term;
+			    this.overallPercentage =
+			        this.selectedTerm.averagePercentage;
+			    this.overallGrade =
+			        this.selectedTerm.letterGrade;
+			    this.overallCompleted =
+			        this.selectedTerm.completed;
+			    // Load all courses in this term
+			    this.loadCoursesForTerm();
+			}
+	        this.cdr.detectChanges();
+	      });
+	}	
+	loadCoursesForTerm() {
+	    this.courseService
+	        .getCoursesForTerm(
+	            this.student.id,
+	            this.selectedTermName
+	        )
+	        .subscribe({
+	            next: (data) => {
+	                console.log("Course Performance:", data);
+	                this.coursePerformance = data;
+					if(data.length){
+					    this.selectedCourseName =
+					        data[0].courseName;
+					    this.loadCourseProgress();
 					}
-				});
+	                this.cdr.detectChanges();
+	            },
+	            error: (err) => {
+	                console.error(err);
+	            }
+	        });
+	}
+	loadCourseProgress() {
+	    if (!this.student?.id ||
+	        !this.selectedTermName ||
+	        !this.selectedCourseName) {
+	        return;
+	    }
+	    this.courseService
+	        .getCourseProgress(
+	            this.student.id,
+	            this.selectedTermName,
+	            this.selectedCourseName
+	        )
+	        .subscribe({
+	            next: (data) => {
+	                this.courseProgress = data;					
+	                // X-axis labels
+					this.courseChartLabels = data.map(x => {
+					    let label = x.assessmentName
+					        .replace(this.selectedCourseName + " ", "")
+					        .replace(" Exam", "")
+					        .replace(" Assignment", "")
+					        .replace(" Test", "")
+					        .replace(" 1", "")
+					        .trim();
+					    return label;
+					});
+	                // Y-axis values
+	                this.courseChartData = data.map(x => x.percentage);
+	                // Chart object
+	                this.courseChart = {
+	                    labels: this.courseChartLabels,
+	                    datasets: [
+	                        {
+	                            label: "Progress",
+	                            data: this.courseChartData,
+	                            backgroundColor: "#6DFF65",
+	                            borderRadius: 10,
+	                            borderSkipped: false,
+	                            barThickness: 45
+	                        }
+	                    ]
+	                };
+	                // Optional summary
+	                this.completedAssessments =
+	                    data.filter(x => x.completed).length;
+	                this.totalAssessments = data.length;
+					// =====================================
+					// STUDY HOURS CHART
+					// =====================================
+					this.weeklyChart = {
+					    labels: this.courseChartLabels,
+					    datasets: [
+					        {
+					            label: "Allocated Hours",
+					            data: data.map(x => x.allocatedStudyHours),
+					            backgroundColor: "#4FA3FF"
+					        },
+					        {
+					            label: "Hours Spent",
+					            data: data.map(x =>
+					                x.completed
+					                    ? x.hoursSpent
+					                    : 0
+					            ),
+					            backgroundColor: "#6DFF65"
+					        }
+					    ]
+					};
+					this.allocatedHours =
+					    data.reduce(
+					        (sum, x) =>
+					            sum + (x.allocatedStudyHours || 0),
+					        0
+					    );
+					this.spentHours =
+					    data.reduce(
+					        (sum, x) =>
+					            sum + (x.hoursSpent || 0),
+					        0
+					    );
+					this.studyEfficiency =
+					    this.allocatedHours > 0
+					        ? Math.round(
+					            (this.spentHours /
+					             this.allocatedHours) * 100
+					        )
+					        : 0;
+	                this.cdr.detectChanges();
+					this.loadAssessmentCompletion();
+	            },
+	            error: (err) => {
+	                console.error("Course progress error:", err);
+	            }
+	        });
+	}
+	loadAssessmentCompletion() {
+	    this.assessmentService
+	        .getAssessmentCompletion(
+	            this.student.id,
+	            this.selectedTermName,
+	            this.selectedCourseName
+	        )
+	        .subscribe(data => {
+	            this.completedCount = data.completed;
+	            this.upcomingCount = data.upcoming;
+	            this.overdueCount = data.overdue;
+	            this.completionChart = {
+	                labels: [
+	                    "Completed",
+	                    "Upcoming",
+	                    "Overdue"
+	                ],
+	                datasets: [
+	                    {
+	                        data: [
+	                            data.completed,
+	                            data.upcoming,
+	                            data.overdue
+	                        ],
+	                        backgroundColor: [
+	                            "#66E46A",   // green
+	                            "#4FA3FF",   // blue
+	                            "#FF6B6B"    // red
+	                        ],
+	                        borderWidth: 0
+	                    }
+	                ]
+	            };
+	            this.cdr.detectChanges();
+	        });
+	}
+	changeTerm(term: string) {
 
-				const average =
-					gradedCount > 0
-						? totalPercentage / gradedCount
-						: 0;
-
-				// Convert percentage → GPA
-				this.gpa =
-					Number(((average / 100) * 4).toFixed(2));
-
-				// =========================
-				// COURSE PROGRESS
-				// =========================
-
-				const courseMap: any = {};
-
-				data.forEach(a => {
-
-					const course =
-						a.course?.courseName || 'Unknown';
-
-					if (!courseMap[course]) {
-
-						courseMap[course] = {
-							total: 0,
-							completed: 0
-						};
-					}
-
-					courseMap[course].total++;
-
-					if (a.completed) {
-						courseMap[course].completed++;
-					}
-				});
-
-				this.courseChartLabels =
-					Object.keys(courseMap);
-
-				this.courseChartData =
-					Object.values(courseMap).map((c: any) =>
-						Math.round((c.completed / c.total) * 100)
-					);
-
-				// =========================
-				// COMPLETION CHART
-				// =========================
-
-				const completed =
-					data.filter(a => a.completed).length;
-
-				const pending =
-					data.length - completed;
-
-				this.completionChartData = [
-					completed,
-					pending
-				];
-
-				// =========================
-				// WEEKLY PRODUCTIVITY
-				// =========================
-
-				const weekly = [0, 0, 0, 0, 0, 0, 0];
-
-				data.forEach(a => {
-
-					const hours =
-						a.studyHours || 0;
-
-					const day =
-						Math.floor(Math.random() * 7);
-
-					weekly[day] += hours;
-				});
-
-				this.weeklyChartData = weekly;
-
-				this.cdr.detectChanges();
-			});
+	    this.selectedTerm =
+	        this.termPerformance.find(
+	            t => t.term === term
+	        );
+	    this.selectedTermName = term;
+	    this.loadCoursesForTerm();
+		this.loadAssessmentCompletion();
+		this.cdr.detectChanges();
 	}
 
 	// calendar route
