@@ -124,7 +124,15 @@ public class ChatService {
             return new ChatResponse(reply);
 
         } catch (Exception e) {
-            return new ChatResponse("I'm having trouble connecting right now. Please try again in a moment.");
+
+            System.err.println("========== GROQ ERROR ==========");
+            e.printStackTrace();
+            System.err.println("================================");
+
+            return new ChatResponse(
+                "I'm having trouble connecting right now. Please try again in a moment."
+            );
+        
         }
     }
 }
