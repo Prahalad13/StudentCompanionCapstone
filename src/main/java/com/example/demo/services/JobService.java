@@ -16,14 +16,16 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.domain.Job;
 
+import org.springframework.beans.factory.annotation.Value;
+
 @Service
 public class JobService {
 
-    private final String API_KEY =
-            "bc7a919683msh51e8ac79f474a47p1a0e2bjsn724b22e338a7";
+	@Value("${rapidapi.key}")
+    private String API_KEY;
 
-    private final String API_HOST =
-            "jsearch.p.rapidapi.com";
+    @Value("${rapidapi.host}")
+    private String API_HOST;
 
     public List<Job> searchJobs(
             String title,
