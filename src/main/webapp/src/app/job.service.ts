@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { API_BASE_URL } from './api.config';
 import { Job } from './job';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { Job } from './job';
 })
 export class JobService {
 
-  private apiUrl = 'http://localhost:8080/api/jobs';
+  private apiUrl = `${API_BASE_URL}/api/jobs`;
 
   constructor(private http: HttpClient) {}
 
