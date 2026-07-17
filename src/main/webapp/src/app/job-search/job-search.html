@@ -11,13 +11,17 @@
 	  <input
 	    type="text"
 	    [(ngModel)]="city"
-	    placeholder="City">
-	
-	  <select [(ngModel)]="type">
-	    <option value="remote">Remote</option>
-	    <option value="hybrid">Hybrid</option>
-	    <option value="inperson">In Person</option>
-	  </select>
+	    placeholder="City">	
+	  <select
+		  [(ngModel)]="selectedType"
+		  name="type"
+		  class="form-select">		
+		  <option value="all">All</option>
+		  <option value="full_time">Full Time</option>
+		  <option value="part_time">Part Time</option>
+		  <option value="permanent">Permanent</option>
+		  <option value="contract">Contract</option>		
+		</select>
 	
 	  <button (click)="searchJobs()">
 	    Search Jobs
@@ -34,7 +38,7 @@
 
         <p>{{ job.city }}</p>
 
-        <p>{{ job.type }}</p>
+        <p>{{ formatJobType(job.type) }}</p>
         
      	<a
 		  [href]="job.applyLink"

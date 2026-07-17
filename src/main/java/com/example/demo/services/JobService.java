@@ -7,147 +7,141 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.domain.Job;
 
-import org.springframework.beans.factory.annotation.Value;
-
 @Service
 public class JobService {
 
-	@Value("${rapidapi.key}")
-    private String API_KEY;
+    @Value("${adzuna.app.id}")
+    private String appId;
 
-    @Value("${rapidapi.host}")
-    private String API_HOST;
+    @Value("${adzuna.app.key}")
+    private String appKey;
 
-    public List<Job> searchJobs(
-            String title,
-            String city,
-            String type) {
+    private final RestTemplate restTemplate;
 
-        List<Job> jobs =
-                new ArrayList<>();
+    public JobService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public List<Job> searchJobs(String title, String city, String type) {
+
+        List<Job> jobs = new ArrayList<>();
 
         try {
 
-            String query =
-                    title + " jobs in " + city;
+            StringBuilder url = new StringBuilder(
+                    "https://api.adzuna.com/v1/api/jobs/ca/search/1");
 
-            String encodedQuery =
-                    URLEncoder.encode(
-                            query,
-                            StandardCharsets.UTF_8);
+            url.append("?app_id=").append(appId);
+            url.append("&app_key=").append(appKey);
+            url.append("&results_per_page=20");
 
-            String remoteFilter = "";
-
-            // Remote Jobs
-            if (type.equalsIgnoreCase(
-                    "remote")) {
-
-                remoteFilter =
-                        "&remote_jobs_only=true";
+            if (title != null && !title.isBlank()) {
+                url.append("&what=")
+                        .append(URLEncoder.encode(title, StandardCharsets.UTF_8));
             }
 
-            // In Person Jobs
-            else if (type.equalsIgnoreCase(
-                    "inperson")) {
-
-                remoteFilter =
-                        "&remote_jobs_only=false";
+            if (city != null && !city.isBlank()) {
+                url.append("&where=")
+                        .append(URLEncoder.encode(city, StandardCharsets.UTF_8));
             }
-
-            // Hybrid Jobs
-            else {
-
-                remoteFilter = "";
-            }
-
-            String url =
-            		"https://jsearch.p.rapidapi.com/search-v2"
-                    + "?query=" + encodedQuery
-                    + "&page=1"
-                    + "&num_pages=1"
-                    + "&country=ca"
-                    + remoteFilter;
-
-            RestTemplate restTemplate =
-                    new RestTemplate();
-
-            HttpHeaders headers =
-                    new HttpHeaders();
-
-            headers.set(
-                    "X-RapidAPI-Key",
-                    API_KEY);
-
-            headers.set(
-                    "X-RapidAPI-Host",
-                    API_HOST);
-
-            HttpEntity<String> entity =
-                    new HttpEntity<>(headers);
 
             ResponseEntity<String> response =
-                    restTemplate.exchange(
-                            url,
-                            HttpMethod.GET,
-                            entity,
-                            String.class);
+                    restTemplate.getForEntity(url.toString(), String.class);
 
-            System.out.println("========== RAPID API RESPONSE ==========");
+            System.out.println("========== ADZUNA RESPONSE ==========");
             System.out.println(response.getBody());
-            System.out.println("========================================");
+            System.out.println("=====================================");
 
             JSONObject jsonObject =
                     new JSONObject(response.getBody());
 
-            if (!jsonObject.has("data")) {
+            if (!jsonObject.has("results")) {
                 return jobs;
             }
 
-            JSONObject data =
-                    jsonObject.getJSONObject("data");
-
             JSONArray jobsArray =
-                    data.getJSONArray("jobs");
+                    jsonObject.getJSONArray("results");
 
-            for (int i = 0;
-                 i < jobsArray.length();
-                 i++) {
+            for (int i = 0; i < jobsArray.length(); i++) {
 
                 JSONObject obj =
                         jobsArray.getJSONObject(i);
 
-                Job job =
-                        new Job();
+                Job job = new Job();
 
+                // Job title
                 job.setTitle(
-                        obj.optString(
-                                "job_title"));
-                job.setCompanyName(
-                        obj.optString("employer_name"));
-                job.setCity(
-                        obj.optString(
-                                "job_city"));
+                        obj.optString("title", ""));
 
-                job.setType(
-                        obj.optString(
-                                "job_employment_type"));
-                
+                // Company
+                JSONObject company =
+                        obj.optJSONObject("company");
+
+                if (company != null) {
+                    job.setCompanyName(
+                            company.optString("display_name", ""));
+                } else {
+                    job.setCompanyName("");
+                }
+
+                // Location
+                JSONObject location =
+                        obj.optJSONObject("location");
+
+                if (location != null) {
+                    job.setCity(
+                            location.optString("display_name", ""));
+                } else {
+                    job.setCity("");
+                }
+
+                // Employment Type
+                String contractType =
+                        obj.optString("contract_type", "");
+
+                String contractTime =
+                        obj.optString("contract_time", "");
+
+                String jobType = "";
+
+                if (!contractTime.isBlank()) {
+                    jobType = contractTime;
+                }
+
+                if (!contractType.isBlank()) {
+
+                    if (!jobType.isBlank()) {
+                        jobType += " - ";
+                    }
+
+                    jobType += contractType;
+                }
+
+                job.setType(jobType);
+
+                // Apply URL
                 job.setApplyLink(
-                        obj.optString("job_apply_link"));
+                        obj.optString("redirect_url", ""));
+
+                // Optional filtering by type
+                if (type != null && !type.isBlank() && !type.equalsIgnoreCase("all")) {
+
+	                	if (!job.getType().toLowerCase().contains(type.toLowerCase())) {
+	                	    continue;
+	                	}
+                }
 
                 jobs.add(job);
             }
-        } catch (Exception e) {
 
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -31,7 +31,7 @@ export class JobSearchComponent {
 
   city = '';
 
-  type = 'remote';
+  selectedType = "all";
 
   jobs: Job[] = [];
 
@@ -45,7 +45,7 @@ export class JobSearchComponent {
     this.jobService.searchJobs(
       this.title,
       this.city,
-      this.type
+      this.selectedType
     ).subscribe({
 
       next: (data) => {
@@ -61,5 +61,18 @@ export class JobSearchComponent {
       }
     });
 	this.cdr.detectChanges();
+  }
+  formatJobType(type: string): string {
+
+    if (!type) {
+      return 'Not Specified';
+    }
+
+    return type
+      .replace(/full_time/g, 'Full Time')
+      .replace(/part_time/g, 'Part Time')
+      .replace(/permanent/g, 'Permanent')
+      .replace(/contract/g, 'Contract')
+      .replace(/_/g, ' ');
   }
  }
