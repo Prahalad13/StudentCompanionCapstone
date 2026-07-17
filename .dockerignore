@@ -1,0 +1,12 @@
+target
+.git
+.settings
+.project
+.classpath
+
+.idea
+.vscode
+
+node_modules
+
+*.log
