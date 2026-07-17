@@ -99,7 +99,9 @@ public class JobService {
                             entity,
                             String.class);
 
+            System.out.println("========== RAPID API RESPONSE ==========");
             System.out.println(response.getBody());
+            System.out.println("========================================");
 
             JSONObject jsonObject =
                     new JSONObject(response.getBody());
