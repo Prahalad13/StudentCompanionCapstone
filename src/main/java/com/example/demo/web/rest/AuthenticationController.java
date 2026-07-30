@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
 	
-	private final AuthenticationService authenticationService;
+	private final AuthenticationService authenticationService ;
 	
 	// map incoming POST requests to register a new user
 	@PostMapping(value = "/register", consumes = "application/json")

@@ -1,7 +1,10 @@
 package com.example.demo.services;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import com.example.demo.domain.Assessment;
 import com.example.demo.domain.AssessmentType;
 import com.example.demo.dto.AssessmentCompletionDTO;
 import com.example.demo.dto.AssessmentStudyRequest;
+import com.example.demo.models.StudyPlanResponse;
 import com.example.demo.repositories.AssessmentRepository;
 
 @Service
@@ -36,59 +40,26 @@ public class AssessmentServiceImpl implements AssessmentService {
     @Override
     public Assessment save(Assessment assessment) {
 
-        System.out.println("\n========== SAVING ASSESSMENT ==========");
-
-        System.out.println("Title: " + assessment.getTitle());
-        System.out.println("Assessment Type: " + assessment.getAssessmentType());
-        System.out.println("Completed: " + assessment.getCompleted());
-        System.out.println("Total Marks: " + assessment.getTotalMarks());
-        System.out.println("Achieved Marks: " + assessment.getAchievedMarks());
-        System.out.println("Allocated Study Hours: " + assessment.getAllocatedStudyHours());
-        System.out.println("Hours Spent: " + assessment.getHoursSpent());
-
-        // Calculate Weight
         double weight = getWeight(assessment.getAssessmentType());
-
-        System.out.println("Calculated Weight: " + weight);
-
         assessment.setWeight(weight);
 
         if (Boolean.TRUE.equals(assessment.getCompleted())) {
 
             double percentage = calculatePercentage(
                     assessment.getAchievedMarks(),
-                    assessment.getTotalMarks());
-
-            System.out.println("Calculated Percentage: " + percentage);
+                    assessment.getTotalMarks()
+            );
 
             assessment.setPercentage(percentage);
-
-            String grade = calculateLetterGrade(percentage);
-
-            System.out.println("Calculated Letter Grade: " + grade);
-
-            assessment.setLetterGrade(grade);
+            assessment.setLetterGrade(calculateLetterGrade(percentage));
 
         } else {
-
-            System.out.println("Assessment is Pending");
-
             assessment.setAchievedMarks(null);
-            //assessment.setHoursSpent(0);
             assessment.setPercentage(null);
             assessment.setLetterGrade(null);
         }
 
-        Assessment savedAssessment = repo.save(assessment);
-
-        System.out.println("========== SAVED TO DATABASE ==========");
-        System.out.println("ID: " + savedAssessment.getId());
-        System.out.println("Weight: " + savedAssessment.getWeight());
-        System.out.println("Percentage: " + savedAssessment.getPercentage());
-        System.out.println("Letter Grade: " + savedAssessment.getLetterGrade());
-        System.out.println("=======================================\n");
-
-        return savedAssessment;
+        return repo.save(assessment);
     }
 
     @Override
@@ -99,46 +70,31 @@ public class AssessmentServiceImpl implements AssessmentService {
 
         existing.setTitle(updated.getTitle());
         existing.setDueDate(updated.getDueDate());
-
         existing.setAssessmentType(updated.getAssessmentType());
-
         existing.setTotalMarks(updated.getTotalMarks());
-        existing.setAchievedMarks(updated.getAchievedMarks());
-
         existing.setCompleted(updated.getCompleted());
-
         existing.setAllocatedStudyHours(updated.getAllocatedStudyHours());
         existing.setHoursSpent(updated.getHoursSpent());
-
         existing.setCourse(updated.getCourse());
         existing.setStudent(updated.getStudent());
-        // calculate
-        existing.setWeight(
-                getWeight(updated.getAssessmentType()));
+
+        existing.setWeight(getWeight(updated.getAssessmentType()));
 
         if (Boolean.TRUE.equals(updated.getCompleted())) {
 
             existing.setAchievedMarks(updated.getAchievedMarks());
 
-            existing.setHoursSpent(updated.getHoursSpent());
-
             double percentage = calculatePercentage(
                     updated.getAchievedMarks(),
-                    updated.getTotalMarks());
+                    updated.getTotalMarks()
+            );
 
             existing.setPercentage(percentage);
-
-            existing.setLetterGrade(
-                    calculateLetterGrade(percentage));
+            existing.setLetterGrade(calculateLetterGrade(percentage));
 
         } else {
-
             existing.setAchievedMarks(null);
-
-           // existing.setHoursSpent(0);
-
             existing.setPercentage(null);
-
             existing.setLetterGrade(null);
         }
 
@@ -155,149 +111,266 @@ public class AssessmentServiceImpl implements AssessmentService {
         return repo.findByDueDate(date);
     }
 
-    /**
-     * Returns the weight for each assessment type.
-     */
     private double getWeight(AssessmentType type) {
 
         if (type == null) {
             return 0.0;
         }
 
-        switch (type) {
-
-            case QUIZ:
-                return 10.0;
-
-            case ASSIGNMENT:
-                return 15.0;
-
-            case MIDTERM:
-                return 30.0;
-
-            case FINAL:
-                return 30.0;
-
-            case PROJECT:
-                return 15.0;
-
-            default:
-                return 0.0;
-        }
+        return switch (type) {
+            case QUIZ -> 10.0;
+            case ASSIGNMENT -> 15.0;
+            case MIDTERM -> 30.0;
+            case FINAL -> 30.0;
+            case PROJECT -> 15.0;
+        };
     }
 
-    /**
-     * Calculates the assessment percentage.
-     */
-    private double calculatePercentage(Double achievedMarks,
-                                       Double totalMarks) {
+    private double calculatePercentage(
+            Double achievedMarks,
+            Double totalMarks) {
 
-        if (achievedMarks == null ||
-            totalMarks == null ||
-            totalMarks <= 0) {
-
+        if (achievedMarks == null
+                || totalMarks == null
+                || totalMarks <= 0) {
             return 0.0;
         }
 
         return (achievedMarks / totalMarks) * 100.0;
     }
 
-    /**
-     * Converts a percentage into a letter grade.
-     */
     private String calculateLetterGrade(double percentage) {
 
-        if (percentage >= 90)
+        if (percentage >= 90) {
             return "A+";
+        }
 
-        if (percentage >= 80)
+        if (percentage >= 80) {
             return "A";
+        }
 
-        if (percentage >= 70)
+        if (percentage >= 70) {
             return "B";
+        }
 
-        if (percentage >= 60)
+        if (percentage >= 60) {
             return "C";
+        }
 
-        if (percentage >= 50)
+        if (percentage >= 50) {
             return "D";
+        }
 
         return "F";
     }
+
     @Override
     public AssessmentCompletionDTO getAssessmentCompletion(
             Long studentId,
             String term,
             String courseName) {
+
         List<Assessment> allAssessments =
                 repo.findByStudentId(studentId);
+
         int completed = 0;
         int upcoming = 0;
         int overdue = 0;
+
         LocalDate today = LocalDate.now();
+
         for (Assessment assessment : allAssessments) {
-            // Skip different terms
+
             if (assessment.getCourse() == null
                     || assessment.getCourse().getTerm() == null
                     || !assessment.getCourse().getTerm().equals(term)) {
                 continue;
             }
-            // Skip different courses
-            if (!assessment.getCourse().getCourseName().equals(courseName)) {
+
+            if (!assessment.getCourse()
+                    .getCourseName()
+                    .equals(courseName)) {
                 continue;
             }
-            // Completed
+
             if (Boolean.TRUE.equals(assessment.getCompleted())) {
                 completed++;
-            }
-            // Overdue
-            else if (assessment.getDueDate() != null
+            } else if (assessment.getDueDate() != null
                     && assessment.getDueDate().isBefore(today)) {
                 overdue++;
-            }
-            // Upcoming
-            else {
+            } else {
                 upcoming++;
             }
         }
+
         return new AssessmentCompletionDTO(
                 completed,
                 upcoming,
                 overdue
         );
     }
+
     @Override
-    public List<Assessment> getPendingAssessments(Long studentId,
-                                                  Long courseId) {
+    public List<Assessment> getPendingAssessments(
+            Long studentId,
+            Long courseId) {
 
         return repo
                 .findByStudentIdAndCourseIdAndCompletedFalseOrderByDueDateAsc(
                         studentId,
-                        courseId);
+                        courseId
+                );
     }
-    @Override
-    public void addStudyHours(
-            AssessmentStudyRequest request) {
 
-        Assessment assessment =
-                repo.findById(request.getAssessmentId()).orElseThrow();
-        int current =
-                assessment.getHoursSpent() == null
-                        ? 0
-                        : assessment.getHoursSpent();
+    @Override
+    public void addStudyHours(AssessmentStudyRequest request) {
+
+        Assessment assessment = repo
+                .findById(request.getAssessmentId())
+                .orElseThrow(() ->
+                        new RuntimeException("Assessment not found"));
+
+        int currentHours = assessment.getHoursSpent() == null
+                ? 0
+                : assessment.getHoursSpent();
 
         assessment.setHoursSpent(
-
-                current
-
-                +
-
-                request.getHours()
-
+                currentHours + request.getHours()
         );
 
         repo.save(assessment);
-
     }
 
+    @Override
+    public List<StudyPlanResponse> getStudyPlan(Long studentId) {
+
+        LocalDate today = LocalDate.now();
+
+        return repo.findByStudentIdOrderByDueDateAsc(studentId)
+                .stream()
+                .filter(assessment ->
+                        assessment.getCompleted() == null
+                                || !assessment.getCompleted()
+                )
+                .map(assessment -> {
+
+                    int allocatedHours =
+                            assessment.getAllocatedStudyHours() == null
+                                    ? 0
+                                    : assessment.getAllocatedStudyHours();
+
+                    int hoursSpent =
+                            assessment.getHoursSpent() == null
+                                    ? 0
+                                    : assessment.getHoursSpent();
+
+                    int remainingHours = Math.max(
+                            allocatedHours - hoursSpent,
+                            0
+                    );
+
+                    long daysRemaining =
+                            ChronoUnit.DAYS.between(
+                                    today,
+                                    assessment.getDueDate()
+                            );
+
+                    double weight =
+                            assessment.getWeight() == null
+                                    ? 0.0
+                                    : assessment.getWeight();
+
+                    String riskLevel;
+
+                    if (daysRemaining < 0) {
+                        riskLevel = "OVERDUE";
+                    } else if (
+                            daysRemaining <= 2
+                                    || remainingHours > daysRemaining * 2
+                                    || weight >= 30
+                    ) {
+                        riskLevel = "HIGH";
+                    } else if (
+                            daysRemaining <= 7
+                                    || remainingHours > daysRemaining
+                    ) {
+                        riskLevel = "MEDIUM";
+                    } else {
+                        riskLevel = "LOW";
+                    }
+
+                    int recommendedHoursToday;
+
+                    if (remainingHours == 0) {
+                        recommendedHoursToday = 0;
+                    } else if (daysRemaining <= 0) {
+                        recommendedHoursToday = remainingHours;
+                    } else {
+                        recommendedHoursToday = (int) Math.ceil(
+                                (double) remainingHours / daysRemaining
+                        );
+
+                        recommendedHoursToday = Math.max(
+                                recommendedHoursToday,
+                                1
+                        );
+                    }
+
+                    String recommendation;
+
+                    if (remainingHours == 0) {
+                        recommendation =
+                                "All planned study hours are complete.";
+                    } else if (daysRemaining < 0) {
+                        recommendation =
+                                "This assessment is overdue. Complete it as soon as possible.";
+                    } else if ("HIGH".equals(riskLevel)) {
+                        recommendation =
+                                "This assessment should be your highest priority today.";
+                    } else if ("MEDIUM".equals(riskLevel)) {
+                        recommendation =
+                                "Continue working on this assessment to avoid falling behind.";
+                    } else {
+                        recommendation =
+                                "You are currently on track. Continue with the recommended study time.";
+                    }
+
+                    String courseName =
+                            assessment.getCourse() == null
+                                    ? "No Course"
+                                    : assessment.getCourse().getCourseName();
+
+                    String assessmentType =
+                            assessment.getAssessmentType() == null
+                                    ? "OTHER"
+                                    : assessment.getAssessmentType().name();
+
+                    return new StudyPlanResponse(
+                            assessment.getId(),
+                            assessment.getTitle(),
+                            courseName,
+                            assessmentType,
+                            assessment.getDueDate(),
+                            daysRemaining,
+                            allocatedHours,
+                            hoursSpent,
+                            remainingHours,
+                            weight,
+                            riskLevel,
+                            recommendedHoursToday,
+                            recommendation
+                    );
+                })
+                .sorted(
+                        Comparator.comparingInt(plan ->
+                                switch (plan.getRiskLevel()) {
+                                    case "OVERDUE" -> 0;
+                                    case "HIGH" -> 1;
+                                    case "MEDIUM" -> 2;
+                                    default -> 3;
+                                }
+                        )
+                )
+                .collect(Collectors.toList());
+    }
 }

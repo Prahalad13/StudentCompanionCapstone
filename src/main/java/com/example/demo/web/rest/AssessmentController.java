@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.models.StudyPlanResponse;
 
 import com.example.demo.domain.Assessment;
 import com.example.demo.dto.AssessmentCompletionDTO;
@@ -46,6 +47,13 @@ public class AssessmentController {
     @GetMapping("/student/{studentId}")
     public List<Assessment> getByStudent(@PathVariable Long studentId) {
         return assessmentService.findByStudentId(studentId);
+    }
+    
+    @GetMapping("/student/{studentId}/study-plan")
+    public List<StudyPlanResponse> getStudyPlan(
+            @PathVariable Long studentId) {
+
+        return assessmentService.getStudyPlan(studentId);
     }
 
     // CREATE

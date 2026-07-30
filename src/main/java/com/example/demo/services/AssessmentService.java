@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import java.time.LocalDate;
+import com.example.demo.models.StudyPlanResponse;
 import java.util.List;
 
 import com.example.demo.domain.Assessment;
@@ -8,6 +9,7 @@ import com.example.demo.dto.AssessmentCompletionDTO;
 import com.example.demo.dto.AssessmentStudyRequest;
 
 public interface AssessmentService {
+	List<StudyPlanResponse> getStudyPlan(Long studentId);
     List<Assessment> findAll();
     List<Assessment> findByStudentId(Long studentId); 
     List<Assessment> findByCourse(Long courseId);

@@ -21,7 +21,7 @@ public class Assessment {
 
     @NonNull
     private LocalDate dueDate;
-    
+
     @Enumerated(EnumType.STRING)
     private AssessmentType assessmentType;
 
@@ -51,9 +51,8 @@ public class Assessment {
     @ManyToOne
     @NonNull
     private Course course;
-    
+
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
-    
 }
