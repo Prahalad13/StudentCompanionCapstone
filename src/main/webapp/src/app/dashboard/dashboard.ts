@@ -612,7 +612,8 @@ energyOptions = {
 				        this.studyMessage = "";
 				    }, 4000);
 				}
-	        });
+				this.cdr.detectChanges();
+	        });			
 	}
 	updateAssessmentProgress(){
 	    this.selectedAssessment =
