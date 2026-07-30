@@ -21,6 +21,10 @@ export class Courses implements OnInit {
   editingId: number | null = null;
   confirmDeleteId: number | null = null;
 
+  searchQuery: string = '';
+filteredCourses: any[] = [];
+
+
 
   newCourse = {
     courseName: '',
@@ -44,6 +48,7 @@ export class Courses implements OnInit {
   loadCourses() {
     this.courseService.getByStudent(this.studentId).subscribe(courses => {
       this.courses = courses;
+      this.filteredCourses = [...courses];
       this.cdr.detectChanges();
     });
   }
@@ -219,6 +224,56 @@ confirmDelete() {
     }
   });
 }
+
+applySearch() {
+  const query = this.searchQuery.toLowerCase().trim();
+
+  if (query === '') {
+    this.filteredCourses = [...this.courses];
+    return;
+  }
+
+  this.filteredCourses = this.courses.filter(c =>
+    c.courseName.toLowerCase().includes(query) ||
+    c.term.toLowerCase().includes(query)
+  );
+}
+
+
+
+
+selectedFilter = 'courseNameAsc';
+
+applyFilter() {
+  switch (this.selectedFilter) {
+    case 'courseNameAsc':
+      this.filteredCourses.sort((a, b) => a.courseName.localeCompare(b.courseName));
+      break;
+
+    case 'courseNameDesc':
+      this.filteredCourses.sort((a, b) => b.courseName.localeCompare(a.courseName));
+      break;
+
+    case 'termAsc':
+      this.filteredCourses.sort((a, b) => a.term.localeCompare(b.term));
+      break;
+
+    case 'termDesc':
+      this.filteredCourses.sort((a, b) => b.term.localeCompare(a.term));
+      break;
+  }
+}
+
+resetFilters() {
+  this.searchQuery = '';
+  this.selectedFilter = 'courseNameAsc';
+
+  // Reset list to full list
+  this.filteredCourses = [...this.courses];
+}
+
+
+
 
 
 }

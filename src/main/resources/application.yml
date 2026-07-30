@@ -26,4 +26,4 @@ spring:
 
 groq:
   api:
-    key: ${groq.api.key:your-api-key-here}
+    key: ""

@@ -68,7 +68,7 @@ public class JobService {
             }
 
             String url =
-                    "https://jsearch.p.rapidapi.com/search"
+            		"https://jsearch.p.rapidapi.com/search-v2"
                     + "?query=" + encodedQuery
                     + "&page=1"
                     + "&num_pages=1"
@@ -102,17 +102,17 @@ public class JobService {
             System.out.println(response.getBody());
 
             JSONObject jsonObject =
-                    new JSONObject(
-                            response.getBody());
+                    new JSONObject(response.getBody());
 
             if (!jsonObject.has("data")) {
-
                 return jobs;
             }
 
+            JSONObject data =
+                    jsonObject.getJSONObject("data");
+
             JSONArray jobsArray =
-                    jsonObject.getJSONArray(
-                            "data");
+                    data.getJSONArray("jobs");
 
             for (int i = 0;
                  i < jobsArray.length();
@@ -127,7 +127,8 @@ public class JobService {
                 job.setTitle(
                         obj.optString(
                                 "job_title"));
-
+                job.setCompanyName(
+                        obj.optString("employer_name"));
                 job.setCity(
                         obj.optString(
                                 "job_city"));
