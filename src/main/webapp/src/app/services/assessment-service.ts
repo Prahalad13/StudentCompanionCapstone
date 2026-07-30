@@ -82,4 +82,22 @@ getAssessmentCompletion(
         }
     );
 }
+addStudyHours(
+    assessmentId: number,
+    hours: number
+) {
+    const token = localStorage.getItem('token');
+    return this.http.post(
+        `${assessmentsUrl}/study-hours`,
+        {
+            assessmentId,
+            hours
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+}
 }

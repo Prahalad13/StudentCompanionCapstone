@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Assessment;
+import com.example.demo.domain.Course;
+import com.example.demo.domain.Student;
 
 @Repository
 public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
@@ -20,5 +22,12 @@ public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
     boolean existsByCourseId(Long courseId);
     
     List<Assessment> findByDueDate(LocalDate date);
+    
+    List<Assessment> findByStudentAndCourse(
+            Student student,
+            Course course);
+    List<Assessment> findByStudentIdAndCourseIdAndCompletedFalseOrderByDueDateAsc(
+            Long studentId,
+            Long courseId);
 
 }

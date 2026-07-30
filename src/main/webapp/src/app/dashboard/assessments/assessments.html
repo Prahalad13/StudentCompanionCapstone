@@ -91,20 +91,21 @@
 		
 		    <!-- Only visible when completed -->
 		    @if(newAssessment.completed){
-		
-		    <input
-		        type="number"
-		        placeholder="Achieved Marks"
-		        min="0"
-		        [(ngModel)]="newAssessment.achievedMarks" />
-		
-		    <input
-		        type="number"
-		        placeholder="Hours Spent"
-		        min="0"
-		        [(ngModel)]="newAssessment.hoursSpent" />
-		
-		    }
+
+			<input
+			    type="number"
+			    placeholder="Achieved Marks"
+			    min="0"
+			    [(ngModel)]="newAssessment.achievedMarks" />
+			
+			}
+			
+			<!-- Always visible -->
+			<input
+			    type="number"
+			    placeholder="Hours Spent"
+			    min="0"
+			    [(ngModel)]="newAssessment.hoursSpent" />
 		
 		    <button
 		        [disabled]="isEditing"
@@ -209,7 +210,10 @@
 						        {{ a.completed ? '✅ Completed' : '⏳ Pending' }}
 						
 						    </span>
-						
+						    <span>								
+								⏱ Hours Spent:								
+								{{a.hoursSpent}}
+							</span>						
 						</div>
 						
 						@if(a.completed){
@@ -230,12 +234,11 @@
 						        🎓 Grade:
 						        {{ a.letterGrade }}
 						    </span>
-						
+						<!-- 
 						    <span>
 						        ⏱ Hours Spent:
 						        {{ a.hoursSpent }}
-						    </span>
-						
+						    </span> -->						
 						</div>
 						
 						}

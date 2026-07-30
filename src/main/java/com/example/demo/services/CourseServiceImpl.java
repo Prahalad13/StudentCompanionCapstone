@@ -284,7 +284,7 @@ public class CourseServiceImpl implements CourseService {
 
             CourseProgressDTO dto =
                     new CourseProgressDTO();
-
+            dto.setId(assessment.getId());
             dto.setAssessmentName(assessment.getTitle());
             dto.setPercentage(assessment.getPercentage());
             dto.setCompleted(assessment.getCompleted());

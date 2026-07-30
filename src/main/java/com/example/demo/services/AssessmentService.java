@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.demo.domain.Assessment;
 import com.example.demo.dto.AssessmentCompletionDTO;
+import com.example.demo.dto.AssessmentStudyRequest;
 
 public interface AssessmentService {
     List<Assessment> findAll();
@@ -19,5 +20,7 @@ public interface AssessmentService {
             Long studentId,
             String term,
             String courseName);
-    
+    List<Assessment> getPendingAssessments(Long studentId, Long courseId);
+
+    void addStudyHours(AssessmentStudyRequest request);    
 }

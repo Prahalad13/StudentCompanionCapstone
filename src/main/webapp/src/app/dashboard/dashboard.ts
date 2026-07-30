@@ -158,6 +158,15 @@ export class Dashboard implements OnInit {
 	allocatedHours = 0;
 	spentHours = 0;
 	studyEfficiency = 0;
+	todayHours = 0;
+	pendingAssessments: any[] = [];
+	selectedAssessmentId: number = 0;
+	studyMessage = "";
+	selectedAssessment: any = null;
+	assessmentAllocatedHours = 0;
+	assessmentSpentHours = 0;
+	assessmentRemainingHours = 0;
+	assessmentProgress = 0;
 	// HEALTH & WELLNESS DASHBOARD
 	wellnessEntries: WellnessEntry[] = [];
 
@@ -488,15 +497,11 @@ energyOptions = {
 					            data: data.map(x => x.allocatedStudyHours),
 					            backgroundColor: "#4FA3FF"
 					        },
-					        {
-					            label: "Hours Spent",
-					            data: data.map(x =>
-					                x.completed
-					                    ? x.hoursSpent
-					                    : 0
-					            ),
-					            backgroundColor: "#6DFF65"
-					        }
+							{
+							    label: "Hours Spent",
+							    data: data.map(x => x.hoursSpent || 0),
+							    backgroundColor: "#6DFF65"
+							}
 					    ]
 					};
 					this.allocatedHours =
@@ -518,6 +523,14 @@ energyOptions = {
 					             this.allocatedHours) * 100
 					        )
 					        : 0;
+					// Pending assessments for Study Progress card
+					this.pendingAssessments =
+					    data.filter(a => !a.completed);
+					if (this.pendingAssessments.length > 0) {
+					    this.selectedAssessmentId =
+					        this.pendingAssessments[0].id;
+						this.updateAssessmentProgress();
+					}
 	                this.cdr.detectChanges();
 					this.loadAssessmentCompletion();
 	            },
@@ -573,9 +586,63 @@ energyOptions = {
 		this.loadAssessmentCompletion();
 		this.cdr.detectChanges();
 	}
-
+	logStudyHours() {
+	    if (!this.selectedAssessmentId) {
+	        return;
+	    }
+	    if (this.todayHours <= 0) {
+	        return;
+	    }
+	    this.assessmentService
+	        .addStudyHours(
+	            this.selectedAssessmentId,
+	            this.todayHours
+	        )
+	        .subscribe({
+				next: () => {
+				    const assessment = this.pendingAssessments.find(
+				        a => a.id === this.selectedAssessmentId
+				    );
+				    this.studyMessage =
+				        `${this.todayHours} hour(s) logged for ${assessment?.assessmentName}`;
+				    this.todayHours = 0;
+				    this.loadCourseProgress();
+				    // Optional: Hide the message after 4 seconds
+				    setTimeout(() => {
+				        this.studyMessage = "";
+				    }, 4000);
+				}
+	        });
+	}
+	updateAssessmentProgress(){
+	    this.selectedAssessment =
+	        this.pendingAssessments.find(
+	            a => a.id === this.selectedAssessmentId
+	        );
+	    if(!this.selectedAssessment){
+	        return;
+	    }
+	    this.assessmentAllocatedHours =
+	        this.selectedAssessment.allocatedStudyHours || 0;
+	    this.assessmentSpentHours =
+	        this.selectedAssessment.hoursSpent || 0;
+	    this.assessmentRemainingHours =
+	        this.assessmentAllocatedHours	        -
+	        this.assessmentSpentHours;
+	    this.assessmentProgress =
+	        this.assessmentAllocatedHours > 0
+	        ?
+	        Math.round(
+	            this.assessmentSpentHours
+	            /
+	            this.assessmentAllocatedHours
+	            *
+	            100
+	        )
+	        :
+	        0;
+	}
 	// calendar route
-
 	goToCalendar() {
   this.router.navigate(['/dashboard/calendar']).then(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
@@ -673,10 +740,6 @@ if (this.energyData.length === 0) {
     ]
   };
 }
-
-
-
-
       const productivity = this.getProductivityFlow(this.wellnessEntries);
       this.productivityLabels = productivity.labels;
       this.productivityData = productivity.data;

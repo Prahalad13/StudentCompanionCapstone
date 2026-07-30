@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.domain.Assessment;
 import com.example.demo.domain.AssessmentType;
 import com.example.demo.dto.AssessmentCompletionDTO;
+import com.example.demo.dto.AssessmentStudyRequest;
 import com.example.demo.repositories.AssessmentRepository;
 
 @Service
@@ -73,7 +74,7 @@ public class AssessmentServiceImpl implements AssessmentService {
             System.out.println("Assessment is Pending");
 
             assessment.setAchievedMarks(null);
-            assessment.setHoursSpent(0);
+            //assessment.setHoursSpent(0);
             assessment.setPercentage(null);
             assessment.setLetterGrade(null);
         }
@@ -134,7 +135,7 @@ public class AssessmentServiceImpl implements AssessmentService {
 
             existing.setAchievedMarks(null);
 
-            existing.setHoursSpent(0);
+           // existing.setHoursSpent(0);
 
             existing.setPercentage(null);
 
@@ -264,6 +265,39 @@ public class AssessmentServiceImpl implements AssessmentService {
                 upcoming,
                 overdue
         );
+    }
+    @Override
+    public List<Assessment> getPendingAssessments(Long studentId,
+                                                  Long courseId) {
+
+        return repo
+                .findByStudentIdAndCourseIdAndCompletedFalseOrderByDueDateAsc(
+                        studentId,
+                        courseId);
+    }
+    @Override
+    public void addStudyHours(
+            AssessmentStudyRequest request) {
+
+        Assessment assessment =
+                repo.findById(request.getAssessmentId()).orElseThrow();
+        int current =
+                assessment.getHoursSpent() == null
+                        ? 0
+                        : assessment.getHoursSpent();
+
+        assessment.setHoursSpent(
+
+                current
+
+                +
+
+                request.getHours()
+
+        );
+
+        repo.save(assessment);
+
     }
 
 }

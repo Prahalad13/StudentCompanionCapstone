@@ -296,11 +296,73 @@
 			</div>
 		</div>
 		<hr>
+		<div class="analytics-grid">
+    			<div class="card analytics-card study-progress-card">		
+		    <h3>	📚 {{selectedAssessment?.assessmentName || selectedCourseName}}</h3>	
+		    <div class="progress-container">		        <div
+		            class="progress-fill"
+		            [style.width.%]="assessmentProgress">
+		        </div>
+		    </div>		
+		    <div class="progress-percent">			
+			    <span>
+			        {{assessmentSpentHours}} /
+			        {{assessmentAllocatedHours}} hrs
+			    </span>			
+			    <span>
+			        {{assessmentProgress}}%
+			    </span>			
+			</div>		
+		    <div class="study-summary">		
+		        <div class="summary-box">
+		            <label>Goal</label>
+		            <strong>{{assessmentAllocatedHours}} hrs</strong>
+		        </div>		
+		        <div class="summary-box">
+		            <label>Studied</label>
+		            <strong>{{assessmentSpentHours}} hrs</strong>
+		        </div>		
+		        <div class="summary-box">
+		            <label>Remaining</label>
+		            <strong>{{assessmentRemainingHours}} hrs</strong>
+		        </div>		
+		    </div>		
+		    <div class="study-controls">		
+		        <div>		
+		            <label>Assessment</label>		
+		            <select
+		                [(ngModel)]="selectedAssessmentId"
+		                (change)="updateAssessmentProgress()">		
+		                <option
+		                    *ngFor="let assessment of pendingAssessments"
+		                    [ngValue]="assessment.id">		
+		                    {{assessment.assessmentName}}		
+		                </option>		
+		            </select>		
+		        </div>		
+		        <div>		
+		            <label>Today's Study</label>		
+		            <input
+		                type="number"
+		                [(ngModel)]="todayHours">		
+		        </div>		
+		        <div>		
+		            <button
+		                (click)="logStudyHours()">		
+		                Log Study Time		
+		            </button>		
+		        </div>		
+		    </div>		
+		    <div
+		        *ngIf="studyMessage"
+		        class="study-success">		
+		        {{studyMessage}}		
+		    </div>		
+		</div>
+	</div>
+	<hr>
 		<!-- ANALYTICS GRID -->
 		<div class="analytics-grid">
-
-
-
 			<!-- ⭐ AVERAGE MOOD -->
 			<div class="card analytics-card">
 				<h3>💚 Average Mood</h3>
