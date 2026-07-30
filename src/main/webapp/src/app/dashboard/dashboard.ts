@@ -607,12 +607,12 @@ energyOptions = {
 				        `${this.todayHours} hour(s) logged for ${assessment?.assessmentName}`;
 				    this.todayHours = 0;
 				    this.loadCourseProgress();
+					this.cdr.detectChanges();
 				    // Optional: Hide the message after 4 seconds
 				    setTimeout(() => {
 				        this.studyMessage = "";
 				    }, 4000);
-				}
-				this.cdr.detectChanges();
+				}				
 	        });			
 	}
 	updateAssessmentProgress(){
