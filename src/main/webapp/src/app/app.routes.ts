@@ -11,6 +11,7 @@ import { CreateHealthWellness } from './dashboard/health-wellness/create-health-
 import { Calendar } from './dashboard/calendar/calendar';
 import { Chat } from './dashboard/chat/chat';
 import { Summarizer } from './dashboard/summarizer/summarizer';
+import { StudyPlanner} from './dashboard/study-planner/study-planner';
 
 export const routes: Routes = [
     { path: 'register', component: CreateAccount},
@@ -19,6 +20,7 @@ export const routes: Routes = [
     { path: 'dashboard/create-student', component: CreateStudent},
     { path: 'dashboard/courses', component: Courses},
     { path: 'dashboard/assessments', component: Assessments},
+    { path: 'dashboard/study-planner',component: StudyPlanner},
 	{ path: 'dashboard/jobs', component: JobSearchComponent},
     { path: 'dashboard/health-wellness', component: HealthWellness, runGuardsAndResolvers: 'always'},
     { path: 'dashboard/health-wellness/create-health-wellness', component: CreateHealthWellness, runGuardsAndResolvers: 'always'},

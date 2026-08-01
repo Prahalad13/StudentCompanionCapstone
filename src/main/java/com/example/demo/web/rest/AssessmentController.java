@@ -51,9 +51,14 @@ public class AssessmentController {
     
     @GetMapping("/student/{studentId}/study-plan")
     public List<StudyPlanResponse> getStudyPlan(
-            @PathVariable Long studentId) {
+            @PathVariable Long studentId,
+            @RequestParam(defaultValue = "6")
+            int dailyLimit) {
 
-        return assessmentService.getStudyPlan(studentId);
+        return assessmentService.getStudyPlan(
+                studentId,
+                dailyLimit
+        );
     }
 
     // CREATE

@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,9 +24,17 @@ public class StudyPlanResponse {
     private Integer hoursSpent;
     private Integer remainingHours;
 
+    private Double requiredHoursPerDay;
+    private Integer progressPercentage;
+
     private Double weight;
 
+    private Integer riskScore;
     private String riskLevel;
+
     private Integer recommendedHoursToday;
+
+    private List<String> riskFactors;
+
     private String recommendation;
 }

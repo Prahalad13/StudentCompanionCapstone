@@ -1,0 +1,324 @@
+<div class="planner-container">
+
+  <!-- Page header -->
+
+  <div class="planner-header">
+
+    <div class="header-text">
+
+      <a
+        routerLink="/dashboard"
+        class="back-link">
+
+        ← Back to Dashboard
+
+      </a>
+
+      <h1>📚 Smart Study Planner</h1>
+
+      <p>
+        View your assessment priorities, deadline risks,
+        remaining workload and recommended study goals.
+      </p>
+
+    </div>
+
+    <a
+      routerLink="/dashboard/assessments"
+      class="assessment-link">
+
+      View Assessments
+
+    </a>
+
+  </div>
+
+
+  <!-- Daily study limit -->
+
+  <div class="daily-limit-card">
+
+    <div class="daily-limit-description">
+
+      <h3>Daily Study Limit</h3>
+
+      <p>
+        Set the maximum number of study hours that can
+        be divided across all assessments today.
+      </p>
+
+    </div>
+
+    <div class="daily-limit-controls">
+
+      <input
+        id="dailyLimit"
+        type="number"
+        min="1"
+        max="12"
+        [(ngModel)]="dailyStudyLimit">
+
+      <span>hours</span>
+
+      <button
+        type="button"
+        [disabled]="loading"
+        (click)="updateDailyLimit()">
+
+        Update Plan
+
+      </button>
+
+    </div>
+
+    <div class="daily-total">
+
+      <span>Planned Today</span>
+
+      <strong>
+        {{ totalPlannedToday }} /
+        {{ dailyStudyLimit }} hours
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- Loading message -->
+
+  <div
+    *ngIf="loading"
+    class="message-card">
+
+    Loading your study plan...
+
+  </div>
+
+
+  <!-- Error message -->
+
+  <div
+    *ngIf="!loading && errorMessage"
+    class="message-card error-message">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- No pending assessments -->
+
+  <div
+    *ngIf="
+      !loading &&
+      !errorMessage &&
+      studyPlans.length === 0
+    "
+    class="message-card">
+
+    <h2>No pending assessments</h2>
+
+    <p>
+      Add an incomplete assessment with planned study
+      hours to generate your personalized study plan.
+    </p>
+
+    <a
+      routerLink="/dashboard/assessments"
+      class="assessment-link">
+
+      Add Assessment
+
+    </a>
+
+  </div>
+
+
+  <!-- Study planner cards -->
+
+  <div
+    *ngIf="
+      !loading &&
+      !errorMessage &&
+      studyPlans.length > 0
+    "
+    class="planner-grid">
+
+    <div
+      *ngFor="let plan of studyPlans"
+      class="planner-card"
+      [ngClass]="getRiskClass(plan)">
+
+      <!-- Card heading -->
+
+      <div class="card-header">
+
+        <div class="assessment-heading">
+
+          <div class="course-name">
+            {{ plan.courseName }}
+          </div>
+
+          <h2>{{ plan.title }}</h2>
+
+          <div class="assessment-type">
+            {{ plan.assessmentType }}
+          </div>
+
+        </div>
+
+        <div class="risk-information">
+
+          <span class="risk-badge">
+            {{ plan.riskLevel }}
+          </span>
+
+          <span class="risk-score">
+            Risk Score:
+            {{ plan.riskScore }}/100
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- Due date -->
+
+      <div class="due-row">
+
+        <strong>
+          {{ getDueText(plan) }}
+        </strong>
+
+        <span>
+          {{ plan.dueDate | date:'mediumDate' }}
+        </span>
+
+      </div>
+
+
+      <!-- Study progress -->
+
+      <div class="progress-section">
+
+        <div class="progress-labels">
+
+          <span>
+            {{ plan.hoursSpent }} /
+            {{ plan.allocatedHours }}
+            planned hours completed
+          </span>
+
+          <span>
+            {{ plan.progressPercentage }}%
+          </span>
+
+        </div>
+
+        <div class="progress-track">
+
+          <div
+            class="progress-fill"
+            [style.width.%]="plan.progressPercentage">
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Planner statistics -->
+
+      <div class="planner-statistics">
+
+        <div class="stat-box">
+
+          <span>Remaining</span>
+
+          <strong>
+            {{ plan.remainingHours }} hrs
+          </strong>
+
+        </div>
+
+        <div class="stat-box">
+
+          <span>Required Per Day</span>
+
+          <strong>
+            {{ plan.requiredHoursPerDay |
+              number:'1.1-1' }} hrs
+          </strong>
+
+        </div>
+
+        <div class="stat-box today-goal">
+
+          <span>Today's Goal</span>
+
+          <strong>
+            {{ plan.recommendedHoursToday }} hrs
+          </strong>
+
+        </div>
+
+        <div class="stat-box">
+
+          <span>Assessment Weight</span>
+
+          <strong>
+            {{ plan.weight |
+              number:'1.0-1' }}%
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- Risk factors -->
+
+      <div
+        class="risk-factors"
+        *ngIf="
+          plan.riskFactors &&
+          plan.riskFactors.length > 0
+        ">
+
+        <strong>Why this risk level?</strong>
+
+        <ul>
+
+          <li
+            *ngFor="
+              let factor of plan.riskFactors
+            ">
+
+            {{ factor }}
+
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- Recommendation -->
+
+      <div class="recommendation">
+
+        <strong>Recommended Plan</strong>
+
+        <p>
+          {{ plan.recommendation }}
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

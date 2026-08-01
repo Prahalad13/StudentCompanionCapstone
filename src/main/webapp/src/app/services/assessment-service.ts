@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { StudyPlan } from '../study-plan';
 
 const assessmentsUrl = '/api/v1/assessments'
 @Injectable({
@@ -99,5 +100,24 @@ addStudyHours(
             }
         }
     );
+}
+
+getStudyPlan(
+  studentId: number,
+  dailyLimit: number
+) {
+  const token = localStorage.getItem('token');
+
+  return this.http.get<StudyPlan[]>(
+    `${assessmentsUrl}/student/${studentId}/study-plan`,
+    {
+      params: {
+        dailyLimit: dailyLimit.toString()
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
 }
 }

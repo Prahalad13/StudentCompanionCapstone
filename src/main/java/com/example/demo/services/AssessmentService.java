@@ -9,7 +9,10 @@ import com.example.demo.dto.AssessmentCompletionDTO;
 import com.example.demo.dto.AssessmentStudyRequest;
 
 public interface AssessmentService {
-	List<StudyPlanResponse> getStudyPlan(Long studentId);
+	List<StudyPlanResponse> getStudyPlan(
+	        Long studentId,
+	        int dailyLimit
+	);
     List<Assessment> findAll();
     List<Assessment> findByStudentId(Long studentId); 
     List<Assessment> findByCourse(Long courseId);

@@ -1,0 +1,746 @@
+.planner-container {
+  width: 100%;
+  min-height: 100vh;
+
+  padding: 30px 38px;
+
+  box-sizing: border-box;
+
+  color: white;
+}
+
+
+/* Page header */
+
+.planner-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-end;
+
+  gap: 25px;
+
+  margin-bottom: 25px;
+}
+
+.header-text {
+  flex: 1;
+}
+
+.planner-header h1 {
+  margin: 12px 0 8px;
+
+  font-size: 38px;
+}
+
+.planner-header p {
+  margin: 0;
+
+  max-width: 760px;
+
+  color: #e1e1e1;
+
+  font-size: 16px;
+
+  line-height: 1.5;
+}
+
+.back-link {
+  color: #d7f5e8;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: bold;
+}
+
+.back-link:hover {
+  color: white;
+
+  text-decoration: underline;
+}
+
+.assessment-link {
+  display: inline-block;
+
+  padding: 12px 20px;
+
+  border-radius: 9px;
+
+  background: #3d6c56;
+
+  color: white;
+
+  font-weight: bold;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  transition: 0.2s;
+}
+
+.assessment-link:hover {
+  background: #2a4f3f;
+
+  transform: translateY(-2px);
+}
+
+
+/* Daily study limit */
+
+.daily-limit-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 25px;
+
+  margin-bottom: 27px;
+
+  padding: 19px 22px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.12);
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.11);
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.13);
+}
+
+.daily-limit-description {
+  flex: 1;
+}
+
+.daily-limit-description h3 {
+  margin: 0 0 5px;
+
+  color: white;
+
+  font-size: 19px;
+}
+
+.daily-limit-description p {
+  margin: 0;
+
+  color: #dddddd;
+
+  font-size: 14px;
+
+  line-height: 1.45;
+}
+
+.daily-limit-controls {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.daily-limit-controls input {
+  width: 72px;
+
+  padding: 10px;
+
+  box-sizing: border-box;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.28);
+
+  border-radius: 8px;
+
+  outline: none;
+
+  background:
+    rgba(255, 255, 255, 0.12);
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  text-align: center;
+}
+
+.daily-limit-controls input:focus {
+  border-color: #8fe3b8;
+
+  background:
+    rgba(255, 255, 255, 0.17);
+}
+
+.daily-limit-controls span {
+  color: #eeeeee;
+
+  font-size: 14px;
+}
+
+.daily-limit-controls button {
+  padding: 11px 16px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #3d6c56;
+
+  color: white;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.daily-limit-controls button:hover {
+  background: #2a4f3f;
+
+  transform: translateY(-1px);
+}
+
+.daily-limit-controls button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+.daily-total {
+  min-width: 145px;
+
+  padding: 11px 14px;
+
+  box-sizing: border-box;
+
+  border-radius: 9px;
+
+  background:
+    rgba(20, 61, 45, 0.68);
+
+  text-align: center;
+}
+
+.daily-total span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #d7f5e8;
+
+  font-size: 13px;
+}
+
+.daily-total strong {
+  display: block;
+
+  color: white;
+
+  font-size: 17px;
+}
+
+
+/* Planner card grid */
+
+.planner-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 24px;
+
+  align-items: start;
+}
+
+
+/* Individual planner card */
+
+.planner-card {
+  width: 100%;
+
+  padding: 26px;
+
+  box-sizing: border-box;
+
+  border-left: 7px solid #7cfc4a;
+
+  border-radius: 17px;
+
+  background:
+    rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.18);
+
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+
+.planner-card:hover {
+  transform: translateY(-3px);
+
+  background:
+    rgba(255, 255, 255, 0.15);
+}
+
+
+/* Risk card colours */
+
+.planner-card.overdue {
+  border-left-color: #ff5252;
+}
+
+.planner-card.high {
+  border-left-color: #ff8a80;
+}
+
+.planner-card.medium {
+  border-left-color: #ffd54f;
+}
+
+.planner-card.low {
+  border-left-color: #7cfc4a;
+}
+
+
+/* Card heading */
+
+.card-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 20px;
+}
+
+.assessment-heading {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.course-name {
+  color: #d7f5e8;
+
+  font-size: 15px;
+
+  font-weight: bold;
+}
+
+.card-header h2 {
+  margin: 5px 0;
+
+  font-size: 27px;
+
+  line-height: 1.2;
+
+  overflow-wrap: anywhere;
+}
+
+.assessment-type {
+  color: #e2e2e2;
+
+  font-size: 14px;
+}
+
+
+/* Risk information */
+
+.risk-information {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 9px;
+}
+
+.risk-badge {
+  padding: 8px 13px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255, 255, 255, 0.14);
+
+  font-size: 13px;
+
+  font-weight: bold;
+}
+
+.risk-score {
+  color: #eeeeee;
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+  white-space: nowrap;
+}
+
+.overdue .risk-badge,
+.high .risk-badge {
+  color: #ffe4e1;
+
+  background:
+    rgba(255, 82, 82, 0.24);
+}
+
+.medium .risk-badge {
+  color: #fff3b0;
+
+  background:
+    rgba(255, 213, 79, 0.22);
+}
+
+.low .risk-badge {
+  color: #dcffd1;
+
+  background:
+    rgba(124, 252, 74, 0.18);
+}
+
+
+/* Due date */
+
+.due-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-top: 23px;
+
+  padding: 14px 16px;
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.09);
+}
+
+.due-row strong {
+  font-size: 15px;
+}
+
+.due-row span {
+  color: #e1e1e1;
+
+  font-size: 14px;
+}
+
+
+/* Progress section */
+
+.progress-section {
+  margin-top: 22px;
+}
+
+.progress-labels {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 9px;
+
+  color: #eeeeee;
+
+  font-size: 14px;
+}
+
+.progress-track {
+  width: 100%;
+
+  height: 14px;
+
+  overflow: hidden;
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.22);
+}
+
+.progress-fill {
+  height: 100%;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #63ff4f,
+      #2bbf42
+    );
+
+  transition: width 0.4s;
+}
+
+
+/* Statistics */
+
+.planner-statistics {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-top: 23px;
+}
+
+.stat-box {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  min-height: 78px;
+
+  padding: 13px 8px;
+
+  box-sizing: border-box;
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.09);
+
+  text-align: center;
+}
+
+.stat-box span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #dddddd;
+
+  font-size: 13px;
+}
+
+.stat-box strong {
+  font-size: 20px;
+}
+
+.today-goal {
+  background:
+    rgba(52, 111, 82, 0.75);
+}
+
+
+/* Risk factors */
+
+.risk-factors {
+  margin-top: 22px;
+
+  padding: 17px;
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+}
+
+.risk-factors strong {
+  color: #d7f5e8;
+
+  font-size: 16px;
+}
+
+.risk-factors ul {
+  margin: 12px 0 0;
+
+  padding-left: 22px;
+}
+
+.risk-factors li {
+  margin-bottom: 8px;
+
+  color: #eeeeee;
+
+  line-height: 1.45;
+}
+
+.risk-factors li:last-child {
+  margin-bottom: 0;
+}
+
+
+/* Recommendation */
+
+.recommendation {
+  margin-top: 18px;
+
+  padding: 17px;
+
+  border-radius: 11px;
+
+  background:
+    rgba(20, 61, 45, 0.68);
+}
+
+.recommendation strong {
+  color: #d7f5e8;
+
+  font-size: 16px;
+}
+
+.recommendation p {
+  margin: 8px 0 0;
+
+  color: white;
+
+  line-height: 1.55;
+}
+
+
+/* Loading, error and empty messages */
+
+.message-card {
+  padding: 32px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.11);
+
+  text-align: center;
+}
+
+.message-card h2 {
+  margin-top: 0;
+}
+
+.message-card p {
+  margin-bottom: 20px;
+
+  color: #eeeeee;
+}
+
+.error-message {
+  color: #ffd5d5;
+
+  background:
+    rgba(255, 82, 82, 0.18);
+}
+
+
+/* Medium screens */
+
+@media (max-width: 1250px) {
+
+  .planner-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Tablets */
+
+@media (max-width: 900px) {
+
+  .daily-limit-card {
+    flex-wrap: wrap;
+  }
+
+  .daily-limit-description {
+    width: 100%;
+
+    flex-basis: 100%;
+  }
+
+  .daily-total {
+    margin-left: auto;
+  }
+
+  .planner-statistics {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* Mobile screens */
+
+@media (max-width: 700px) {
+
+  .planner-container {
+    padding: 22px;
+  }
+
+  .planner-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .planner-header h1 {
+    font-size: 31px;
+  }
+
+  .daily-limit-card {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .daily-limit-controls {
+    width: 100%;
+
+    flex-wrap: wrap;
+  }
+
+  .daily-limit-controls button {
+    flex: 1;
+  }
+
+  .daily-total {
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .card-header {
+    flex-direction: column;
+  }
+
+  .risk-information {
+    align-items: flex-start;
+  }
+
+  .due-row {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .progress-labels {
+    flex-direction: column;
+  }
+
+  .planner-statistics {
+    grid-template-columns: 1fr;
+  }
+}
